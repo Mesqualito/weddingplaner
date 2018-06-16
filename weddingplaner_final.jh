@@ -1,0 +1,127 @@
+
+/**
+* 'User' is a predesigned special entity
+* and can not have additional attributes etc.
+*
+*	List to see User-fields (without constraints, pattern...)
+* entity User {
+*	login String
+*	password String
+*	firstName String
+*	lastName String
+*	email String
+*	activated Boolean
+*	langKey String
+*	imageUrl String
+*	activationKey String
+*	resetKey String
+*	resetDate Instant
+* }
+*/
+
+/**
+* Error while parsing applications and entities from the JDL Error:
+* The name 'appUser' is a reserved keyword and can not be used as an entity field name.
+* NEW since jhipster 5 ?!
+*/
+
+entity UserExtra {
+    code String required minlength(8) maxlength(15)
+    addressLine1 String
+    addressLine2 String
+    city String
+    zipCode String
+    country String
+    businessPhoneNr String
+    privatePhoneNr String
+    mobilePhoneNr String
+    guestInvitationDate LocalDate
+    guestCommitted Boolean
+}
+
+enum AllowGroup {
+	ADRESSE, EMAIL, TELEFON
+}
+
+entity AllowControl {
+	allowGroup AllowGroup
+}
+
+entity PartyFood {
+	foodName String required minlength(6) maxlength(80)
+	foodShortDescription String minlength(20) maxlength(1024)
+    foodLongDescription TextBlob
+    foodQuantityPersons Integer
+    foodBestServeTime Instant
+    foodProposalAccepted Boolean
+}
+
+entity Message {
+	messageShortDescription String required minlength(6) maxlength(80)
+    messageInitTime Instant
+    messageText TextBlob
+    language Language
+    messageValidFrom Instant
+    messageValidUntil Instant
+}
+
+/**
+***** Bi-directional one-to-one relationship *****
+*/
+relationship OneToOne {
+	UserExtra{user(login) required} to User
+}
+
+/**
+***** Unidirectional many-to-one relationship
+* Owner (1) <----- (*) Car
+* Car{owner} to Owner
+*/
+relationship ManyToOne {
+	PartyFood{userExtra(login)} to UserExtra{partyFood(foodName) required}
+    Message{userExtra(login)} to UserExtra{message(messageShortDescription) required}
+}
+
+/**
+***** Bi-directional one-to-many relationship *****
+* EntityOne (1) <------> (*) EntityMany
+* EntityOne{entityMany} to EntityMany{name_of_linkField(entityOne)}
+*/
+
+/**
+***** many-to-many relationship *****
+* Driver (*) <-----> (*) Car
+* Car{carDriver(driver)} to Driver{drivenCar(car)}
+*/
+relationship ManyToMany {
+  PartyFood{userExtra(login))} to UserExtra{partyFood(foodName)}
+  Message{userExtra(login)) required} to UserExtra{message(messageShortDescription))}
+  AllowControl{userExtra(login)} to UserExtra{allowControl(allowGroup)}
+}
+
+/**
+* set Pagination
+*/
+paginate * with pagination
+
+/**
+* add service-classes
+*/
+service * with serviceImpl
+
+/**
+* DTO if needed only, needs ServiceClasses
+*/
+// dto * with mapstruct
+
+/**
+* microservice * with jhipster_all except few
+* microservice Gateway with jhipster_gateway
+* search * with elasticsearch except Gateway
+*/
+// service all with serviceImpl
+
+/**
+* set an Angular-Suffix
+*/
+// angularSuffix * with joAngular
