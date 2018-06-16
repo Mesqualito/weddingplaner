@@ -1,0 +1,39 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myAllowControlLabel" jhiTranslate="weddingplanerApp.allowControl.home.createOrEditLabel">Create or edit a Allow Control</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!allowControl.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="allowControl.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.allowControl.allowGroup" for="field_allowGroup">Allow Group</label>
+            <select class="form-control" name="allowGroup" [(ngModel)]="allowControl.allowGroup" id="field_allowGroup" >
+                <option value="ADRESSE">{{'weddingplanerApp.AllowGroup.ADRESSE' | translate}}</option>
+                <option value="EMAIL">{{'weddingplanerApp.AllowGroup.EMAIL' | translate}}</option>
+                <option value="TELEFON">{{'weddingplanerApp.AllowGroup.TELEFON' | translate}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="weddingplanerApp.allowControl.userExtra" for="field_userExtra">User Extra</label>
+            <select class="form-control" id="field_userExtra" multiple name="userExtra" [(ngModel)]="allowControl.userExtras">
+                <option [ngValue]="getSelected(allowControl.userExtras, userExtraOption)" *ngFor="let userExtraOption of userextras; trackBy: trackUserExtraById">{{userExtraOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

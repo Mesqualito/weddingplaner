@@ -1,0 +1,29 @@
+
+{
+    "weddingplanerApp": {
+        "partyFood" : {
+            "home": {
+                "title": "Party Foods",
+                "createLabel": "Party Food erstellen",
+                "createOrEditLabel": "Party Food erstellen oder bearbeiten",
+                "search": "Suche nach Party Food"
+            },
+            "created": "Party Food erstellt mit ID {{ param }}",
+            "updated": "Party Food aktualisiert mit ID {{ param }}",
+            "deleted": "Party Food gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Party Food {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Party Food"
+            },
+            "foodName": "Food Name",
+            "foodShortDescription": "Food Short Description",
+            "foodLongDescription": "Food Long Description",
+            "foodQuantityPersons": "Food Quantity Persons",
+            "foodBestServeTime": "Food Best Serve Time",
+            "foodProposalAccepted": "Food Proposal Accepted",
+            "userExtra": "User Extra"
+        }
+    }
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity AllowControl.
+    -->
+    <changeSet id="20180616143745-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="allow_controls_id"
+                                 baseTableName="allow_control_user_extra"
+                                 constraintName="fk_allow_control_user_extra_allow_controls_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="allow_control"/>
+        <addForeignKeyConstraint baseColumnNames="user_extras_id"
+                                 baseTableName="allow_control_user_extra"
+                                 constraintName="fk_allow_control_user_extra_user_extras_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_extra"/>
+        
+    </changeSet>
+</databaseChangeLog>

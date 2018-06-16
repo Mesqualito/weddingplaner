@@ -1,0 +1,70 @@
+
+<div *ngIf="userExtra">
+    <h2><span jhiTranslate="weddingplanerApp.userExtra.detail.title">User Extra</span> {{userExtra.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.code">Code</span></dt>
+        <dd>
+            <span>{{userExtra.code}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.addressLine1">Address Line 1</span></dt>
+        <dd>
+            <span>{{userExtra.addressLine1}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.addressLine2">Address Line 2</span></dt>
+        <dd>
+            <span>{{userExtra.addressLine2}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.city">City</span></dt>
+        <dd>
+            <span>{{userExtra.city}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.zipCode">Zip Code</span></dt>
+        <dd>
+            <span>{{userExtra.zipCode}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.country">Country</span></dt>
+        <dd>
+            <span>{{userExtra.country}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.businessPhoneNr">Business Phone Nr</span></dt>
+        <dd>
+            <span>{{userExtra.businessPhoneNr}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.privatePhoneNr">Private Phone Nr</span></dt>
+        <dd>
+            <span>{{userExtra.privatePhoneNr}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.mobilePhoneNr">Mobile Phone Nr</span></dt>
+        <dd>
+            <span>{{userExtra.mobilePhoneNr}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.guestInvitationDate">Guest Invitation Date</span></dt>
+        <dd>
+            <span>{{userExtra.guestInvitationDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.guestCommitted">Guest Committed</span></dt>
+        <dd>
+            <span>{{userExtra.guestCommitted}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.user">User</span></dt>
+        <dd>
+            {{userExtra.user?.id}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'user-extra/'+ userExtra.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
