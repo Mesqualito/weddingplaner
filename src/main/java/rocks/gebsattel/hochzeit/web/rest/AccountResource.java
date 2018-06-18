@@ -61,7 +61,10 @@ public class AccountResource {
         }
         userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {throw new LoginAlreadyUsedException();});
         userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {throw new EmailAlreadyUsedException();});
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        // User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.getCode(), managedUserVM.getAddressLine1(),
+            managedUserVM.getAddressLine2(), managedUserVM.getCity(), managedUserVM.getZipCode(), managedUserVM.getCountry(), managedUserVM.getBusinessPhoneNr(),
+            managedUserVM.getPrivatePhoneNr(), managedUserVM.getMobilePhoneNr(), managedUserVM.getGuestInvitationDate(), managedUserVM.isGuestCommitted());
         mailService.sendActivationEmail(user);
     }
 

@@ -18,7 +18,7 @@ import java.util.Objects;
 /**
  * 'User' is a predesigned special entity
  * and can not have additional attributes etc.
- * 
+ *
  * List to see User-fields (without constraints, pattern...)
  * entity User {
  * login String
@@ -44,7 +44,7 @@ public class UserExtra implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -83,8 +83,9 @@ public class UserExtra implements Serializable {
     private Boolean guestCommitted;
 
     @OneToOne(optional = false)
-    @NotNull
-    @JoinColumn(unique = true)
+    // @NotNull
+    // @JoinColumn(unique = true)
+    @MapsId
     private User user;
 
     @OneToMany(mappedBy = "userExtra")

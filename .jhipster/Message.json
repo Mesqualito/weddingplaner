@@ -7,7 +7,7 @@
             "otherEntityRelationshipName": "message",
             "relationshipName": "userExtra",
             "otherEntityName": "userExtra",
-            "otherEntityField": "id",
+            "otherEntityField": "user_id",
             "ownerSide": true
         }
     ],
