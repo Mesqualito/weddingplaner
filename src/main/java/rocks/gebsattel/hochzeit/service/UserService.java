@@ -1,5 +1,6 @@
 package rocks.gebsattel.hochzeit.service;
 
+import org.elasticsearch.common.inject.Inject;
 import rocks.gebsattel.hochzeit.config.CacheConfiguration;
 import rocks.gebsattel.hochzeit.domain.Authority;
 import rocks.gebsattel.hochzeit.domain.User;
@@ -8,6 +9,7 @@ import rocks.gebsattel.hochzeit.repository.AuthorityRepository;
 import rocks.gebsattel.hochzeit.config.Constants;
 import rocks.gebsattel.hochzeit.repository.UserRepository;
 import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
+import rocks.gebsattel.hochzeit.repository.search.UserExtraSearchRepository;
 import rocks.gebsattel.hochzeit.repository.search.UserSearchRepository;
 import rocks.gebsattel.hochzeit.security.AuthoritiesConstants;
 import rocks.gebsattel.hochzeit.security.SecurityUtils;
@@ -43,7 +45,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final UserExtraRepository userExtraRepository;
+    @Inject
+    private UserExtraRepository userExtraRepository;
+
+    @Inject
+    private UserExtraSearchRepository userExtraSearchRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -53,11 +59,14 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserExtraRepository userExtraRepository, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserExtraRepository userExtraRepository,
+                       UserSearchRepository userSearchRepository, UserExtraSearchRepository userExtraSearchRepository,
+                       AuthorityRepository authorityRepository, CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userExtraRepository = userExtraRepository;
         this.userSearchRepository = userSearchRepository;
+        this.userExtraSearchRepository = userExtraSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
     }
@@ -147,6 +156,7 @@ public class UserService {
         newUserExtra.setGuestCommitted(guestCommitted);
 
         userExtraRepository.save(newUserExtra);
+        userExtraSearchRepository.save(newUserExtra);
         log.debug("Created Information for UserExtra: {}", newUserExtra);
 
         return newUser;

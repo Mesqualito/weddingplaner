@@ -82,9 +82,9 @@ public class UserExtra implements Serializable {
     @Column(name = "guest_committed")
     private Boolean guestCommitted;
 
-    @OneToOne(optional = false)
     // @NotNull
     // @JoinColumn(unique = true)
+    @OneToOne
     @MapsId
     private User user;
 
