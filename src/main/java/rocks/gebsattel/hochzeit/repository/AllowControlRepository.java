@@ -13,10 +13,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface AllowControlRepository extends JpaRepository<AllowControl, Long> {
-    @Query("select distinct allow_control from AllowControl allow_control left join fetch allow_control.userExtras")
+    @Query("select distinct allow_control from AllowControl allow_control left join fetch allow_control.controlledGroups")
     List<AllowControl> findAllWithEagerRelationships();
 
-    @Query("select allow_control from AllowControl allow_control left join fetch allow_control.userExtras where allow_control.id =:id")
+    @Query("select allow_control from AllowControl allow_control left join fetch allow_control.controlledGroups where allow_control.id =:id")
     AllowControl findOneWithEagerRelationships(@Param("id") Long id);
 
 }

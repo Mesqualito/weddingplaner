@@ -10,8 +10,8 @@ import { UserExtra } from './user-extra.model';
 import { UserExtraPopupService } from './user-extra-popup.service';
 import { UserExtraService } from './user-extra.service';
 import { User, UserService } from '../../shared';
-import { Message, MessageService } from '../message';
 import { AllowControl, AllowControlService } from '../allow-control';
+import { Message, MessageService } from '../message';
 
 @Component({
     selector: 'jhi-user-extra-dialog',
@@ -24,9 +24,9 @@ export class UserExtraDialogComponent implements OnInit {
 
     users: User[];
 
-    messages: Message[];
-
     allowcontrols: AllowControl[];
+
+    messages: Message[];
     guestInvitationDateDp: any;
 
     constructor(
@@ -34,8 +34,8 @@ export class UserExtraDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private userExtraService: UserExtraService,
         private userService: UserService,
-        private messageService: MessageService,
         private allowControlService: AllowControlService,
+        private messageService: MessageService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -44,10 +44,10 @@ export class UserExtraDialogComponent implements OnInit {
         this.isSaving = false;
         this.userService.query()
             .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.messageService.query()
-            .subscribe((res: HttpResponse<Message[]>) => { this.messages = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.allowControlService.query()
             .subscribe((res: HttpResponse<AllowControl[]>) => { this.allowcontrols = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.messageService.query()
+            .subscribe((res: HttpResponse<Message[]>) => { this.messages = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -88,11 +88,11 @@ export class UserExtraDialogComponent implements OnInit {
         return item.id;
     }
 
-    trackMessageById(index: number, item: Message) {
+    trackAllowControlById(index: number, item: AllowControl) {
         return item.id;
     }
 
-    trackAllowControlById(index: number, item: AllowControl) {
+    trackMessageById(index: number, item: Message) {
         return item.id;
     }
 

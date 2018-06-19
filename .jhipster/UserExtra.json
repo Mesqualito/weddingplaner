@@ -3,6 +3,7 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "user",
             "otherEntityName": "user",
             "otherEntityField": "id",
@@ -17,18 +18,30 @@
             "otherEntityRelationshipName": "userExtra"
         },
         {
-            "relationshipType": "many-to-many",
-            "relationshipName": "message",
+            "relationshipType": "one-to-many",
+            "relationshipName": "owner",
+            "otherEntityName": "allowControl",
+            "otherEntityRelationshipName": "controlGroup"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "ownedMessage",
             "otherEntityName": "message",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "userExtra"
+            "otherEntityRelationshipName": "from"
         },
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "allowControl",
+            "relationshipName": "allowedUser",
             "otherEntityName": "allowControl",
             "ownerSide": false,
-            "otherEntityRelationshipName": "userExtra"
+            "otherEntityRelationshipName": "controlledGroup"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "receivedMessage",
+            "otherEntityName": "message",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "to"
         }
     ],
     "fields": [

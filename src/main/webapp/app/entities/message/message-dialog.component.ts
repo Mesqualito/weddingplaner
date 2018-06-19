@@ -1,15 +1,15 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import {Observable} from 'rxjs/Observable';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager, JhiAlertService, JhiDataUtils} from 'ng-jhipster';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
-import {Message} from './message.model';
-import {MessagePopupService} from './message-popup.service';
-import {MessageService} from './message.service';
-import {UserExtra, UserExtraService} from '../user-extra';
+import { Message } from './message.model';
+import { MessagePopupService } from './message-popup.service';
+import { MessageService } from './message.service';
+import { UserExtra, UserExtraService } from '../user-extra';
 
 @Component({
     selector: 'jhi-message-dialog',
@@ -18,12 +18,9 @@ import {UserExtra, UserExtraService} from '../user-extra';
 export class MessageDialogComponent implements OnInit {
 
     message: Message;
-
     isSaving: boolean;
 
     userextras: UserExtra[];
-    userExtraOptions: any[];
-
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -33,17 +30,6 @@ export class MessageDialogComponent implements OnInit {
         private userExtraService: UserExtraService,
         private eventManager: JhiEventManager
     ) {
-    }
-
-    search(event){
-console.log(event.query);
-        this.userExtraOptions = this.userextras.filter((userExtra) => (userExtra.user.firstName.startsWith(event.query) || userExtra.user.lastName.startsWith(event.query)));
-console.log(this.userExtraOptions);
-        }
-
-    private subscribeToSaveResponse(result: Observable<HttpResponse<Message>>) {
-        result.subscribe((res: HttpResponse<Message>) =>
-            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     ngOnInit() {
@@ -79,6 +65,11 @@ console.log(this.userExtraOptions);
         }
     }
 
+    private subscribeToSaveResponse(result: Observable<HttpResponse<Message>>) {
+        result.subscribe((res: HttpResponse<Message>) =>
+            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
+    }
+
     private onSaveSuccess(result: Message) {
         this.eventManager.broadcast({ name: 'messageListModification', content: 'OK'});
         this.isSaving = false;
@@ -91,10 +82,6 @@ console.log(this.userExtraOptions);
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
-    }
-
-private onSuccess(data, headers) {
-
     }
 
     trackUserExtraById(index: number, item: UserExtra) {

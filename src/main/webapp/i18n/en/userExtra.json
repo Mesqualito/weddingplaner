@@ -30,8 +30,10 @@
             "guestCommitted": "Guest Committed",
             "user": "User",
             "partyFood": "Party Food",
-            "message": "Message",
-            "allowControl": "Allow Control"
+            "owner": "Owner",
+            "ownedMessage": "Owned Message",
+            "allowedUser": "Allowed User",
+            "receivedMessage": "Received Message"
         }
     }
 }

@@ -22,9 +22,16 @@
         </div>
 
         <div class="form-group">
-            <label jhiTranslate="weddingplanerApp.allowControl.userExtra" for="field_userExtra">User Extra</label>
-            <select class="form-control" id="field_userExtra" multiple name="userExtra" [(ngModel)]="allowControl.userExtras">
-                <option [ngValue]="getSelected(allowControl.userExtras, userExtraOption)" *ngFor="let userExtraOption of userextras; trackBy: trackUserExtraById">{{userExtraOption.id}}</option>
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.allowControl.controlGroup" for="field_controlGroup">Control Group</label>
+            <select class="form-control" id="field_controlGroup" name="controlGroup" [(ngModel)]="allowControl.controlGroup" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userExtraOption.id === allowControl.controlGroup?.id ? allowControl.controlGroup : userExtraOption" *ngFor="let userExtraOption of userextras; trackBy: trackUserExtraById">{{userExtraOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="weddingplanerApp.allowControl.controlledGroup" for="field_controlledGroup">Controlled Group</label>
+            <select class="form-control" id="field_controlledGroup" multiple name="controlledGroup" [(ngModel)]="allowControl.controlledGroups">
+                <option [ngValue]="getSelected(allowControl.controlledGroups, userExtraOption)" *ngFor="let userExtraOption of userextras; trackBy: trackUserExtraById">{{userExtraOption.id}}</option>
             </select>
         </div>
     </div>

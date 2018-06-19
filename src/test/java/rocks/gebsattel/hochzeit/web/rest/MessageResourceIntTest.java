@@ -4,6 +4,7 @@ import rocks.gebsattel.hochzeit.WeddingplanerApp;
 
 import rocks.gebsattel.hochzeit.domain.Message;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
+import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.repository.MessageRepository;
 import rocks.gebsattel.hochzeit.service.MessageService;
 import rocks.gebsattel.hochzeit.repository.search.MessageSearchRepository;
@@ -109,10 +110,15 @@ public class MessageResourceIntTest {
             .messageValidFrom(DEFAULT_MESSAGE_VALID_FROM)
             .messageValidUntil(DEFAULT_MESSAGE_VALID_UNTIL);
         // Add required entity
-        UserExtra userExtra = UserExtraResourceIntTest.createEntity(em);
-        em.persist(userExtra);
+        UserExtra from = UserExtraResourceIntTest.createEntity(em);
+        em.persist(from);
         em.flush();
-        message.getUserExtras().add(userExtra);
+        message.setFrom(from);
+        // Add required entity
+        UserExtra to = UserExtraResourceIntTest.createEntity(em);
+        em.persist(to);
+        em.flush();
+        message.getTos().add(to);
         return message;
     }
 

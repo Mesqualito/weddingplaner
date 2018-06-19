@@ -2,12 +2,19 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "from",
+            "otherEntityName": "userExtra",
+            "otherEntityField": "id"
+        },
+        {
             "relationshipType": "many-to-many",
             "relationshipValidateRules": "required",
-            "otherEntityRelationshipName": "message",
-            "relationshipName": "userExtra",
+            "otherEntityRelationshipName": "receivedMessage",
+            "relationshipName": "to",
             "otherEntityName": "userExtra",
-            "otherEntityField": "user_id",
+            "otherEntityField": "id",
             "ownerSide": true
         }
     ],

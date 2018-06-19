@@ -18,7 +18,8 @@
                 "title": "Allow Control"
             },
             "allowGroup": "Allow Group",
-            "userExtra": "User Extra"
+            "controlGroup": "Control Group",
+            "controlledGroup": "Controlled Group"
         }
     }
 }
