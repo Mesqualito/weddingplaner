@@ -39,7 +39,7 @@ public class AllowControl implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "allow_control_controlled_group",
                joinColumns = @JoinColumn(name="allow_controls_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="controlled_groups_id", referencedColumnName="id"))
+               inverseJoinColumns = @JoinColumn(name="controlled_groups_id", referencedColumnName="user_id"))
     private Set<UserExtra> controlledGroups = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

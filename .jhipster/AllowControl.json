@@ -5,14 +5,14 @@
             "relationshipType": "many-to-one",
             "relationshipName": "controlGroup",
             "otherEntityName": "userExtra",
-            "otherEntityField": "id"
+            "otherEntityField": "user_id"
         },
         {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "allowedUser",
             "relationshipName": "controlledGroup",
             "otherEntityName": "userExtra",
-            "otherEntityField": "id",
+            "otherEntityField": "user_id",
             "ownerSide": true
         }
     ],

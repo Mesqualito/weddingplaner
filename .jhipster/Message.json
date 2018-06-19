@@ -6,7 +6,7 @@
             "relationshipValidateRules": "required",
             "relationshipName": "from",
             "otherEntityName": "userExtra",
-            "otherEntityField": "id"
+            "otherEntityField": "user_id"
         },
         {
             "relationshipType": "many-to-many",
@@ -14,7 +14,7 @@
             "otherEntityRelationshipName": "receivedMessage",
             "relationshipName": "to",
             "otherEntityName": "userExtra",
-            "otherEntityField": "id",
+            "otherEntityField": "user_id",
             "ownerSide": true
         }
     ],
