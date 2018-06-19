@@ -8,7 +8,7 @@
     -->
     <changeSet id="20180616143745-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="control_group_id"
+        <addForeignKeyConstraint baseColumnNames="control_group_user_id"
                                  baseTableName="allow_control"
                                  constraintName="fk_allow_control_control_group_id"
                                  referencedColumnNames="user_id"

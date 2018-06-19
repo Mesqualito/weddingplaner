@@ -65,9 +65,6 @@
             <column name="guest_committed" type="bit">
                 <constraints nullable="true" />
             </column>
-            <column name="user_id" type="bigint">
-                <constraints unique="true" nullable="false" />
-            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
