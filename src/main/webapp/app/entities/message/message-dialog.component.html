@@ -88,8 +88,9 @@
             </small>
         </div>
 
-        <label jhiTranslate="weddingplanerApp.message.to" for="field_to">to User</label>
+
         <div class="form-group">
+            <label jhiTranslate="weddingplanerApp.message.to" for="field_to">to User</label>
             <p-autoComplete id="field_to" name="to" [(ngModel)]="message.tos" [required]="true"
                             placeholder="Enter receivers names" [suggestions]="userExtraOptions"
                             (completeMethod)="search($event)"

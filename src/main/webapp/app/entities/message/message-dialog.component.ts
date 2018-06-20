@@ -66,10 +66,8 @@ export class MessageDialogComponent implements OnInit {
         }
     }
 
-    search(event){
-        console.log(event.query);
+    search(event) {
         this.userExtraOptions = this.userextras.filter((userExtra) => (userExtra.user.firstName.startsWith(event.query) || userExtra.user.lastName.startsWith(event.query)));
-        console.log(this.userExtraOptions);
     }
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<Message>>) {
