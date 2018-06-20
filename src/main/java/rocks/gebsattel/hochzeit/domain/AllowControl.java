@@ -32,12 +32,15 @@ public class AllowControl implements Serializable {
     @Column(name = "allow_group")
     private AllowGroup allowGroup;
 
+    @ManyToOne
+    private UserExtra controlGroup;
+
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "allow_control_user_extra",
+    @JoinTable(name = "allow_control_controlled_group",
                joinColumns = @JoinColumn(name="allow_controls_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="user_extras_id", referencedColumnName="user_id"))
-    private Set<UserExtra> userExtras = new HashSet<>();
+               inverseJoinColumns = @JoinColumn(name="controlled_groups_id", referencedColumnName="user_id"))
+    private Set<UserExtra> controlledGroups = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -61,29 +64,42 @@ public class AllowControl implements Serializable {
         this.allowGroup = allowGroup;
     }
 
-    public Set<UserExtra> getUserExtras() {
-        return userExtras;
+    public UserExtra getControlGroup() {
+        return controlGroup;
     }
 
-    public AllowControl userExtras(Set<UserExtra> userExtras) {
-        this.userExtras = userExtras;
+    public AllowControl controlGroup(UserExtra userExtra) {
+        this.controlGroup = userExtra;
         return this;
     }
 
-    public AllowControl addUserExtra(UserExtra userExtra) {
-        this.userExtras.add(userExtra);
-        userExtra.getAllowControls().add(this);
+    public void setControlGroup(UserExtra userExtra) {
+        this.controlGroup = userExtra;
+    }
+
+    public Set<UserExtra> getControlledGroups() {
+        return controlledGroups;
+    }
+
+    public AllowControl controlledGroups(Set<UserExtra> userExtras) {
+        this.controlledGroups = userExtras;
         return this;
     }
 
-    public AllowControl removeUserExtra(UserExtra userExtra) {
-        this.userExtras.remove(userExtra);
-        userExtra.getAllowControls().remove(this);
+    public AllowControl addControlledGroup(UserExtra userExtra) {
+        this.controlledGroups.add(userExtra);
+        userExtra.getAllowedUsers().add(this);
         return this;
     }
 
-    public void setUserExtras(Set<UserExtra> userExtras) {
-        this.userExtras = userExtras;
+    public AllowControl removeControlledGroup(UserExtra userExtra) {
+        this.controlledGroups.remove(userExtra);
+        userExtra.getAllowedUsers().remove(this);
+        return this;
+    }
+
+    public void setControlledGroups(Set<UserExtra> userExtras) {
+        this.controlledGroups = userExtras;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

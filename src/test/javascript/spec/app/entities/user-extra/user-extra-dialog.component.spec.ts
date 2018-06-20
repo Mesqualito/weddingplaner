@@ -10,8 +10,8 @@ import { UserExtraDialogComponent } from '../../../../../../main/webapp/app/enti
 import { UserExtraService } from '../../../../../../main/webapp/app/entities/user-extra/user-extra.service';
 import { UserExtra } from '../../../../../../main/webapp/app/entities/user-extra/user-extra.model';
 import { UserService } from '../../../../../../main/webapp/app/shared';
-import { MessageService } from '../../../../../../main/webapp/app/entities/message';
 import { AllowControlService } from '../../../../../../main/webapp/app/entities/allow-control';
+import { MessageService } from '../../../../../../main/webapp/app/entities/message';
 
 describe('Component Tests', () => {
 
@@ -28,8 +28,8 @@ describe('Component Tests', () => {
                 declarations: [UserExtraDialogComponent],
                 providers: [
                     UserService,
-                    MessageService,
                     AllowControlService,
+                    MessageService,
                     UserExtraService
                 ]
             })

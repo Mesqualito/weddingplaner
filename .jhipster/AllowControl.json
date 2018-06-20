@@ -2,9 +2,15 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "many-to-one",
+            "relationshipName": "controlGroup",
+            "otherEntityName": "userExtra",
+            "otherEntityField": "user_id"
+        },
+        {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "allowControl",
-            "relationshipName": "userExtra",
+            "otherEntityRelationshipName": "allowedUser",
+            "relationshipName": "controlledGroup",
             "otherEntityName": "userExtra",
             "otherEntityField": "user_id",
             "ownerSide": true

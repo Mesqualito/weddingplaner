@@ -152,12 +152,14 @@ public class UserService {
         newUserExtra.setBusinessPhoneNr(businessPhoneNr);
         newUserExtra.setPrivatePhoneNr(privatePhoneNr);
         newUserExtra.setMobilePhoneNr(mobilePhoneNr);
-        newUserExtra.setGuestInvitationDate(guestInvitationDate);
         newUserExtra.setGuestCommitted(guestCommitted);
 
         userExtraRepository.save(newUserExtra);
         userExtraSearchRepository.save(newUserExtra);
         log.debug("Created Information for UserExtra: {}", newUserExtra);
+
+        // auto-activate newUser
+        this.activateRegistration(newUser.getActivationKey());
 
         return newUser;
     }

@@ -21,6 +21,7 @@ export class AllowControlDialogComponent implements OnInit {
     isSaving: boolean;
 
     userextras: UserExtra[];
+    userExtraOptions: any[];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -50,6 +51,10 @@ export class AllowControlDialogComponent implements OnInit {
             this.subscribeToSaveResponse(
                 this.allowControlService.create(this.allowControl));
         }
+    }
+
+    search(event) {
+        this.userExtraOptions = this.userextras.filter((userExtra) => (userExtra.user.firstName.startsWith(event.query) || userExtra.user.lastName.startsWith(event.query)));
     }
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<AllowControl>>) {

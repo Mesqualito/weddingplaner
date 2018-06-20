@@ -64,11 +64,13 @@ relationship OneToOne {
 
 relationship ManyToOne {
 	PartyFood{userExtra} to UserExtra{partyFood(foodName) required}
+	AllowControl{controlGroup} to UserExtra{owner}
+    Message{from required} to UserExtra{ownedMessage}
 }
 
 relationship ManyToMany {
-  Message{userExtra) required} to UserExtra{message(messageShortDescription))}
-  AllowControl{userExtra} to UserExtra{allowControl(allowGroup)}
+  AllowControl{controlledGroup} to UserExtra{allowedUser}
+  Message{to required} to UserExtra{receivedMessage}
 }
 
 paginate * with pagination

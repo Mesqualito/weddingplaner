@@ -65,7 +65,8 @@ public class AccountResource {
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.getCode(), managedUserVM.getAddressLine1(),
             managedUserVM.getAddressLine2(), managedUserVM.getCity(), managedUserVM.getZipCode(), managedUserVM.getCountry(), managedUserVM.getBusinessPhoneNr(),
             managedUserVM.getPrivatePhoneNr(), managedUserVM.getMobilePhoneNr(), managedUserVM.getGuestInvitationDate(), managedUserVM.isGuestCommitted());
-        mailService.sendActivationEmail(user);
+        // see UserService.java => auto-activate newUser
+        // mailService.sendActivationEmail(user);
     }
 
     /**

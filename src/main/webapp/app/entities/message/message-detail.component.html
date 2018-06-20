@@ -24,10 +24,16 @@
         <dd>
             <span>{{message.messageValidUntil | date:'medium'}}</span>
         </dd>
-        <dt><span jhiTranslate="weddingplanerApp.message.userExtra">User Extra</span></dt>
+        <dt><span jhiTranslate="weddingplanerApp.message.from">From</span></dt>
         <dd>
-            <span *ngFor="let userExtra of message.userExtras; let last = last">
-                <a [routerLink]="['/user-extra', userExtra?.id ]">{{userExtra.id}}</a>{{last ? '' : ', '}}
+            <div *ngIf="message.from">
+                <a [routerLink]="['/user-extra', message.from?.id]">{{message.from?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.message.to">To</span></dt>
+        <dd>
+            <span *ngFor="let to of message.tos; let last = last">
+                <a [routerLink]="['/user-extra', to?.id ]">{{to.id}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
     </dl>

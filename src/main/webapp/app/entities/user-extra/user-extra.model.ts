@@ -16,8 +16,10 @@ export class UserExtra implements BaseEntity {
         public guestCommitted?: boolean,
         public user?: User,
         public partyFoods?: BaseEntity[],
-        public messages?: BaseEntity[],
-        public allowControls?: BaseEntity[],
+        public owners?: BaseEntity[],
+        public ownedMessages?: BaseEntity[],
+        public allowedUsers?: BaseEntity[],
+        public receivedMessages?: BaseEntity[],
     ) {
         this.guestCommitted = false;
     }

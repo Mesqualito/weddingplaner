@@ -93,15 +93,25 @@ public class UserExtra implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PartyFood> partyFoods = new HashSet<>();
 
-    @ManyToMany(mappedBy = "userExtras")
+    @OneToMany(mappedBy = "controlGroup")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Message> messages = new HashSet<>();
+    private Set<AllowControl> owners = new HashSet<>();
 
-    @ManyToMany(mappedBy = "userExtras")
+    @OneToMany(mappedBy = "from")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<AllowControl> allowControls = new HashSet<>();
+    private Set<Message> ownedMessages = new HashSet<>();
+
+    @ManyToMany(mappedBy = "controlledGroups")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<AllowControl> allowedUsers = new HashSet<>();
+
+    @ManyToMany(mappedBy = "tos")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Message> receivedMessages = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -293,54 +303,104 @@ public class UserExtra implements Serializable {
         this.partyFoods = partyFoods;
     }
 
-    public Set<Message> getMessages() {
-        return messages;
+    public Set<AllowControl> getOwners() {
+        return owners;
     }
 
-    public UserExtra messages(Set<Message> messages) {
-        this.messages = messages;
+    public UserExtra owners(Set<AllowControl> allowControls) {
+        this.owners = allowControls;
         return this;
     }
 
-    public UserExtra addMessage(Message message) {
-        this.messages.add(message);
-        message.getUserExtras().add(this);
+    public UserExtra addOwner(AllowControl allowControl) {
+        this.owners.add(allowControl);
+        allowControl.setControlGroup(this);
         return this;
     }
 
-    public UserExtra removeMessage(Message message) {
-        this.messages.remove(message);
-        message.getUserExtras().remove(this);
+    public UserExtra removeOwner(AllowControl allowControl) {
+        this.owners.remove(allowControl);
+        allowControl.setControlGroup(null);
         return this;
     }
 
-    public void setMessages(Set<Message> messages) {
-        this.messages = messages;
+    public void setOwners(Set<AllowControl> allowControls) {
+        this.owners = allowControls;
     }
 
-    public Set<AllowControl> getAllowControls() {
-        return allowControls;
+    public Set<Message> getOwnedMessages() {
+        return ownedMessages;
     }
 
-    public UserExtra allowControls(Set<AllowControl> allowControls) {
-        this.allowControls = allowControls;
+    public UserExtra ownedMessages(Set<Message> messages) {
+        this.ownedMessages = messages;
         return this;
     }
 
-    public UserExtra addAllowControl(AllowControl allowControl) {
-        this.allowControls.add(allowControl);
-        allowControl.getUserExtras().add(this);
+    public UserExtra addOwnedMessage(Message message) {
+        this.ownedMessages.add(message);
+        message.setFrom(this);
         return this;
     }
 
-    public UserExtra removeAllowControl(AllowControl allowControl) {
-        this.allowControls.remove(allowControl);
-        allowControl.getUserExtras().remove(this);
+    public UserExtra removeOwnedMessage(Message message) {
+        this.ownedMessages.remove(message);
+        message.setFrom(null);
         return this;
     }
 
-    public void setAllowControls(Set<AllowControl> allowControls) {
-        this.allowControls = allowControls;
+    public void setOwnedMessages(Set<Message> messages) {
+        this.ownedMessages = messages;
+    }
+
+    public Set<AllowControl> getAllowedUsers() {
+        return allowedUsers;
+    }
+
+    public UserExtra allowedUsers(Set<AllowControl> allowControls) {
+        this.allowedUsers = allowControls;
+        return this;
+    }
+
+    public UserExtra addAllowedUser(AllowControl allowControl) {
+        this.allowedUsers.add(allowControl);
+        allowControl.getControlledGroups().add(this);
+        return this;
+    }
+
+    public UserExtra removeAllowedUser(AllowControl allowControl) {
+        this.allowedUsers.remove(allowControl);
+        allowControl.getControlledGroups().remove(this);
+        return this;
+    }
+
+    public void setAllowedUsers(Set<AllowControl> allowControls) {
+        this.allowedUsers = allowControls;
+    }
+
+    public Set<Message> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public UserExtra receivedMessages(Set<Message> messages) {
+        this.receivedMessages = messages;
+        return this;
+    }
+
+    public UserExtra addReceivedMessage(Message message) {
+        this.receivedMessages.add(message);
+        message.getTos().add(this);
+        return this;
+    }
+
+    public UserExtra removeReceivedMessage(Message message) {
+        this.receivedMessages.remove(message);
+        message.getTos().remove(this);
+        return this;
+    }
+
+    public void setReceivedMessages(Set<Message> messages) {
+        this.receivedMessages = messages;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

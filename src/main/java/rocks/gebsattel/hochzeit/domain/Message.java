@@ -46,13 +46,17 @@ public class Message implements Serializable {
     @Column(name = "message_valid_until")
     private Instant messageValidUntil;
 
+    @ManyToOne(optional = false)
+    @NotNull
+    private UserExtra from;
+
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @NotNull
-    @JoinTable(name = "message_user_extra",
+    @JoinTable(name = "message_to",
                joinColumns = @JoinColumn(name="messages_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="user_extras_id", referencedColumnName="user_id"))
-    private Set<UserExtra> userExtras = new HashSet<>();
+               inverseJoinColumns = @JoinColumn(name="tos_id", referencedColumnName="user_id"))
+    private Set<UserExtra> tos = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -128,29 +132,42 @@ public class Message implements Serializable {
         this.messageValidUntil = messageValidUntil;
     }
 
-    public Set<UserExtra> getUserExtras() {
-        return userExtras;
+    public UserExtra getFrom() {
+        return from;
     }
 
-    public Message userExtras(Set<UserExtra> userExtras) {
-        this.userExtras = userExtras;
+    public Message from(UserExtra userExtra) {
+        this.from = userExtra;
         return this;
     }
 
-    public Message addUserExtra(UserExtra userExtra) {
-        this.userExtras.add(userExtra);
-        userExtra.getMessages().add(this);
+    public void setFrom(UserExtra userExtra) {
+        this.from = userExtra;
+    }
+
+    public Set<UserExtra> getTos() {
+        return tos;
+    }
+
+    public Message tos(Set<UserExtra> userExtras) {
+        this.tos = userExtras;
         return this;
     }
 
-    public Message removeUserExtra(UserExtra userExtra) {
-        this.userExtras.remove(userExtra);
-        userExtra.getMessages().remove(this);
+    public Message addTo(UserExtra userExtra) {
+        this.tos.add(userExtra);
+        userExtra.getReceivedMessages().add(this);
         return this;
     }
 
-    public void setUserExtras(Set<UserExtra> userExtras) {
-        this.userExtras = userExtras;
+    public Message removeTo(UserExtra userExtra) {
+        this.tos.remove(userExtra);
+        userExtra.getReceivedMessages().remove(this);
+        return this;
+    }
+
+    public void setTos(Set<UserExtra> userExtras) {
+        this.tos = userExtras;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

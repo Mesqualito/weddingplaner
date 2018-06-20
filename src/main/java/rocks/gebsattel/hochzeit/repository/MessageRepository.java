@@ -13,10 +13,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    @Query("select distinct message from Message message left join fetch message.userExtras")
+    @Query("select distinct message from Message message left join fetch message.tos")
     List<Message> findAllWithEagerRelationships();
 
-    @Query("select message from Message message left join fetch message.userExtras where message.id =:id")
+    @Query("select message from Message message left join fetch message.tos where message.id =:id")
     Message findOneWithEagerRelationships(@Param("id") Long id);
 
 }

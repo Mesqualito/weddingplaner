@@ -22,7 +22,8 @@
             "messageText": "Message Text",
             "messageValidFrom": "Message Valid From",
             "messageValidUntil": "Message Valid Until",
-            "userExtra": "User Extra"
+            "from": "From",
+            "to": "To"
         }
     }
 }

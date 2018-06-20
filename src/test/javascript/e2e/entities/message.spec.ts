@@ -43,7 +43,8 @@ describe('Message e2e test', () => {
         expect(messageDialogPage.getMessageValidFromInput()).toMatch('2001-12-31T02:30');
         messageDialogPage.setMessageValidUntilInput(12310020012301);
         expect(messageDialogPage.getMessageValidUntilInput()).toMatch('2001-12-31T02:30');
-        // messageDialogPage.userExtraSelectLastOption();
+        messageDialogPage.fromSelectLastOption();
+        // messageDialogPage.toSelectLastOption();
         messageDialogPage.save();
         expect(messageDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });*/
@@ -75,7 +76,8 @@ export class MessageDialogPage {
     messageTextInput = element(by.css('textarea#field_messageText'));
     messageValidFromInput = element(by.css('input#field_messageValidFrom'));
     messageValidUntilInput = element(by.css('input#field_messageValidUntil'));
-    userExtraSelect = element(by.css('select#field_userExtra'));
+    fromSelect = element(by.css('select#field_from'));
+    toSelect = element(by.css('select#field_to'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -121,20 +123,36 @@ export class MessageDialogPage {
         return this.messageValidUntilInput.getAttribute('value');
     };
 
-    userExtraSelectLastOption = function() {
-        this.userExtraSelect.all(by.tagName('option')).last().click();
+    fromSelectLastOption = function() {
+        this.fromSelect.all(by.tagName('option')).last().click();
     };
 
-    userExtraSelectOption = function(option) {
-        this.userExtraSelect.sendKeys(option);
+    fromSelectOption = function(option) {
+        this.fromSelect.sendKeys(option);
     };
 
-    getUserExtraSelect = function() {
-        return this.userExtraSelect;
+    getFromSelect = function() {
+        return this.fromSelect;
     };
 
-    getUserExtraSelectedOption = function() {
-        return this.userExtraSelect.element(by.css('option:checked')).getText();
+    getFromSelectedOption = function() {
+        return this.fromSelect.element(by.css('option:checked')).getText();
+    };
+
+    toSelectLastOption = function() {
+        this.toSelect.all(by.tagName('option')).last().click();
+    };
+
+    toSelectOption = function(option) {
+        this.toSelect.sendKeys(option);
+    };
+
+    getToSelect = function() {
+        return this.toSelect;
+    };
+
+    getToSelectedOption = function() {
+        return this.toSelect.element(by.css('option:checked')).getText();
     };
 
     save() {
