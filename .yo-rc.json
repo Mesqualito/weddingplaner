@@ -35,6 +35,7 @@
     "jhipsterVersion": "4.14.4",
     "packageFolder": "rocks/gebsattel/hochzeit",
     "jwtSecretKey": "5d75e6ece1fc3e7eda3df28e5049864f3d949a30",
-    "jhiPrefix": "jhi"
+    "jhiPrefix": "jhi",
+    "herokuDeployType": "git"
   }
 }

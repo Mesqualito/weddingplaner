@@ -1,0 +1,6 @@
+heroku:
+- brew install heroku/brew/heroku (installs heroku toolbelt)
+- heroku login
+- jhipster heroku
+- heroku plugins:install heroku-cli-deploy
+- ./gradlew -Pprod bootRepackage -x test heroku war:deploy build/libs/*war --app weddingplaner
