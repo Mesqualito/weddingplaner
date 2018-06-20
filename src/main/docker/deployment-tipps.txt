@@ -5,8 +5,11 @@ docker:
     - docker container run -d --name jenkins2 -p 18080:8080 -p 50000:50000 -v $PWD/jenkins:/var/jenkins_home:z -t jenkinsci/jenkins
 
 heroku:
+needed once:
 - brew install heroku/brew/heroku (installs heroku toolbelt)
 - heroku login
 - jhipster heroku
 - heroku plugins:install heroku-cli-deploy
+can be deployed manually:
 - ./gradlew -Pprod bootRepackage -x test heroku war:deploy build/libs/*war --app weddingplaner
+or deploy with git and jenkins2!
