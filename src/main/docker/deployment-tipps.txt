@@ -1,3 +1,9 @@
+docker:
+  mysql:
+    docker run --name mysql  --mount source=mysql-weddingplaner-db,target=/var/lib/mysql --publish=3306:3306 -e MYSQL_ROOT_PASSWORD=[MYSQL_ROOT_PASSWORD] -e MYSQL_DATABASE=weddingplaner_db -e MYSQL_USER=weddingplaner -e MYSQL_PASSWORD=[MYSQL_USER_PASSWORD] -d mysql(:tag)
+  jenkins2:
+    - docker container run -d --name jenkins2 -p 18080:8080 -p 50000:50000 -v $PWD/jenkins:/var/jenkins_home:z -t jenkinsci/jenkins
+
 heroku:
 - brew install heroku/brew/heroku (installs heroku toolbelt)
 - heroku login
