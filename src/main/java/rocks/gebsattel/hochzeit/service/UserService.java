@@ -1,15 +1,11 @@
 package rocks.gebsattel.hochzeit.service;
 
-import org.elasticsearch.common.inject.Inject;
 import rocks.gebsattel.hochzeit.config.CacheConfiguration;
 import rocks.gebsattel.hochzeit.domain.Authority;
 import rocks.gebsattel.hochzeit.domain.User;
-import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.repository.AuthorityRepository;
 import rocks.gebsattel.hochzeit.config.Constants;
 import rocks.gebsattel.hochzeit.repository.UserRepository;
-import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
-import rocks.gebsattel.hochzeit.repository.search.UserExtraSearchRepository;
 import rocks.gebsattel.hochzeit.repository.search.UserSearchRepository;
 import rocks.gebsattel.hochzeit.security.AuthoritiesConstants;
 import rocks.gebsattel.hochzeit.security.SecurityUtils;
@@ -27,12 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static rocks.gebsattel.hochzeit.domain.UserExtra_.*;
 
 /**
  * Service class for managing users.
@@ -45,12 +38,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Inject
-    private UserExtraRepository userExtraRepository;
-
-    @Inject
-    private UserExtraSearchRepository userExtraSearchRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     private final UserSearchRepository userSearchRepository;
@@ -59,14 +46,10 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserExtraRepository userExtraRepository,
-                       UserSearchRepository userSearchRepository, UserExtraSearchRepository userExtraSearchRepository,
-                       AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.userExtraRepository = userExtraRepository;
         this.userSearchRepository = userSearchRepository;
-        this.userExtraSearchRepository = userExtraSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
     }
@@ -113,8 +96,7 @@ public class UserService {
             });
     }
 
-    public User registerUser(UserDTO userDTO, String password, String code, String addressLine1, String addressLine2, String city, String zipCode, String country,
-                             String businessPhoneNr, String privatePhoneNr, String mobilePhoneNr, LocalDate guestInvitationDate, boolean guestCommitted ) {
+    public User registerUser(UserDTO userDTO, String password) {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
@@ -139,26 +121,6 @@ public class UserService {
         cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).evict(newUser.getLogin());
         cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).evict(newUser.getEmail());
         log.debug("Created Information for User: {}", newUser);
-
-        // create and save the ExtraUser entity
-        UserExtra newUserExtra = new UserExtra();
-        newUserExtra.setUser(newUser);
-        newUserExtra.setCode(code);
-        newUserExtra.setAddressLine1(addressLine1);
-        newUserExtra.setAddressLine2(addressLine2);
-        newUserExtra.setCity(city);
-        newUserExtra.setZipCode(zipCode);
-        newUserExtra.setCountry(country);
-        newUserExtra.setBusinessPhoneNr(businessPhoneNr);
-        newUserExtra.setPrivatePhoneNr(privatePhoneNr);
-        newUserExtra.setMobilePhoneNr(mobilePhoneNr);
-        newUserExtra.setGuestInvitationDate(guestInvitationDate);
-        newUserExtra.setGuestCommitted(guestCommitted);
-
-        userExtraRepository.save(newUserExtra);
-        userExtraSearchRepository.save(newUserExtra);
-        log.debug("Created Information for UserExtra: {}", newUserExtra);
-
         return newUser;
     }
 
