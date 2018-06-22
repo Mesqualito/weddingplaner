@@ -27,9 +27,9 @@
     "@ngtools/json-schema" "^1.1.0"
     rxjs "^5.5.6"
 
-"@angular/animations@^6.0.5":
-  version "6.0.5"
-  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-6.0.5.tgz#3964bc2a60facf3c3b417925c4a395b3f44abb94"
+"@angular/animations@^6.0.6":
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-6.0.6.tgz#90a6e5acd693d2860017cdf83ec7fcd5daa74717"
   dependencies:
     tslib "^1.9.0"
 
@@ -6768,9 +6768,9 @@ pretty-error@^2.0.2:
     renderkid "^2.0.1"
     utila "~0.4"
 
-primeng@^6.0.0-rc.1:
-  version "6.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/primeng/-/primeng-6.0.0-rc.1.tgz#038e5657a5395e08a5c1fd9312b12cac1a44b527"
+primeng@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/primeng/-/primeng-6.0.0.tgz#73a3523098f2b95da0f18d3705d86cf66f6f0d0e"
 
 private@^0.1.6, private@~0.1.5:
   version "0.1.8"
@@ -8595,9 +8595,13 @@ tsickle@^0.26.0:
     source-map "^0.5.6"
     source-map-support "^0.4.2"
 
-tslib@^1.7.1, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.7.1, tslib@^1.8.1:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.2.tgz#8be0cc9a1f6dc7727c38deb16c2ebd1a2892988e"
+
+tslib@^1.9.0:
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 
 tslint-loader@3.5.3:
   version "3.5.3"

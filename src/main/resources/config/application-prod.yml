@@ -29,7 +29,7 @@ spring:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://localhost:3306/weddingplaner_db?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: weddingplaner
-        password: Mat5i_p09.SaM
+        password:
         hikari:
             data-source-properties:
                 cachePrepStmts: true
