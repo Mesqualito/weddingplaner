@@ -2,6 +2,7 @@ package rocks.gebsattel.hochzeit.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.repository.UserRepository;
 import rocks.gebsattel.hochzeit.security.SecurityUtils;
@@ -54,6 +55,7 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @Timed
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         if (!checkPasswordLength(managedUserVM.getPassword())) {
