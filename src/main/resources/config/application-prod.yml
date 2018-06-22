@@ -27,9 +27,9 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:postgresql://localhost:5432/weddingplaner
+        url: jdbc:postgresql://localhost:5432/weddingplaner_db
         username: weddingplaner
-        password:
+        password: [POSTGRES_SUPERUSER_PASSWORD]
     jpa:
         database-platform: io.github.jhipster.domain.util.FixedPostgreSQL82Dialect
         database: POSTGRESQL
