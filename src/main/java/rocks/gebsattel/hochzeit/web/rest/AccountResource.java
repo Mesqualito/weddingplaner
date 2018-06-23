@@ -68,7 +68,7 @@ public class AccountResource {
             managedUserVM.getAddressLine2(), managedUserVM.getCity(), managedUserVM.getZipCode(), managedUserVM.getCountry(), managedUserVM.getBusinessPhoneNr(),
             managedUserVM.getPrivatePhoneNr(), managedUserVM.getMobilePhoneNr(), managedUserVM.getGuestInvitationDate(), managedUserVM.isGuestCommitted());
         // see UserService.java => auto-activate newUser
-        // mailService.sendActivationEmail(user);
+//        mailService.sendActivationEmail(user);
     }
 
     /**
