@@ -146,3 +146,7 @@ Desktop.ini
 /src/main/resources/config/liquibase/users_extras.csv
 /src/main/resources/config/liquibase/users-prod.csv
 /src/main/resources/config/application-prod.yml
+/src/main/groovy/rocks.gebsattel/converters/hochzeitsgaeste.csv
+/src/main/groovy/rocks.gebsattel/converters/user_extras-prod.csv
+/src/main/groovy/rocks.gebsattel/converters/users-prod.csv
+/src/main/resources/config/liquibase/user_extras-prod.csv
