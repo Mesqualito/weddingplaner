@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="mesqualito_0007_prod_db_layout_UsersAuthorities" author="mesqualito" context="dev">
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/users_authorities-prod.csv"
+                  separator=";"
+                  tableName="jhi_user_authority"/>
+    </changeSet>
+</databaseChangeLog>
