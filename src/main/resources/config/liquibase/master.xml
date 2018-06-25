@@ -5,7 +5,10 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/00000000000002_dev_prod_db_layout_User_UserExtra.xml" relativeToChangelogFile="false"/>
+
+    <include file="config/liquibase/changelog/mesqualito_0002_dev_db_layout_User.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/mesqualito_0003_prod_db_layout_User.xml" relativeToChangelogFile="false"/>
+
     <include file="config/liquibase/changelog/20180616143745_added_entity_AllowControl.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180616143746_added_entity_PartyFood.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180616143747_added_entity_Message.xml" relativeToChangelogFile="false"/>
@@ -15,5 +18,11 @@
     <include file="config/liquibase/changelog/20180616143745_added_entity_constraints_AllowControl.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180616143746_added_entity_constraints_PartyFood.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180616143747_added_entity_constraints_Message.xml" relativeToChangelogFile="false"/>
+
+    <include file="config/liquibase/changelog/mesqualito_0004_dev_db_layout_UserExtra.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/mesqualito_0005_prod_db_layout_UserExtra.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/mesqualito_0006_dev_db_layout_UsersAuthorities.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/mesqualito_0007_prod_db_layout_UsersAuthorities.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -16,7 +16,7 @@ def data = parseCsv(new FileReader(absoluteFilePath + sourceFile))
 def userOrigin = [:]
 def mailDomain = "gebsattel.rocks"
 
-String timeStamp = new SimpleDateFormat("yyyy-MM-dd'T'HH.mm.ss").format(new Date())
+String timeStamp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date())
 
 for (line in data) {
 
@@ -73,7 +73,8 @@ userOrigin.each { key, entry ->
 // users_extras.csv - from benutzer:
 // address_line_1;address_line_2;business_phone_nr;code;country;guest_committed;guest_invitation_date;mobile_phone_nr;private_phone_nr;user_id;zip_code
 File usersExtraFile = new File(absoluteFilePath + "user_extras-prod.csv")
-usersExtraFile.write("address_line1;address_line2;business_phone_nr;code;country;guest_committed;guest_invitation_date;mobile_phone_nr;private_phone_nr;user_id;zip_code;city\n")
+usersExtraFile.write(
+    "address_line_1;address_line_2;business_phone_nr;code;country;guest_committed;guest_invitation_date;mobile_phone_nr;private_phone_nr;user_id;zip_code;city\n")
 
 userOrigin.each { key, entry ->
     usersExtraFile.append(entry.addressLine1 + ";"
@@ -94,10 +95,10 @@ userOrigin.each { key, entry ->
 // user_id;authority_name
 File usersAuthoritiesFile = new File(absoluteFilePath + "users_authorities-prod.csv")
 usersAuthoritiesFile.write(
-    "address_line1;address_line2;business_phone_nr;code;country;guest_committed;guest_invitation_date;id;mobile_phone_nr;private_phone_nr;user_id;zip_code;city\n")
+    "user_id;authority_name\n")
 
 userOrigin.each { key, entry ->
-    usersAuthoritiesFile.append(entry.userId + ";" + "ROLE_USER")
+    usersAuthoritiesFile.append(entry.userId + ";" + "ROLE_USER\n")
 }
 
 def src = new File(absoluteFilePath + "users-prod.csv")
