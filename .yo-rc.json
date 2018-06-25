@@ -13,7 +13,7 @@
     "websocket": "spring-websocket",
     "databaseType": "sql",
     "devDatabaseType": "h2Disk",
-    "prodDatabaseType": "postgresql",
+    "prodDatabaseType": "mysql",
     "searchEngine": "elasticsearch",
     "enableSwaggerCodegen": false,
     "messageBroker": false,
