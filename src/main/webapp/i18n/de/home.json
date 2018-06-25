@@ -1,19 +1,23 @@
 {
     "home": {
         "title": "Willkommen, Java Hipster!",
-        "subtitle": "Dies ist Ihre Hauptseite",
         "logged": {
             "message": "Sie sind als Benutzer \"{{username}}\" angemeldet."
         },
-        "question": "Wenn Sie Fragen zu JHipster haben:",
-        "link": {
-            "homepage": "JHipster Hauptseite",
-            "stackoverflow": "JHipster auf Stack Overflow",
-            "bugtracker": "JHipster Fehlereinträge",
-            "chat": "JHipster Chat",
-            "follow": "kontaktieren Sie uns mit @java_hipster auf Twitter"
-        },
-        "like": "Wenn Sie JHipster mögen, vergessen Sie nicht uns einen Stern zu geben auf",
-        "github": "GitHub"
+        "button": "Anmelden",
+        "code": "Code",
+        "code.placeholder": "Dein DropIn-Code",
+        "name": "Name",
+        "name.placeholder": "Name",
+        "vorname": "Vorname",
+        "vorname.placeholder": "Vorname",
+        "messages.error.authentication": "Anmeldung fehlgeschlagen! Bitte überprüfe deine Angaben und versuche es erneut.",
+        "validate": {
+            "code": {
+                "required": "Bitte gib deinen Code ein.",
+                "minlength": "Der Code muss mindestens 8 Zeichen lang sein",
+                "maxlength": "Das neue Passwort darf nicht länger als 50 Zeichen sein"
+            }
+        }
     }
 }

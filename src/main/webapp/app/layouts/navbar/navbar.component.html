@@ -4,8 +4,7 @@
             <i class="fa fa-bars"></i>
         </a>
         <a class="navbar-brand logo float-left" routerLink="/" (click)="collapseNavbar()">
-            <span class="logo-img"></span>
-            <span jhiTranslate="global.title" class="navbar-title">Weddingplaner</span> <span class="navbar-version">{{version}}</span>
+            <span jhiTranslate="global.title" class="navbar-title">Weddingplaner</span>
         </a>
     </div>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
@@ -30,29 +29,29 @@
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
                     <li>
-                        <a class="dropdown-item" routerLink="user-extra" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.userExtra">User Extra</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="allow-control" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.allowControl">Allow Control</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="party-food" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.partyFood">Party Food</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="message" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.message">Message</span>
-                        </a>
-                    </li>
+                                                <a class="dropdown-item" routerLink="user-extra" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                                    <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                                                    <span jhiTranslate="global.menu.entities.userExtra">User Extra</span>
+                                                </a>
+                                            </li>
+                                        <li>
+                                            <a class="dropdown-item" routerLink="allow-control" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                                <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                                                <span jhiTranslate="global.menu.entities.allowControl">Allow Control</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" routerLink="party-food" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                                <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                                                <span jhiTranslate="global.menu.entities.partyFood">Party Food</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" routerLink="message" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                                <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                                                <span jhiTranslate="global.menu.entities.message">Message</span>
+                                            </a>
+                                        </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
@@ -171,8 +170,8 @@
                             <span jhiTranslate="global.menu.account.login">Sign in</span>
                         </a>
                     </li>
-                    <li *ngSwitchCase="false">
-                        <a class="dropdown-item" routerLink="register" routerLinkActive="active" (click)="collapseNavbar()">
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                    <a class="dropdown-item" routerLink="register" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-user-plus" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.register">Register</span>
                         </a>

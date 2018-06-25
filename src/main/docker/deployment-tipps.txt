@@ -1,0 +1,19 @@
+docker:
+  mysql:
+      docker run --detach --name mysql --mount source=mysql-weddingplaner-db,target=/var/lib/mysql --publish=3306:3306 --env MYSQL_ROOT_PASSWORD=[MYSQL_ROOT_PASSWORD] --env MYSQL_DATABASE=weddingplaner_db --env MYSQL_USER=weddingplaner --env MYSQL_PASSWORD=[MYSQL_USER_PASSWORD] mysql(:tag)
+  elasticsearch:
+       docker run --publish=9200:9200 --publish 9300:9300 --mount source=elasticsearch-weddingplaner-data,target=/usr/share/elasticsearch/data/ elasticsearch:2.4.6
+  postgresql:
+       docker run --detach --name postgresql --mount source=postgresql-weddingplaner-db,target=/var/lib/postgresql/data --publish=5432:5432 --env POSTGRES_PASSWORD=[POSTGRES_SUPERUSER_PASSWORD] --env POSTGRES_USER=[POSTGRES_SUPERUSER] --env POSTGRES_DB=[POSTGRES_DBNAME] postgres(:tag)
+  jenkins2:
+    - docker container run -d --name jenkins2 -p 18080:8080 -p 50000:50000 -v $PWD/jenkins:/var/jenkins_home:z -t jenkinsci/jenkins
+
+heroku:
+needed once:
+- brew install heroku/brew/heroku (installs heroku toolbelt)
+- heroku login
+- jhipster heroku
+- heroku plugins:install heroku-cli-deploy
+can be deployed manually:
+- ./gradlew -Pprod bootRepackage -x test heroku war:deploy build/libs/*war --app weddingplaner
+or deploy with git and jenkins2!

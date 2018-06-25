@@ -1,21 +1,85 @@
 @import 'bootstrap-variables';
+/* arabic */
+@font-face {
+    font-family: 'Markazi Text';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/markazitext/v1/sykh-ydym6AtQaiEtX7yhqb_rV1k_81ZVYYZtfSQf4EvBNkm.woff2) format('woff2');
+    unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE80-FEFC;
+}
+
+/* vietnamese */
+@font-face {
+    font-family: 'Markazi Text';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/markazitext/v1/sykh-ydym6AtQaiEtX7yhqb_rV1k_81ZVYYZtfSQf4svBNkm.woff2) format('woff2');
+    unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+
+/* latin-ext */
+@font-face {
+    font-family: 'Markazi Text';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/markazitext/v1/sykh-ydym6AtQaiEtX7yhqb_rV1k_81ZVYYZtfSQf4ovBNkm.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Markazi Text';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/markazitext/v1/sykh-ydym6AtQaiEtX7yhqb_rV1k_81ZVYYZtfSQf4QvBA.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Spirax';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Spirax-Regular'), url(https://fonts.gstatic.com/s/spirax/v6/buE3poKgYNLy0F3sWUFs.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
 
-body, h1, h2, h3, h4 {
+body {
     font-weight: 300;
+    background: url('../../content/images/hintergrund.jpg') center center;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: $font-base;
+    color: #fff;
 }
 
 a {
-    color: #533f03;
+    color: #e4745e;
     font-weight: bold;
 }
 
 a:hover {
-    color: #533f03;
-    font-weight: bold;
+    color: #e4745e;
+}
+
+h1, h2, h3, h4 {
+
+    button {
+        font-family: $font-base;
+    }
+    font-family: $font-schmuck;
+}
+
+img {
+    max-width: 100%;
+}
+
+.modal {
+    color: #000;
 }
 
 /* ==========================================================================
@@ -33,20 +97,25 @@ Generic styles
 ========================================================================== */
 
 /* Error highlight on input fields */
-.ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid green;
+.ng-valid[required], .ng-valid.required {
+    border-left: 5px solid green;
 }
 
-.ng-invalid:not(form)  {
-  border-left: 5px solid red;
+.ng-invalid:not(form) {
+    border-left: 5px solid red;
 }
 
 /* other generic styles */
 
+.card {
+    background-color: transparent;
+}
+
 .jh-card {
-    padding: 1.5%;
-    margin-top: 20px;
+    padding: 120px 1.5% 1.5% 1.5%;
     border: none;
+    max-width: 1200px;
+    margin: auto;
 }
 
 .error {
@@ -68,7 +137,7 @@ Generic styles
 
 .break {
     white-space: normal;
-    word-break:break-all;
+    word-break: break-all;
 }
 
 .readonly {
@@ -77,14 +146,14 @@ Generic styles
 }
 
 .footer {
-    border-top: 1px solid rgba(0,0,0,.125);
+    border-top: 1px solid rgba(0, 0, 0, .125);
 }
 
 /* ==========================================================================
 make sure browsers use the pointer cursor for anchors, even with no href
 ========================================================================== */
 a:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .hand, [jhisortby] {
@@ -97,7 +166,7 @@ Custom alerts for notification
 .alerts {
     .alert {
         text-overflow: ellipsis;
-        pre{
+        pre {
             background: none;
             border: none;
             font: inherit;
@@ -150,6 +219,7 @@ entity tables helpers
         }
     }
 }
+
 @include no-padding("left");
 @include no-padding("right");
 @include no-padding("top");
@@ -158,17 +228,19 @@ entity tables helpers
 
 /* bootstrap 3 input-group 100% width
    http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
-.width-min { width: 1% !important; }
+.width-min {
+    width: 1% !important;
+}
 
 /* Makes toolbar not wrap on smaller screens
    http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
 .flex-btn-group-container {
-   display: -webkit-flex;
-   display: flex;
-   -webkit-flex-direction: row;
-   flex-direction: row;
-   -webkit-justify-content: flex-end;
-   justify-content: flex-end;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
 }
 
 /* ==========================================================================
@@ -201,12 +273,12 @@ ui bootstrap tweaks
 }
 
 .datetime-picker-dropdown > li.date-picker-menu div > table .btn-default,
-.uib-datepicker-popup  > li > div.uib-datepicker > table .btn-default {
+.uib-datepicker-popup > li > div.uib-datepicker > table .btn-default {
     border: 0;
 }
 
 .datetime-picker-dropdown > li.date-picker-menu div > table:focus,
-.uib-datepicker-popup  > li > div.uib-datepicker > table:focus {
+.uib-datepicker-popup > li > div.uib-datepicker > table:focus {
     outline: none;
 }
 
@@ -215,17 +287,18 @@ ui bootstrap tweaks
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
- }
+}
 
 /* ==========================================================================
-ui primeng autocomplete tweaks
-========================================================================== */
+--- ui primeng autocomplete tweaks ---
+-========================================================================== */
 
- .ui-autocomplete {
-     width: 100%;
- }
- .ui-autocomplete-input {
-     width: 100%;
- }
+.ui-autocomplete {
+    width: 100%;
+}
+
+.ui-autocomplete {
+    width: 100%;
+}
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */

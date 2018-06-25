@@ -4,6 +4,7 @@ import { WeddingplanerUserExtraModule } from './user-extra/user-extra.module';
 import { WeddingplanerAllowControlModule } from './allow-control/allow-control.module';
 import { WeddingplanerPartyFoodModule } from './party-food/party-food.module';
 import { WeddingplanerMessageModule } from './message/message.module';
+
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({

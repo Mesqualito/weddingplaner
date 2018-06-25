@@ -1,4 +1,3 @@
-
 /* ==========================================================================
 Navbar
 ========================================================================== */
@@ -8,6 +7,13 @@ Navbar
 }
 
 .jh-navbar {
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:1;
+    .jh-logo-container {
+        position: relative;
+    }
     background-color: #353d47;
     padding: .2em 1em;
     .profile-image {
@@ -47,7 +53,7 @@ Navbar
     }
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 769px) {
     .jh-logo-container {
         width: 100%;
     }
@@ -56,12 +62,37 @@ Navbar
 .navbar-title {
     display: inline-block;
     vertical-align: middle;
+    z-index: 1;
+    position:relative;
+
 }
 
 /* ==========================================================================
 Logo styles
 ========================================================================== */
 .navbar-brand {
+    &:after {
+        content: '';
+        background-image: url("../../../content/images/mond.png");
+        background-position: 100%;
+        background-size: cover;
+        position: absolute;
+        top: -60px;
+        left: -70px;
+        width: 200px;
+        height: 200px;
+        z-index:auto;
+        transition: all 2s;
+    }
+
+    &:hover:after {
+        transition: all 2s;
+        width: 500px;
+        height: 500px;
+        top: -100px;
+        left: -110px;
+    }
+
     &.logo {
         padding: 5px 15px;
         .logo-img {
