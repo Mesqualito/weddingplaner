@@ -3,28 +3,28 @@
     "weddingplanerApp": {
         "userExtra" : {
             "home": {
-                "title": "User Extras",
-                "createLabel": "User Extra erstellen",
-                "createOrEditLabel": "User Extra erstellen oder bearbeiten",
-                "search": "Suche nach User Extra"
+                "title": "Benutzer",
+                "createLabel": "Benutzer erstellen",
+                "createOrEditLabel": "Benutzer erstellen oder bearbeiten",
+                "search": "Suche nach Benutzer"
             },
-            "created": "User Extra erstellt mit ID {{ param }}",
-            "updated": "User Extra aktualisiert mit ID {{ param }}",
-            "deleted": "User Extra gelöscht mit ID {{ param }}",
+            "created": "Benutzer erstellt mit ID {{ param }}",
+            "updated": "Benutzer aktualisiert mit ID {{ param }}",
+            "deleted": "Benutzer gelöscht mit ID {{ param }}",
             "delete": {
-                "question": "Soll User Extra {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll Benutzer {{ id }} wirklich dauerhaft gelöscht werden?"
             },
             "detail": {
-                "title": "User Extra"
+                "title": "Benutzer"
             },
             "code": "Code",
-            "addressLine1": "Address Line 1",
+            "addressLine1": "Straße",
             "addressLine2": "Address Line 2",
-            "city": "City",
-            "zipCode": "Zip Code",
-            "country": "Country",
+            "city": "Stadt",
+            "zipCode": "PLZ",
+            "country": "Land",
             "businessPhoneNr": "Business Phone Nr",
-            "privatePhoneNr": "Private Phone Nr",
+            "privatePhoneNr": "Telefon",
             "mobilePhoneNr": "Mobile Phone Nr",
             "guestInvitationDate": "Guest Invitation Date",
             "guestCommitted": "Guest Committed",

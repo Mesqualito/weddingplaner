@@ -71,7 +71,6 @@ public class AccountResource {
 
         // see UserService.java => auto-activate newUser
         // mailService.sendActivationEmail(user);
-
     }
 
     /**

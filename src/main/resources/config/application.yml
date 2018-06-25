@@ -93,8 +93,8 @@ jhipster:
         contact-email:
         license:
         license-url:
-    ribbon:
-        display-on-active-profiles: dev
+#    ribbon:
+#        display-on-active-profiles: dev
 
 # ===================================================================
 # Application specific properties
