@@ -21,6 +21,7 @@ export class MessageDialogComponent implements OnInit {
     isSaving: boolean;
 
     userextras: UserExtra[];
+    userExtraOptions: any[];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -68,6 +69,10 @@ export class MessageDialogComponent implements OnInit {
             this.subscribeToSaveResponse(
                 this.messageService.create(this.message));
         }
+    }
+
+    search(event) {
+        this.userExtraOptions = this.userextras.filter((userExtra) => (userExtra.user.firstName.startsWith(event.query) || userExtra.user.lastName.startsWith(event.query)));
     }
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<Message>>) {

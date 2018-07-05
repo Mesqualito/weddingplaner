@@ -2,9 +2,9 @@
     "weddingplanerApp": {
         "AllowGroup" : {
             "null": "",
-            "ADRESSE": "ADRESSE",
-            "EMAIL": "EMAIL",
-            "TELEFON": "TELEFON"
+            "ADRESSE": "Anschrift freigeben",
+            "EMAIL": "eMail freigeben",
+            "TELEFON": "Telefonnummern freigeben"
         }
     }
 }
