@@ -60,6 +60,11 @@ public class MessageResourceIntTest {
     private static final Instant DEFAULT_MESSAGE_VALID_UNTIL = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MESSAGE_VALID_UNTIL = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
+    private static final byte[] DEFAULT_IMAGE = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_IMAGE = TestUtil.createByteArray(2, "1");
+    private static final String DEFAULT_IMAGE_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_IMAGE_CONTENT_TYPE = "image/png";
+
     @Autowired
     private MessageRepository messageRepository;
 
@@ -108,7 +113,9 @@ public class MessageResourceIntTest {
             .messageInitTime(DEFAULT_MESSAGE_INIT_TIME)
             .messageText(DEFAULT_MESSAGE_TEXT)
             .messageValidFrom(DEFAULT_MESSAGE_VALID_FROM)
-            .messageValidUntil(DEFAULT_MESSAGE_VALID_UNTIL);
+            .messageValidUntil(DEFAULT_MESSAGE_VALID_UNTIL)
+            .image(DEFAULT_IMAGE)
+            .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE);
         // Add required entity
         UserExtra from = UserExtraResourceIntTest.createEntity(em);
         em.persist(from);
@@ -148,6 +155,8 @@ public class MessageResourceIntTest {
         assertThat(testMessage.getMessageText()).isEqualTo(DEFAULT_MESSAGE_TEXT);
         assertThat(testMessage.getMessageValidFrom()).isEqualTo(DEFAULT_MESSAGE_VALID_FROM);
         assertThat(testMessage.getMessageValidUntil()).isEqualTo(DEFAULT_MESSAGE_VALID_UNTIL);
+        assertThat(testMessage.getImage()).isEqualTo(DEFAULT_IMAGE);
+        assertThat(testMessage.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
 
         // Validate the Message in Elasticsearch
         Message messageEs = messageSearchRepository.findOne(testMessage.getId());
@@ -206,7 +215,9 @@ public class MessageResourceIntTest {
             .andExpect(jsonPath("$.[*].messageInitTime").value(hasItem(DEFAULT_MESSAGE_INIT_TIME.toString())))
             .andExpect(jsonPath("$.[*].messageText").value(hasItem(DEFAULT_MESSAGE_TEXT.toString())))
             .andExpect(jsonPath("$.[*].messageValidFrom").value(hasItem(DEFAULT_MESSAGE_VALID_FROM.toString())))
-            .andExpect(jsonPath("$.[*].messageValidUntil").value(hasItem(DEFAULT_MESSAGE_VALID_UNTIL.toString())));
+            .andExpect(jsonPath("$.[*].messageValidUntil").value(hasItem(DEFAULT_MESSAGE_VALID_UNTIL.toString())))
+            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))));
     }
 
     @Test
@@ -224,7 +235,9 @@ public class MessageResourceIntTest {
             .andExpect(jsonPath("$.messageInitTime").value(DEFAULT_MESSAGE_INIT_TIME.toString()))
             .andExpect(jsonPath("$.messageText").value(DEFAULT_MESSAGE_TEXT.toString()))
             .andExpect(jsonPath("$.messageValidFrom").value(DEFAULT_MESSAGE_VALID_FROM.toString()))
-            .andExpect(jsonPath("$.messageValidUntil").value(DEFAULT_MESSAGE_VALID_UNTIL.toString()));
+            .andExpect(jsonPath("$.messageValidUntil").value(DEFAULT_MESSAGE_VALID_UNTIL.toString()))
+            .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
+            .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)));
     }
 
     @Test
@@ -252,7 +265,9 @@ public class MessageResourceIntTest {
             .messageInitTime(UPDATED_MESSAGE_INIT_TIME)
             .messageText(UPDATED_MESSAGE_TEXT)
             .messageValidFrom(UPDATED_MESSAGE_VALID_FROM)
-            .messageValidUntil(UPDATED_MESSAGE_VALID_UNTIL);
+            .messageValidUntil(UPDATED_MESSAGE_VALID_UNTIL)
+            .image(UPDATED_IMAGE)
+            .imageContentType(UPDATED_IMAGE_CONTENT_TYPE);
 
         restMessageMockMvc.perform(put("/api/messages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -268,6 +283,8 @@ public class MessageResourceIntTest {
         assertThat(testMessage.getMessageText()).isEqualTo(UPDATED_MESSAGE_TEXT);
         assertThat(testMessage.getMessageValidFrom()).isEqualTo(UPDATED_MESSAGE_VALID_FROM);
         assertThat(testMessage.getMessageValidUntil()).isEqualTo(UPDATED_MESSAGE_VALID_UNTIL);
+        assertThat(testMessage.getImage()).isEqualTo(UPDATED_IMAGE);
+        assertThat(testMessage.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
 
         // Validate the Message in Elasticsearch
         Message messageEs = messageSearchRepository.findOne(testMessage.getId());
@@ -329,7 +346,9 @@ public class MessageResourceIntTest {
             .andExpect(jsonPath("$.[*].messageInitTime").value(hasItem(DEFAULT_MESSAGE_INIT_TIME.toString())))
             .andExpect(jsonPath("$.[*].messageText").value(hasItem(DEFAULT_MESSAGE_TEXT.toString())))
             .andExpect(jsonPath("$.[*].messageValidFrom").value(hasItem(DEFAULT_MESSAGE_VALID_FROM.toString())))
-            .andExpect(jsonPath("$.[*].messageValidUntil").value(hasItem(DEFAULT_MESSAGE_VALID_UNTIL.toString())));
+            .andExpect(jsonPath("$.[*].messageValidUntil").value(hasItem(DEFAULT_MESSAGE_VALID_UNTIL.toString())))
+            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))));
     }
 
     @Test

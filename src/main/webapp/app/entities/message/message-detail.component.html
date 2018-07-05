@@ -24,16 +24,25 @@
         <dd>
             <span>{{message.messageValidUntil | date:'medium'}}</span>
         </dd>
+        <dt><span jhiTranslate="weddingplanerApp.message.image">Image</span></dt>
+        <dd>
+            <div *ngIf="message.image">
+                <a (click)="openFile(message.imageContentType, message.image)">
+                    <img [src]="'data:' + message.imageContentType + ';base64,' + message.image" style="max-width: 100%;" alt="message image"/>
+                </a>
+                {{message.imageContentType}}, {{byteSize(message.image)}}
+            </div>
+        </dd>
         <dt><span jhiTranslate="weddingplanerApp.message.from">From</span></dt>
         <dd>
             <div *ngIf="message.from">
-                <a [routerLink]="['/user-extra', message.from?.id]">{{message.from?.id}}</a>
+                <a [routerLink]="['/user-extra', message.from?.id]">{{message.from?.user_id}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="weddingplanerApp.message.to">To</span></dt>
         <dd>
             <span *ngFor="let to of message.tos; let last = last">
-                <a [routerLink]="['/user-extra', to?.id ]">{{to.id}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/user-extra', to?.id ]">{{to.user_id}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
     </dl>

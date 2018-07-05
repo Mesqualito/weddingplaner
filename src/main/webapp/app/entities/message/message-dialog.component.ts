@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
@@ -21,7 +21,6 @@ export class MessageDialogComponent implements OnInit {
     isSaving: boolean;
 
     userextras: UserExtra[];
-    userExtraOptions: any[];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -29,6 +28,7 @@ export class MessageDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private messageService: MessageService,
         private userExtraService: UserExtraService,
+        private elementRef: ElementRef,
         private eventManager: JhiEventManager
     ) {
     }
@@ -51,6 +51,10 @@ export class MessageDialogComponent implements OnInit {
         this.dataUtils.setFileData(event, entity, field, isImage);
     }
 
+    clearInputImage(field: string, fieldContentType: string, idInput: string) {
+        this.dataUtils.clearInputImage(this.message, this.elementRef, field, fieldContentType, idInput);
+    }
+
     clear() {
         this.activeModal.dismiss('cancel');
     }
@@ -64,10 +68,6 @@ export class MessageDialogComponent implements OnInit {
             this.subscribeToSaveResponse(
                 this.messageService.create(this.message));
         }
-    }
-
-    search(event) {
-        this.userExtraOptions = this.userextras.filter((userExtra) => (userExtra.user.firstName.startsWith(event.query) || userExtra.user.lastName.startsWith(event.query)));
     }
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<Message>>) {
