@@ -17,7 +17,7 @@
             "detail": {
                 "title": "Nachricht"
             },
-            "messageShortDescription": "Nachrichten-Überschrift",
+            "messageShortDescription": "Überschrift",
             "messageInitTime": "Nachricht erzeugt am",
             "messageText": "Text der Nachricht",
             "messageValidFrom": "Anzeige der Nachricht von",

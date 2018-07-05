@@ -1,115 +1,137 @@
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
     <div class="modal-header">
-        <h4 class="modal-title" id="myMessageLabel" jhiTranslate="weddingplanerApp.message.home.createOrEditLabel">Create or edit a Message</h4>
+        <h4 class="modal-title" id="myMessageLabel" jhiTranslate="weddingplanerApp.message.home.createOrEditLabel">
+            Create or edit a Message</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                (click)="clear()">&times;</button>
+                (click)="clear()">&times;
+        </button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
         <div class="form-group" [hidden]="!message.id">
             <label for="id" jhiTranslate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
-                   [(ngModel)]="message.id" readonly />
+                   [(ngModel)]="message.id" readonly/>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.messageShortDescription" for="field_messageShortDescription">Message Short Description</label>
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.messageShortDescription"
+                   for="field_messageShortDescription">Message Short Description</label>
             <input type="text" class="form-control" name="messageShortDescription" id="field_messageShortDescription"
-                [(ngModel)]="message.messageShortDescription" required minlength="6" maxlength="80"/>
-            <div [hidden]="!(editForm.controls.messageShortDescription?.dirty && editForm.controls.messageShortDescription?.invalid)">
+                   [(ngModel)]="message.messageShortDescription" required minlength="6" maxlength="80"/>
+            <div
+                [hidden]="!(editForm.controls.messageShortDescription?.dirty && editForm.controls.messageShortDescription?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.messageShortDescription?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
+                       [hidden]="!editForm.controls.messageShortDescription?.errors?.required"
+                       jhiTranslate="entity.validation.required">
+                    This field is required.
                 </small>
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.messageShortDescription?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 6 }">
-                   This field is required to be at least 6 characters.
+                       [hidden]="!editForm.controls.messageShortDescription?.errors?.minlength"
+                       jhiTranslate="entity.validation.minlength" translateValues="{ min: 6 }">
+                    This field is required to be at least 6 characters.
                 </small>
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.messageShortDescription?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 80 }">
-                   This field cannot be longer than 80 characters.
+                       [hidden]="!editForm.controls.messageShortDescription?.errors?.maxlength"
+                       jhiTranslate="entity.validation.maxlength" translateValues="{ max: 80 }">
+                    This field cannot be longer than 80 characters.
                 </small>
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.messageInitTime" for="field_messageInitTime">Message Init Time</label>
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.messageInitTime"
+                   for="field_messageInitTime">Message Init Time</label>
             <div class="d-flex">
-                <input id="field_messageInitTime" type="datetime-local" class="form-control" name="messageInitTime" [(ngModel)]="message.messageInitTime"
+                <input id="field_messageInitTime" type="datetime-local" class="form-control" name="messageInitTime"
+                       [(ngModel)]="message.messageInitTime"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.messageText" for="field_messageText">Message Text</label>
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.messageText"
+                   for="field_messageText">Message Text</label>
             <textarea class="form-control" name="messageText" id="field_messageText"
-                [(ngModel)]="message.messageText" ></textarea>
+                      [(ngModel)]="message.messageText"></textarea>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.messageValidFrom" for="field_messageValidFrom">Message Valid From</label>
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.messageValidFrom"
+                   for="field_messageValidFrom">Message Valid From</label>
             <div class="d-flex">
-                <input id="field_messageValidFrom" type="datetime-local" class="form-control" name="messageValidFrom" [(ngModel)]="message.messageValidFrom"
+                <input id="field_messageValidFrom" type="datetime-local" class="form-control" name="messageValidFrom"
+                       [(ngModel)]="message.messageValidFrom"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.messageValidUntil" for="field_messageValidUntil">Message Valid Until</label>
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.messageValidUntil"
+                   for="field_messageValidUntil">Message Valid Until</label>
             <div class="d-flex">
-                <input id="field_messageValidUntil" type="datetime-local" class="form-control" name="messageValidUntil" [(ngModel)]="message.messageValidUntil"
+                <input id="field_messageValidUntil" type="datetime-local" class="form-control" name="messageValidUntil"
+                       [(ngModel)]="message.messageValidUntil"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.image" for="field_image">Image</label>
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.image"
+                   for="field_image">Image</label>
             <div>
-                <img [src]="'data:' + message.imageContentType + ';base64,' + message.image" style="max-height: 100px;" *ngIf="message.image" alt="message image"/>
+                <img [src]="'data:' + message.imageContentType + ';base64,' + message.image" style="max-height: 100px;"
+                     *ngIf="message.image" alt="message image"/>
                 <div *ngIf="message.image" class="form-text text-danger clearfix">
                     <span class="pull-left">{{message.imageContentType}}, {{byteSize(message.image)}}</span>
-                    <button type="button" (click)="clearInputImage('image', 'imageContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                    <button type="button" (click)="clearInputImage('image', 'imageContentType', 'fileImage')"
+                            class="btn btn-secondary btn-xs pull-right">
                         <span class="fa fa-times"></span>
                     </button>
                 </div>
-                <input type="file" id="file_image" (change)="setFileData($event, message, 'image', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                <input type="file" id="file_image" (change)="setFileData($event, message, 'image', true)"
+                       accept="image/*" jhiTranslate="entity.action.addimage"/>
             </div>
             <input type="hidden" class="form-control" name="image" id="field_image"
-                [(ngModel)]="message.image" />
+                   [(ngModel)]="message.image"/>
             <input type="hidden" class="form-control" name="imageContentType" id="field_imageContentType"
-                [(ngModel)]="message.imageContentType" />
+                   [(ngModel)]="message.imageContentType"/>
         </div>
 
         <div class="form-group">
-            <label jhiTranslate="weddingplanerApp.message.to" for="field_to">to User</label>
-            <p-autoComplete id="field_to" name="to" [(ngModel)]="message.tos" [required]="true"
-                            placeholder="Enter receivers names" [suggestions]="userExtraOptions"
-                            (completeMethod)="search($event)"
-                            field="user.lastName" [multiple]="true" [forceSelection]="true">
-                <ng-template let-value pTemplate="selectedItems">
-                    <span>{{value.user.firstName}} {{value.user.lastName}}</span>
-                </ng-template>
-                <ng-template let-value pTemplate="getSelected">
-                    <span>{{value.user.firstName}} {{value.user.lastName}}</span>
-                </ng-template>
-
+            <label lass="form-control-label" jhiTranslate="weddingplanerApp.message.to" for="field_to">to User</label>
+            <div>
+                <p-autoComplete id="field_to" name="to" [(ngModel)]="message.tos" [required]="true"
+                                placeholder="Enter receivers names" [suggestions]="userExtraOptions"
+                                (completeMethod)="search($event)"
+                                field="user.lastName" [multiple]="true" [forceSelection]="true">
+                    <ng-template let-value pTemplate="selectedItems">
+                        <span>{{value.user.firstName}} {{value.user.lastName}}</span>
+                    </ng-template>
+                    <ng-template let-value pTemplate="getSelected">
+                        <span>{{value.user.firstName}} {{value.user.lastName}}</span>
+                    </ng-template>
+                </p-autoComplete>
                 <div [hidden]="!(editForm.controls.to?.dirty && editForm.controls.to?.invalid)">
                     <small class="form-text text-danger"
-                           [hidden]="!editForm.controls.to?.errors?.required" jhiTranslate="entity.validation.required">
+                           [hidden]="!editForm.controls.to?.errors?.required"
+                           jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>
                 </div>
-        <div [hidden]="!(editForm.controls.to?.dirty && editForm.controls.to?.invalid)">
-            <small class="form-text text-danger"
-                [hidden]="!editForm.controls.to?.errors?.required" jhiTranslate="entity.validation.required">
-                This field is required.
-            </small>
+
+            </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.from" for="field_from">From</label>
-            <select class="form-control" id="field_from" name="from" [(ngModel)]="message.from"  required>
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.message.from"
+                   for="field_from">From</label>
+            <select class="form-control" id="field_from" name="from" [(ngModel)]="message.from" required>
                 <option *ngIf="!editForm.value.from" [ngValue]="null" selected></option>
-                <option [ngValue]="userExtraOption.id === message.from?.id ? message.from : userExtraOption" *ngFor="let userExtraOption of userextras; trackBy: trackUserExtraById">{{userExtraOption.user_id}}</option>
+                <option [ngValue]="userExtraOption.id === message.from?.id ? message.from : userExtraOption"
+                        *ngFor="let userExtraOption of userextras; trackBy: trackUserExtraById">
+                    {{userExtraOption.user_id}}
+                </option>
             </select>
         </div>
         <div [hidden]="!(editForm.controls.from?.dirty && editForm.controls.from?.invalid)">
             <small class="form-text text-danger"
-                [hidden]="!editForm.controls.from?.errors?.required" jhiTranslate="entity.validation.required">
+                   [hidden]="!editForm.controls.from?.errors?.required"
+                   jhiTranslate="entity.validation.required">
                 This field is required.
             </small>
         </div>
