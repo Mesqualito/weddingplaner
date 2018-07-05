@@ -49,11 +49,9 @@
         },
         "messages": {
             "info": {
-                "authenticated": {
-                    "prefix": "Wenn Sie sich ",
-                    "link": "anmelden",
-                    "suffix": " möchten, versuchen Sie es mit <br/>- Administrator (Name=\"admin\" und Passwort=\"admin\")<br/>- Benutzer (Name=\"user\" und Passwort=\"user\")."
-                },
+                "authenticated":
+                    "Zur Anmeldung verwendet bitte neben Eurem Vor- und Nachnamen Euren persönlichen DropIn-Code, der auf der Einladungskarte aufgedruckt war.",
+
                 "register": {
                     "noaccount": "Sie haben noch keinen Zugang?",
                     "link": "Registrieren Sie sich"

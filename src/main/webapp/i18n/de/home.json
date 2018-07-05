@@ -1,8 +1,8 @@
 {
     "home": {
-        "title": "Willkommen, Java Hipster!",
+        "title": "Willkommen zu unserem kleinen Weddingportal",
         "logged": {
-            "message": "Sie sind als Benutzer \"{{username}}\" angemeldet."
+            "message": "Sie sind als Hochzeitsgast \"{{username}}\" angemeldet."
         },
         "button": "Anmelden",
         "code": "Code",
@@ -14,7 +14,7 @@
         "messages.error.authentication": "Anmeldung fehlgeschlagen! Bitte überprüfe deine Angaben und versuche es erneut.",
         "validate": {
             "code": {
-                "required": "Bitte gib deinen Code ein.",
+                "required": "Bitte gib deinen Code ein, der auf Deiner Einladungskarte aufgedruckt ist.",
                 "minlength": "Der Code muss mindestens 8 Zeichen lang sein",
                 "maxlength": "Das neue Passwort darf nicht länger als 50 Zeichen sein"
             }

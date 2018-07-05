@@ -3,27 +3,27 @@
     "weddingplanerApp": {
         "partyFood" : {
             "home": {
-                "title": "Party Foods",
-                "createLabel": "Party Food erstellen",
-                "createOrEditLabel": "Party Food erstellen oder bearbeiten",
-                "search": "Suche nach Party Food"
+                "title": "Getränke & Speisen",
+                "createLabel": "Getränk oder Gericht mitbringen",
+                "createOrEditLabel": "Getränk oder Gericht notieren oder bearbeiten",
+                "search": "Suche nach Getränk bzw. Gericht"
             },
-            "created": "Party Food erstellt mit ID {{ param }}",
-            "updated": "Party Food aktualisiert mit ID {{ param }}",
-            "deleted": "Party Food gelöscht mit ID {{ param }}",
+            "created": "erstellt mit ID {{ param }}",
+            "updated": "aktualisiert mit ID {{ param }}",
+            "deleted": "gelöscht mit ID {{ param }}",
             "delete": {
-                "question": "Soll Party Food {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll {{ id }} wirklich dauerhaft gelöscht werden?"
             },
             "detail": {
-                "title": "Party Food"
+                "title": "Getränk bzw. Speise"
             },
-            "foodName": "Food Name",
-            "foodShortDescription": "Food Short Description",
-            "foodLongDescription": "Food Long Description",
-            "foodQuantityPersons": "Food Quantity Persons",
-            "foodBestServeTime": "Food Best Serve Time",
-            "foodProposalAccepted": "Food Proposal Accepted",
-            "userExtra": "User Extra"
+            "foodName": "Bezeichnung",
+            "foodShortDescription": "Kurzbeschreibung",
+            "foodLongDescription": "Lange Beschreibung, Rezept, Anmerkungen...",
+            "foodQuantityPersons": "Menge reicht für (Anzahl Personen)",
+            "foodBestServeTime": "Beste Uhrzeit zum Servieren",
+            "foodProposalAccepted": "Dein Vorschlag wurde angenommen",
+            "userExtra": "Vorschlag eingereicht von Hochzeitsgast"
         }
     }
 }
