@@ -1,11 +1,13 @@
 import { browser, element, by } from 'protractor';
 import { NavBarPage } from './../page-objects/jhi-page-objects';
-
+import * as path from 'path';
 describe('Message e2e test', () => {
 
     let navBarPage: NavBarPage;
     let messageDialogPage: MessageDialogPage;
     let messageComponentsPage: MessageComponentsPage;
+    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
+    const absolutePath = path.resolve(__dirname, fileToUpload);
 
     beforeAll(() => {
         browser.get('/');
@@ -43,6 +45,7 @@ describe('Message e2e test', () => {
         expect(messageDialogPage.getMessageValidFromInput()).toMatch('2001-12-31T02:30');
         messageDialogPage.setMessageValidUntilInput(12310020012301);
         expect(messageDialogPage.getMessageValidUntilInput()).toMatch('2001-12-31T02:30');
+        messageDialogPage.setImageInput(absolutePath);
         messageDialogPage.fromSelectLastOption();
         // messageDialogPage.toSelectLastOption();
         messageDialogPage.save();
@@ -76,6 +79,7 @@ export class MessageDialogPage {
     messageTextInput = element(by.css('textarea#field_messageText'));
     messageValidFromInput = element(by.css('input#field_messageValidFrom'));
     messageValidUntilInput = element(by.css('input#field_messageValidUntil'));
+    imageInput = element(by.css('input#file_image'));
     fromSelect = element(by.css('select#field_from'));
     toSelect = element(by.css('select#field_to'));
 
@@ -121,6 +125,14 @@ export class MessageDialogPage {
 
     getMessageValidUntilInput = function() {
         return this.messageValidUntilInput.getAttribute('value');
+    };
+
+    setImageInput = function(image) {
+        this.imageInput.sendKeys(image);
+    };
+
+    getImageInput = function() {
+        return this.imageInput.getAttribute('value');
     };
 
     fromSelectLastOption = function() {

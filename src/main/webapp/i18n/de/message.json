@@ -22,6 +22,7 @@
             "messageText": "Message Text",
             "messageValidFrom": "Message Valid From",
             "messageValidUntil": "Message Valid Until",
+            "image": "Image",
             "from": "From",
             "to": "To"
         }

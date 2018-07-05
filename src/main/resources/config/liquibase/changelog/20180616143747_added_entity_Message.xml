@@ -42,7 +42,14 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="from_user_id" type="bigint">
+            <column name="image" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="image_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="from_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
@@ -51,7 +58,7 @@
         <dropDefaultValue tableName="message" columnName="message_init_time" columnDataType="datetime"/>
         <dropDefaultValue tableName="message" columnName="message_valid_from" columnDataType="datetime"/>
         <dropDefaultValue tableName="message" columnName="message_valid_until" columnDataType="datetime"/>
-
+        
         <createTable tableName="message_to">
             <column name="tos_id" type="bigint">
                 <constraints nullable="false"/>
@@ -62,7 +69,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="messages_id, tos_id" tableName="message_to"/>
-
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
