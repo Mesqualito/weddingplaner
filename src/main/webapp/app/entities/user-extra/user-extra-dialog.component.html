@@ -86,6 +86,21 @@
             <input type="checkbox" class="form-control" name="guestCommitted" id="field_guestCommitted"
                 [(ngModel)]="userExtra.guestCommitted" />
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.userExtra.gender" for="field_gender">Gender</label>
+            <select class="form-control" name="gender" [(ngModel)]="userExtra.gender" id="field_gender" >
+                <option value="FEMALE">{{'weddingplanerApp.Gender.FEMALE' | translate}}</option>
+                <option value="MALE">{{'weddingplanerApp.Gender.MALE' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.userExtra.ageGroup" for="field_ageGroup">Age Group</label>
+            <select class="form-control" name="ageGroup" [(ngModel)]="userExtra.ageGroup" id="field_ageGroup" >
+                <option value="PRE_BOUNCER_CASTLE">{{'weddingplanerApp.AgeGroup.PRE_BOUNCER_CASTLE' | translate}}</option>
+                <option value="BOUNCER_CASTLE">{{'weddingplanerApp.AgeGroup.BOUNCER_CASTLE' | translate}}</option>
+                <option value="POST_BOUNCER_CASTLE">{{'weddingplanerApp.AgeGroup.POST_BOUNCER_CASTLE' | translate}}</option>
+            </select>
+        </div>
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="weddingplanerApp.userExtra.user" for="field_user">User</label>

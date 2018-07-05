@@ -35,6 +35,8 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import rocks.gebsattel.hochzeit.domain.enumeration.Gender;
+import rocks.gebsattel.hochzeit.domain.enumeration.AgeGroup;
 /**
  * Test class for the UserExtraResource REST controller.
  *
@@ -76,6 +78,12 @@ public class UserExtraResourceIntTest {
 
     private static final Boolean DEFAULT_GUEST_COMMITTED = false;
     private static final Boolean UPDATED_GUEST_COMMITTED = true;
+
+    private static final Gender DEFAULT_GENDER = Gender.FEMALE;
+    private static final Gender UPDATED_GENDER = Gender.MALE;
+
+    private static final AgeGroup DEFAULT_AGE_GROUP = AgeGroup.PRE_BOUNCER_CASTLE;
+    private static final AgeGroup UPDATED_AGE_GROUP = AgeGroup.BOUNCER_CASTLE;
 
     @Autowired
     private UserExtraRepository userExtraRepository;
@@ -131,7 +139,9 @@ public class UserExtraResourceIntTest {
             .privatePhoneNr(DEFAULT_PRIVATE_PHONE_NR)
             .mobilePhoneNr(DEFAULT_MOBILE_PHONE_NR)
             .guestInvitationDate(DEFAULT_GUEST_INVITATION_DATE)
-            .guestCommitted(DEFAULT_GUEST_COMMITTED);
+            .guestCommitted(DEFAULT_GUEST_COMMITTED)
+            .gender(DEFAULT_GENDER)
+            .ageGroup(DEFAULT_AGE_GROUP);
         // Add required entity
         User user = UserResourceIntTest.createEntity(em);
         em.persist(user);
@@ -177,6 +187,8 @@ public class UserExtraResourceIntTest {
         assertThat(testUserExtra.getMobilePhoneNr()).isEqualTo(DEFAULT_MOBILE_PHONE_NR);
         assertThat(testUserExtra.getGuestInvitationDate()).isEqualTo(DEFAULT_GUEST_INVITATION_DATE);
         assertThat(testUserExtra.isGuestCommitted()).isEqualTo(DEFAULT_GUEST_COMMITTED);
+        assertThat(testUserExtra.getGender()).isEqualTo(DEFAULT_GENDER);
+        assertThat(testUserExtra.getAgeGroup()).isEqualTo(DEFAULT_AGE_GROUP);
 
         // Validate the UserExtra in Elasticsearch
         UserExtra userExtraEs = userExtraSearchRepository.findOne(testUserExtra.getId());
@@ -241,7 +253,9 @@ public class UserExtraResourceIntTest {
             .andExpect(jsonPath("$.[*].privatePhoneNr").value(hasItem(DEFAULT_PRIVATE_PHONE_NR.toString())))
             .andExpect(jsonPath("$.[*].mobilePhoneNr").value(hasItem(DEFAULT_MOBILE_PHONE_NR.toString())))
             .andExpect(jsonPath("$.[*].guestInvitationDate").value(hasItem(DEFAULT_GUEST_INVITATION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].guestCommitted").value(hasItem(DEFAULT_GUEST_COMMITTED.booleanValue())));
+            .andExpect(jsonPath("$.[*].guestCommitted").value(hasItem(DEFAULT_GUEST_COMMITTED.booleanValue())))
+            .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
+            .andExpect(jsonPath("$.[*].ageGroup").value(hasItem(DEFAULT_AGE_GROUP.toString())));
     }
 
     @Test
@@ -265,7 +279,9 @@ public class UserExtraResourceIntTest {
             .andExpect(jsonPath("$.privatePhoneNr").value(DEFAULT_PRIVATE_PHONE_NR.toString()))
             .andExpect(jsonPath("$.mobilePhoneNr").value(DEFAULT_MOBILE_PHONE_NR.toString()))
             .andExpect(jsonPath("$.guestInvitationDate").value(DEFAULT_GUEST_INVITATION_DATE.toString()))
-            .andExpect(jsonPath("$.guestCommitted").value(DEFAULT_GUEST_COMMITTED.booleanValue()));
+            .andExpect(jsonPath("$.guestCommitted").value(DEFAULT_GUEST_COMMITTED.booleanValue()))
+            .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()))
+            .andExpect(jsonPath("$.ageGroup").value(DEFAULT_AGE_GROUP.toString()));
     }
 
     @Test
@@ -299,7 +315,9 @@ public class UserExtraResourceIntTest {
             .privatePhoneNr(UPDATED_PRIVATE_PHONE_NR)
             .mobilePhoneNr(UPDATED_MOBILE_PHONE_NR)
             .guestInvitationDate(UPDATED_GUEST_INVITATION_DATE)
-            .guestCommitted(UPDATED_GUEST_COMMITTED);
+            .guestCommitted(UPDATED_GUEST_COMMITTED)
+            .gender(UPDATED_GENDER)
+            .ageGroup(UPDATED_AGE_GROUP);
 
         restUserExtraMockMvc.perform(put("/api/user-extras")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -321,6 +339,8 @@ public class UserExtraResourceIntTest {
         assertThat(testUserExtra.getMobilePhoneNr()).isEqualTo(UPDATED_MOBILE_PHONE_NR);
         assertThat(testUserExtra.getGuestInvitationDate()).isEqualTo(UPDATED_GUEST_INVITATION_DATE);
         assertThat(testUserExtra.isGuestCommitted()).isEqualTo(UPDATED_GUEST_COMMITTED);
+        assertThat(testUserExtra.getGender()).isEqualTo(UPDATED_GENDER);
+        assertThat(testUserExtra.getAgeGroup()).isEqualTo(UPDATED_AGE_GROUP);
 
         // Validate the UserExtra in Elasticsearch
         UserExtra userExtraEs = userExtraSearchRepository.findOne(testUserExtra.getId());
@@ -388,7 +408,9 @@ public class UserExtraResourceIntTest {
             .andExpect(jsonPath("$.[*].privatePhoneNr").value(hasItem(DEFAULT_PRIVATE_PHONE_NR.toString())))
             .andExpect(jsonPath("$.[*].mobilePhoneNr").value(hasItem(DEFAULT_MOBILE_PHONE_NR.toString())))
             .andExpect(jsonPath("$.[*].guestInvitationDate").value(hasItem(DEFAULT_GUEST_INVITATION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].guestCommitted").value(hasItem(DEFAULT_GUEST_COMMITTED.booleanValue())));
+            .andExpect(jsonPath("$.[*].guestCommitted").value(hasItem(DEFAULT_GUEST_COMMITTED.booleanValue())))
+            .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
+            .andExpect(jsonPath("$.[*].ageGroup").value(hasItem(DEFAULT_AGE_GROUP.toString())));
     }
 
     @Test

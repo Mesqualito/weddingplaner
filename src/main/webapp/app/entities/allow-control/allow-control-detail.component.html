@@ -8,17 +8,17 @@
         <dd>
             <span jhiTranslate="{{'weddingplanerApp.AllowGroup.' + allowControl.allowGroup}}">{{allowControl.allowGroup}}</span>
         </dd>
-        <dt><span jhiTranslate="weddingplanerApp.allowControl.controlGroup">Control Group</span></dt>
-        <dd>
-            <div *ngIf="allowControl.controlGroup">
-                <a [routerLink]="['/user-extra', allowControl.controlGroup?.id]">{{allowControl.controlGroup?.id}}</a>
-            </div>
-        </dd>
         <dt><span jhiTranslate="weddingplanerApp.allowControl.controlledGroup">Controlled Group</span></dt>
         <dd>
             <span *ngFor="let controlledGroup of allowControl.controlledGroups; let last = last">
-                <a [routerLink]="['/user-extra', controlledGroup?.id ]">{{controlledGroup.id}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/user-extra', controlledGroup?.id ]">{{controlledGroup.user_id}}</a>{{last ? '' : ', '}}
             </span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.allowControl.controlGroup">Control Group</span></dt>
+        <dd>
+            <div *ngIf="allowControl.controlGroup">
+                <a [routerLink]="['/user-extra', allowControl.controlGroup?.id]">{{allowControl.controlGroup?.user_id}}</a>
+            </div>
         </dd>
     </dl>
 

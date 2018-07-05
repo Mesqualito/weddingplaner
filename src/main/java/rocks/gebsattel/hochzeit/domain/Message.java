@@ -53,17 +53,17 @@ public class Message implements Serializable {
     @Column(name = "image_content_type")
     private String imageContentType;
 
-    @ManyToOne(optional = false)
-    @NotNull
-    private UserExtra from;
-
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @NotNull
     @JoinTable(name = "message_to",
                joinColumns = @JoinColumn(name="messages_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="tos_id", referencedColumnName="user_id"))
+               inverseJoinColumns = @JoinColumn(name="tos_id", referencedColumnName="id"))
     private Set<UserExtra> tos = new HashSet<>();
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private UserExtra from;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -165,19 +165,6 @@ public class Message implements Serializable {
         this.imageContentType = imageContentType;
     }
 
-    public UserExtra getFrom() {
-        return from;
-    }
-
-    public Message from(UserExtra userExtra) {
-        this.from = userExtra;
-        return this;
-    }
-
-    public void setFrom(UserExtra userExtra) {
-        this.from = userExtra;
-    }
-
     public Set<UserExtra> getTos() {
         return tos;
     }
@@ -201,6 +188,19 @@ public class Message implements Serializable {
 
     public void setTos(Set<UserExtra> userExtras) {
         this.tos = userExtras;
+    }
+
+    public UserExtra getFrom() {
+        return from;
+    }
+
+    public Message from(UserExtra userExtra) {
+        this.from = userExtra;
+        return this;
+    }
+
+    public void setFrom(UserExtra userExtra) {
+        this.from = userExtra;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -7,13 +7,7 @@
         Added the constraints for entity Message.
     -->
     <changeSet id="20180616143747-2" author="jhipster">
-
-        <addForeignKeyConstraint baseColumnNames="from_user_id"
-                                 baseTableName="message"
-                                 constraintName="fk_message_from_id"
-                                 referencedColumnNames="user_id"
-                                 referencedTableName="user_extra"/>
-
+        
         <addForeignKeyConstraint baseColumnNames="messages_id"
                                  baseTableName="message_to"
                                  constraintName="fk_message_to_messages_id"
@@ -22,7 +16,13 @@
         <addForeignKeyConstraint baseColumnNames="tos_id"
                                  baseTableName="message_to"
                                  constraintName="fk_message_to_tos_id"
-                                 referencedColumnNames="user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_extra"/>
+        
+        <addForeignKeyConstraint baseColumnNames="from_id"
+                                 baseTableName="message"
+                                 constraintName="fk_message_from_id"
+                                 referencedColumnNames="id"
                                  referencedTableName="user_extra"/>
 
     </changeSet>

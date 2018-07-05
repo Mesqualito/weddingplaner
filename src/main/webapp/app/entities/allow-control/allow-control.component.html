@@ -31,7 +31,7 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="allowGroup"><span jhiTranslate="weddingplanerApp.allowControl.allowGroup">Allow Group</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="controlGroup.id"><span jhiTranslate="weddingplanerApp.allowControl.controlGroup">Control Group</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="controlGroup.user_id"><span jhiTranslate="weddingplanerApp.allowControl.controlGroup">Control Group</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -41,7 +41,7 @@
                 <td jhiTranslate="{{'weddingplanerApp.AllowGroup.' + allowControl.allowGroup}}">{{allowControl.allowGroup}}</td>
                 <td>
                     <div *ngIf="allowControl.controlGroup">
-                        <a [routerLink]="['../user-extra', allowControl.controlGroup?.id ]" >{{allowControl.controlGroup?.id}}</a>
+                        <a [routerLink]="['../user-extra', allowControl.controlGroup?.id ]" >{{allowControl.controlGroup?.user_id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

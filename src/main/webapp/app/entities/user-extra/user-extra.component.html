@@ -41,6 +41,8 @@
             <th jhiSortBy="mobilePhoneNr"><span jhiTranslate="weddingplanerApp.userExtra.mobilePhoneNr">Mobile Phone Nr</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="guestInvitationDate"><span jhiTranslate="weddingplanerApp.userExtra.guestInvitationDate">Guest Invitation Date</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="guestCommitted"><span jhiTranslate="weddingplanerApp.userExtra.guestCommitted">Guest Committed</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="gender"><span jhiTranslate="weddingplanerApp.userExtra.gender">Gender</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="ageGroup"><span jhiTranslate="weddingplanerApp.userExtra.ageGroup">Age Group</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="user.id"><span jhiTranslate="weddingplanerApp.userExtra.user">User</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
@@ -59,6 +61,8 @@
                 <td>{{userExtra.mobilePhoneNr}}</td>
                 <td>{{userExtra.guestInvitationDate | date:'mediumDate'}}</td>
                 <td>{{userExtra.guestCommitted}}</td>
+                <td jhiTranslate="{{'weddingplanerApp.Gender.' + userExtra.gender}}">{{userExtra.gender}}</td>
+                <td jhiTranslate="{{'weddingplanerApp.AgeGroup.' + userExtra.ageGroup}}">{{userExtra.ageGroup}}</td>
                 <td>
                     {{userExtra.user?.id}}
                 </td>
