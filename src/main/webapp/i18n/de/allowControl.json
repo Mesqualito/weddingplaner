@@ -3,24 +3,23 @@
     "weddingplanerApp": {
         "allowControl" : {
             "home": {
-                "title": "Datenfreigaben",
-                "createLabel": "Datenfreigabe erteilen",
-                "createOrEditLabel": "Datenfreigabe erteilen oder bearbeiten",
-                "search": "Nach Datenfreigabe suchen"
+                "title": "Allow Controls",
+                "createLabel": "Allow Control erstellen",
+                "createOrEditLabel": "Allow Control erstellen oder bearbeiten",
+                "search": "Suche nach Allow Control"
             },
-            "created": "Datenfreigabe erteilt mit ID {{ param }}",
-            "updated": "Datenfreigabe aktualisiert mit ID {{ param }}",
-            "deleted": "Datenfreigabe gelöscht mit ID {{ param }}",
+            "created": "Allow Control erstellt mit ID {{ param }}",
+            "updated": "Allow Control aktualisiert mit ID {{ param }}",
+            "deleted": "Allow Control gelöscht mit ID {{ param }}",
             "delete": {
-                "question": "Soll die Datenfreigabe {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll Allow Control {{ id }} wirklich dauerhaft gelöscht werden?"
             },
             "detail": {
-                "title": "Datenfreigabe"
+                "title": "Allow Control"
             },
-            "allowGroup": "Freigabegruppe",
-            "controlGroup": "Freigabe-Ersteller",
-            "controlledGroup": "Freigabe-Empfänger",
-            "controlledGroups": "Freigabe-Empfänger"
+            "allowGroup": "Allow Group",
+            "controlledGroup": "Controlled Group",
+            "controlGroup": "Control Group"
         }
     }
 }

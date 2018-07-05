@@ -1,12 +1,12 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {JhiEventManager, JhiParseLinks, JhiAlertService} from 'ng-jhipster';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import {UserExtra} from './user-extra.model';
-import {UserExtraService} from './user-extra.service';
-import {ITEMS_PER_PAGE, Principal} from '../../shared';
+import { UserExtra } from './user-extra.model';
+import { UserExtraService } from './user-extra.service';
+import { ITEMS_PER_PAGE, Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-user-extra',
@@ -14,7 +14,7 @@ import {ITEMS_PER_PAGE, Principal} from '../../shared';
 })
 export class UserExtraComponent implements OnInit, OnDestroy {
 
-    currentAccount: any;
+currentAccount: any;
     userExtras: UserExtra[];
     error: any;
     success: any;
@@ -56,40 +56,34 @@ export class UserExtraComponent implements OnInit, OnDestroy {
                 page: this.page - 1,
                 query: this.currentSearch,
                 size: this.itemsPerPage,
-                sort: this.sort()
-            }).subscribe(
-                (res: HttpResponse<UserExtra[]>) => this.onSuccess(res.body, res.headers),
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+                sort: this.sort()}).subscribe(
+                    (res: HttpResponse<UserExtra[]>) => this.onSuccess(res.body, res.headers),
+                    (res: HttpErrorResponse) => this.onError(res.message)
+                );
             return;
         }
         this.userExtraService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()
-        }).subscribe(
-            (res: HttpResponse<UserExtra[]>) => this.onSuccess(res.body, res.headers),
-            (res: HttpErrorResponse) => this.onError(res.message)
+            sort: this.sort()}).subscribe(
+                (res: HttpResponse<UserExtra[]>) => this.onSuccess(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
         );
-        // console.log(this.userExtraService);
     }
-
     loadPage(page: number) {
         if (page !== this.previousPage) {
             this.previousPage = page;
             this.transition();
         }
     }
-
     transition() {
-        this.router.navigate(['/user-extra'], {
-            queryParams:
-                {
-                    page: this.page,
-                    size: this.itemsPerPage,
-                    search: this.currentSearch,
-                    sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-                }
+        this.router.navigate(['/user-extra'], {queryParams:
+            {
+                page: this.page,
+                size: this.itemsPerPage,
+                search: this.currentSearch,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
         });
         this.loadAll();
     }
@@ -103,7 +97,6 @@ export class UserExtraComponent implements OnInit, OnDestroy {
         }]);
         this.loadAll();
     }
-
     search(query) {
         if (!query) {
             return this.clear();
@@ -117,7 +110,6 @@ export class UserExtraComponent implements OnInit, OnDestroy {
         }]);
         this.loadAll();
     }
-
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then((account) => {
@@ -133,7 +125,6 @@ export class UserExtraComponent implements OnInit, OnDestroy {
     trackId(index: number, item: UserExtra) {
         return item.id;
     }
-
     registerChangeInUserExtras() {
         this.eventSubscriber = this.eventManager.subscribe('userExtraListModification', (response) => this.loadAll());
     }
@@ -153,7 +144,6 @@ export class UserExtraComponent implements OnInit, OnDestroy {
         // this.page = pagingParams.page;
         this.userExtras = data;
     }
-
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     }

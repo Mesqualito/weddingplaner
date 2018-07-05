@@ -1,8 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AutoCompleteModule } from 'primeng/autocomplete';
-
 import { WeddingplanerSharedModule } from '../../shared';
 import {
     AllowControlService,
@@ -26,7 +24,6 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         WeddingplanerSharedModule,
-        AutoCompleteModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [

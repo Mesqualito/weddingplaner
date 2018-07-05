@@ -117,15 +117,15 @@ public class MessageResourceIntTest {
             .image(DEFAULT_IMAGE)
             .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE);
         // Add required entity
-        UserExtra from = UserExtraResourceIntTest.createEntity(em);
-        em.persist(from);
-        em.flush();
-        message.setFrom(from);
-        // Add required entity
         UserExtra to = UserExtraResourceIntTest.createEntity(em);
         em.persist(to);
         em.flush();
         message.getTos().add(to);
+        // Add required entity
+        UserExtra from = UserExtraResourceIntTest.createEntity(em);
+        em.persist(from);
+        em.flush();
+        message.setFrom(from);
         return message;
     }
 

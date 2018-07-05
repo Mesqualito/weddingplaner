@@ -11,6 +11,9 @@
                 "userExtra": "Gästeliste",
                 "allowControl": "Datenfreigaben",
                 "partyFood": "Speisen & Getränke",
+                "userExtra": "User Extra",
+                "allowControl": "Allow Control",
+                "message": "Message",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

@@ -1,5 +1,16 @@
 import { BaseEntity, User } from './../../shared';
 
+export const enum Gender {
+    'FEMALE',
+    'MALE'
+}
+
+export const enum AgeGroup {
+    'PRE_BOUNCER_CASTLE',
+    'BOUNCER_CASTLE',
+    'POST_BOUNCER_CASTLE'
+}
+
 export class UserExtra implements BaseEntity {
     constructor(
         public id?: number,
@@ -14,9 +25,11 @@ export class UserExtra implements BaseEntity {
         public mobilePhoneNr?: string,
         public guestInvitationDate?: any,
         public guestCommitted?: boolean,
+        public gender?: Gender,
+        public ageGroup?: AgeGroup,
         public user?: User,
-        public partyFoods?: BaseEntity[],
         public owners?: BaseEntity[],
+        public partyFoods?: BaseEntity[],
         public ownedMessages?: BaseEntity[],
         public allowedUsers?: BaseEntity[],
         public receivedMessages?: BaseEntity[],

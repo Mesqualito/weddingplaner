@@ -12,16 +12,16 @@
         },
         {
             "relationshipType": "one-to-many",
+            "relationshipName": "owner",
+            "otherEntityName": "allowControl",
+            "otherEntityRelationshipName": "controlGroup"
+        },
+        {
+            "relationshipType": "one-to-many",
             "relationshipValidateRules": "required",
             "relationshipName": "partyFood",
             "otherEntityName": "partyFood",
             "otherEntityRelationshipName": "userExtra"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "owner",
-            "otherEntityName": "allowControl",
-            "otherEntityRelationshipName": "controlGroup"
         },
         {
             "relationshipType": "one-to-many",
@@ -95,6 +95,16 @@
         {
             "fieldName": "guestCommitted",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "gender",
+            "fieldType": "Gender",
+            "fieldValues": "FEMALE,MALE"
+        },
+        {
+            "fieldName": "ageGroup",
+            "fieldType": "AgeGroup",
+            "fieldValues": "PRE_BOUNCER_CASTLE,BOUNCER_CASTLE,POST_BOUNCER_CASTLE"
         }
     ],
     "changelogDate": "20180616143744",

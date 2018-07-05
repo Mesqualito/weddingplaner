@@ -2,13 +2,6 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
-            "relationshipValidateRules": "required",
-            "relationshipName": "from",
-            "otherEntityName": "userExtra",
-            "otherEntityField": "user_id"
-        },
-        {
             "relationshipType": "many-to-many",
             "relationshipValidateRules": "required",
             "otherEntityRelationshipName": "receivedMessage",
@@ -16,6 +9,13 @@
             "otherEntityName": "userExtra",
             "otherEntityField": "user_id",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "from",
+            "otherEntityName": "userExtra",
+            "otherEntityField": "user_id"
         }
     ],
     "fields": [
@@ -54,9 +54,9 @@
         }
     ],
     "changelogDate": "20180616143747",
-    "dto": "no",
-    "service": "serviceImpl",
     "entityTableName": "message",
-    "jpaMetamodelFiltering": false,
-    "pagination": "pagination"
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
 }

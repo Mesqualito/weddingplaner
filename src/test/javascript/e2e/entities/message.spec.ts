@@ -46,8 +46,8 @@ describe('Message e2e test', () => {
         messageDialogPage.setMessageValidUntilInput(12310020012301);
         expect(messageDialogPage.getMessageValidUntilInput()).toMatch('2001-12-31T02:30');
         messageDialogPage.setImageInput(absolutePath);
-        messageDialogPage.fromSelectLastOption();
         // messageDialogPage.toSelectLastOption();
+        messageDialogPage.fromSelectLastOption();
         messageDialogPage.save();
         expect(messageDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });*/
@@ -80,8 +80,8 @@ export class MessageDialogPage {
     messageValidFromInput = element(by.css('input#field_messageValidFrom'));
     messageValidUntilInput = element(by.css('input#field_messageValidUntil'));
     imageInput = element(by.css('input#file_image'));
-    fromSelect = element(by.css('select#field_from'));
     toSelect = element(by.css('select#field_to'));
+    fromSelect = element(by.css('select#field_from'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -135,22 +135,6 @@ export class MessageDialogPage {
         return this.imageInput.getAttribute('value');
     };
 
-    fromSelectLastOption = function() {
-        this.fromSelect.all(by.tagName('option')).last().click();
-    };
-
-    fromSelectOption = function(option) {
-        this.fromSelect.sendKeys(option);
-    };
-
-    getFromSelect = function() {
-        return this.fromSelect;
-    };
-
-    getFromSelectedOption = function() {
-        return this.fromSelect.element(by.css('option:checked')).getText();
-    };
-
     toSelectLastOption = function() {
         this.toSelect.all(by.tagName('option')).last().click();
     };
@@ -165,6 +149,22 @@ export class MessageDialogPage {
 
     getToSelectedOption = function() {
         return this.toSelect.element(by.css('option:checked')).getText();
+    };
+
+    fromSelectLastOption = function() {
+        this.fromSelect.all(by.tagName('option')).last().click();
+    };
+
+    fromSelectOption = function(option) {
+        this.fromSelect.sendKeys(option);
+    };
+
+    getFromSelect = function() {
+        return this.fromSelect;
+    };
+
+    getFromSelectedOption = function() {
+        return this.fromSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

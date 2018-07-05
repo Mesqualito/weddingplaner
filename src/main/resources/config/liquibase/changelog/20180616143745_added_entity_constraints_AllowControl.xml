@@ -7,13 +7,7 @@
         Added the constraints for entity AllowControl.
     -->
     <changeSet id="20180616143745-2" author="jhipster">
-
-        <addForeignKeyConstraint baseColumnNames="control_group_user_id"
-                                 baseTableName="allow_control"
-                                 constraintName="fk_allow_control_control_group_id"
-                                 referencedColumnNames="user_id"
-                                 referencedTableName="user_extra"/>
-
+        
         <addForeignKeyConstraint baseColumnNames="allow_controls_id"
                                  baseTableName="allow_control_controlled_group"
                                  constraintName="fk_allow_control_controlled_group_allow_controls_id"
@@ -22,7 +16,13 @@
         <addForeignKeyConstraint baseColumnNames="controlled_groups_id"
                                  baseTableName="allow_control_controlled_group"
                                  constraintName="fk_allow_control_controlled_group_controlled_groups_id"
-                                 referencedColumnNames="user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_extra"/>
+        
+        <addForeignKeyConstraint baseColumnNames="control_group_id"
+                                 baseTableName="allow_control"
+                                 constraintName="fk_allow_control_control_group_id"
+                                 referencedColumnNames="id"
                                  referencedTableName="user_extra"/>
 
     </changeSet>

@@ -10,8 +10,8 @@ export class Message implements BaseEntity {
         public messageValidUntil?: any,
         public imageContentType?: string,
         public image?: any,
-        public from?: BaseEntity,
         public tos?: BaseEntity[],
+        public from?: BaseEntity,
     ) {
     }
 }

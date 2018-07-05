@@ -48,6 +48,14 @@
         <dd>
             <span>{{userExtra.guestCommitted}}</span>
         </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.gender">Gender</span></dt>
+        <dd>
+            <span jhiTranslate="{{'weddingplanerApp.Gender.' + userExtra.gender}}">{{userExtra.gender}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.ageGroup">Age Group</span></dt>
+        <dd>
+            <span jhiTranslate="{{'weddingplanerApp.AgeGroup.' + userExtra.ageGroup}}">{{userExtra.ageGroup}}</span>
+        </dd>
         <dt><span jhiTranslate="weddingplanerApp.userExtra.user">User</span></dt>
         <dd>
             {{userExtra.user?.id}}

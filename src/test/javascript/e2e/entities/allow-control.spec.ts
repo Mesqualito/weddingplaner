@@ -34,8 +34,8 @@ describe('AllowControl e2e test', () => {
     it('should create and save AllowControls', () => {
         allowControlComponentsPage.clickOnCreateButton();
         allowControlDialogPage.allowGroupSelectLastOption();
-        allowControlDialogPage.controlGroupSelectLastOption();
         // allowControlDialogPage.controlledGroupSelectLastOption();
+        allowControlDialogPage.controlGroupSelectLastOption();
         allowControlDialogPage.save();
         expect(allowControlDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -63,8 +63,8 @@ export class AllowControlDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     allowGroupSelect = element(by.css('select#field_allowGroup'));
-    controlGroupSelect = element(by.css('select#field_controlGroup'));
     controlledGroupSelect = element(by.css('select#field_controlledGroup'));
+    controlGroupSelect = element(by.css('select#field_controlGroup'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -81,22 +81,6 @@ export class AllowControlDialogPage {
     allowGroupSelectLastOption = function() {
         this.allowGroupSelect.all(by.tagName('option')).last().click();
     };
-    controlGroupSelectLastOption = function() {
-        this.controlGroupSelect.all(by.tagName('option')).last().click();
-    };
-
-    controlGroupSelectOption = function(option) {
-        this.controlGroupSelect.sendKeys(option);
-    };
-
-    getControlGroupSelect = function() {
-        return this.controlGroupSelect;
-    };
-
-    getControlGroupSelectedOption = function() {
-        return this.controlGroupSelect.element(by.css('option:checked')).getText();
-    };
-
     controlledGroupSelectLastOption = function() {
         this.controlledGroupSelect.all(by.tagName('option')).last().click();
     };
@@ -111,6 +95,22 @@ export class AllowControlDialogPage {
 
     getControlledGroupSelectedOption = function() {
         return this.controlledGroupSelect.element(by.css('option:checked')).getText();
+    };
+
+    controlGroupSelectLastOption = function() {
+        this.controlGroupSelect.all(by.tagName('option')).last().click();
+    };
+
+    controlGroupSelectOption = function(option) {
+        this.controlGroupSelect.sendKeys(option);
+    };
+
+    getControlGroupSelect = function() {
+        return this.controlGroupSelect;
+    };
+
+    getControlGroupSelectedOption = function() {
+        return this.controlGroupSelect.element(by.css('option:checked')).getText();
     };
 
     save() {
