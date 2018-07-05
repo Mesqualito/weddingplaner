@@ -46,6 +46,13 @@ public class Message implements Serializable {
     @Column(name = "message_valid_until")
     private Instant messageValidUntil;
 
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+
+    @Column(name = "image_content_type")
+    private String imageContentType;
+
     @ManyToOne(optional = false)
     @NotNull
     private UserExtra from;
@@ -55,7 +62,7 @@ public class Message implements Serializable {
     @NotNull
     @JoinTable(name = "message_to",
                joinColumns = @JoinColumn(name="messages_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="tos_id", referencedColumnName="user_id"))
+               inverseJoinColumns = @JoinColumn(name="tos_id", referencedColumnName="id"))
     private Set<UserExtra> tos = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -132,6 +139,32 @@ public class Message implements Serializable {
         this.messageValidUntil = messageValidUntil;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public Message image(byte[] image) {
+        this.image = image;
+        return this;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getImageContentType() {
+        return imageContentType;
+    }
+
+    public Message imageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
+        return this;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
+    }
+
     public UserExtra getFrom() {
         return from;
     }
@@ -200,6 +233,8 @@ public class Message implements Serializable {
             ", messageText='" + getMessageText() + "'" +
             ", messageValidFrom='" + getMessageValidFrom() + "'" +
             ", messageValidUntil='" + getMessageValidUntil() + "'" +
+            ", image='" + getImage() + "'" +
+            ", imageContentType='" + getImageContentType() + "'" +
             "}";
     }
 }
