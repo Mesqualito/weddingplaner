@@ -62,7 +62,7 @@ public class Message implements Serializable {
     @NotNull
     @JoinTable(name = "message_to",
                joinColumns = @JoinColumn(name="messages_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="tos_id", referencedColumnName="id"))
+               inverseJoinColumns = @JoinColumn(name="tos_id", referencedColumnName="user_id"))
     private Set<UserExtra> tos = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

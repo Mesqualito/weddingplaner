@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy, ElementRef} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager, JhiAlertService, JhiDataUtils} from 'ng-jhipster';
 
-import { Message } from './message.model';
-import { MessagePopupService } from './message-popup.service';
-import { MessageService } from './message.service';
-import { UserExtra, UserExtraService } from '../user-extra';
+import {Message} from './message.model';
+import {MessagePopupService} from './message-popup.service';
+import {MessageService} from './message.service';
+import {UserExtra, UserExtraService} from '../user-extra';
 
 @Component({
     selector: 'jhi-message-dialog',
@@ -21,6 +21,7 @@ export class MessageDialogComponent implements OnInit {
     isSaving: boolean;
 
     userextras: UserExtra[];
+    userExtraOptions: any[];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -36,7 +37,9 @@ export class MessageDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.userExtraService.query()
-            .subscribe((res: HttpResponse<UserExtra[]>) => { this.userextras = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<UserExtra[]>) => {
+                this.userextras = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -70,13 +73,17 @@ export class MessageDialogComponent implements OnInit {
         }
     }
 
+    search(event) {
+        this.userExtraOptions = this.userextras.filter((userExtra) => (userExtra.user.firstName.startsWith(event.query) || userExtra.user.lastName.startsWith(event.query)));
+    }
+
     private subscribeToSaveResponse(result: Observable<HttpResponse<Message>>) {
         result.subscribe((res: HttpResponse<Message>) =>
             this.onSaveSuccess(res.body), (res: HttpErrorResponse) => this.onSaveError());
     }
 
     private onSaveSuccess(result: Message) {
-        this.eventManager.broadcast({ name: 'messageListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'messageListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -116,11 +123,12 @@ export class MessagePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private messagePopupService: MessagePopupService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
+            if (params['id']) {
                 this.messagePopupService
                     .open(MessageDialogComponent as Component, params['id']);
             } else {

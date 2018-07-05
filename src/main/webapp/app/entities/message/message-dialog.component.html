@@ -89,16 +89,24 @@
             </small>
         </div>
         <div class="form-group">
-            <label jhiTranslate="weddingplanerApp.message.to" for="field_to">To</label>
-            <select class="form-control" id="field_to" multiple name="to" [(ngModel)]="message.tos" required>
-                <option [ngValue]="getSelected(message.tos, userExtraOption)" *ngFor="let userExtraOption of userextras; trackBy: trackUserExtraById">{{userExtraOption.user_id}}</option>
-            </select>
-        </div>
-        <div [hidden]="!(editForm.controls.to?.dirty && editForm.controls.to?.invalid)">
-            <small class="form-text text-danger"
-                [hidden]="!editForm.controls.to?.errors?.required" jhiTranslate="entity.validation.required">
-                This field is required.
-            </small>
+            <label jhiTranslate="weddingplanerApp.message.to" for="field_to">to User</label>
+            <p-autoComplete id="field_to" name="to" [(ngModel)]="message.tos" [required]="true"
+                            placeholder="Enter receivers names" [suggestions]="userExtraOptions"
+                            (completeMethod)="search($event)"
+                            field="user.lastName" [multiple]="true" [forceSelection]="true">
+                <ng-template let-value pTemplate="selectedItems">
+                    <span>{{value.user.firstName}} {{value.user.lastName}}</span>
+                </ng-template>
+                <ng-template let-value pTemplate="getSelected">
+                    <span>{{value.user.firstName}} {{value.user.lastName}}</span>
+                </ng-template>
+
+                <div [hidden]="!(editForm.controls.to?.dirty && editForm.controls.to?.invalid)">
+                    <small class="form-text text-danger"
+                           [hidden]="!editForm.controls.to?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
         </div>
     </div>
     <div class="modal-footer">
