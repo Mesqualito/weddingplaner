@@ -49,7 +49,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="from_user_id" type="bigint">
+            <column name="from_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
@@ -60,7 +60,7 @@
         <dropDefaultValue tableName="message" columnName="message_valid_until" columnDataType="datetime"/>
 
         <createTable tableName="message_to">
-            <column name="to_users_id" type="bigint">
+            <column name="tos_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="messages_id" type="bigint">
@@ -68,7 +68,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="messages_id, to_users_id" tableName="message_to"/>
+        <addPrimaryKey columnNames="messages_id, tos_id" tableName="message_to"/>
 
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

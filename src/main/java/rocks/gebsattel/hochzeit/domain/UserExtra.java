@@ -22,7 +22,7 @@ import rocks.gebsattel.hochzeit.domain.enumeration.AgeGroup;
 /**
  * 'User' is a predesigned special entity
  * and can not have additional attributes etc.
- * 
+ *
  * List to see User-fields (without constraints, pattern...)
  * entity User {
  * login String
@@ -114,7 +114,7 @@ public class UserExtra implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Message> ownedMessages = new HashSet<>();
 
-    @ManyToMany(mappedBy = "controlledGroups")
+    @ManyToMany(mappedBy = "controlledGroup")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AllowControl> allowedUsers = new HashSet<>();
@@ -401,13 +401,13 @@ public class UserExtra implements Serializable {
 
     public UserExtra addAllowedUser(AllowControl allowControl) {
         this.allowedUsers.add(allowControl);
-        allowControl.getControlledGroups().add(this);
+        allowControl.getControlledGroup().add(this);
         return this;
     }
 
     public UserExtra removeAllowedUser(AllowControl allowControl) {
         this.allowedUsers.remove(allowControl);
-        allowControl.getControlledGroups().remove(this);
+        allowControl.getControlledGroup().remove(this);
         return this;
     }
 

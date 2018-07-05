@@ -37,7 +37,7 @@ public class AllowControl implements Serializable {
     @JoinTable(name = "allow_control_controlled_group",
                joinColumns = @JoinColumn(name="allow_controls_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="controlled_groups_id", referencedColumnName="user_id"))
-    private Set<UserExtra> controlledGroups = new HashSet<>();
+    private Set<UserExtra> controlledGroup = new HashSet<>();
 
     @ManyToOne
     private UserExtra controlGroup;
@@ -64,29 +64,29 @@ public class AllowControl implements Serializable {
         this.allowGroup = allowGroup;
     }
 
-    public Set<UserExtra> getControlledGroups() {
-        return controlledGroups;
+    public Set<UserExtra> getControlledGroup() {
+        return controlledGroup;
     }
 
-    public AllowControl controlledGroups(Set<UserExtra> userExtras) {
-        this.controlledGroups = userExtras;
+    public AllowControl controlledGroup(Set<UserExtra> userExtras) {
+        this.controlledGroup = userExtras;
         return this;
     }
 
     public AllowControl addControlledGroup(UserExtra userExtra) {
-        this.controlledGroups.add(userExtra);
+        this.controlledGroup.add(userExtra);
         userExtra.getAllowedUsers().add(this);
         return this;
     }
 
     public AllowControl removeControlledGroup(UserExtra userExtra) {
-        this.controlledGroups.remove(userExtra);
+        this.controlledGroup.remove(userExtra);
         userExtra.getAllowedUsers().remove(this);
         return this;
     }
 
     public void setControlledGroups(Set<UserExtra> userExtras) {
-        this.controlledGroups = userExtras;
+        this.controlledGroup = userExtras;
     }
 
     public UserExtra getControlGroup() {
