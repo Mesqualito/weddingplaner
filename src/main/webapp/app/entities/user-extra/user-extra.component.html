@@ -28,26 +28,26 @@
     <div class="table-responsive" *ngIf="userExtras">
         <table class="table table-striped">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="code"><span jhiTranslate="weddingplanerApp.userExtra.code">Code</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="addressLine1"><span jhiTranslate="weddingplanerApp.userExtra.addressLine1">Address Line 1</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="addressLine2"><span jhiTranslate="weddingplanerApp.userExtra.addressLine2">Address Line 2</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="city"><span jhiTranslate="weddingplanerApp.userExtra.city">City</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="zipCode"><span jhiTranslate="weddingplanerApp.userExtra.zipCode">Zip Code</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="country"><span jhiTranslate="weddingplanerApp.userExtra.country">Country</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="businessPhoneNr"><span jhiTranslate="weddingplanerApp.userExtra.businessPhoneNr">Business Phone Nr</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="privatePhoneNr"><span jhiTranslate="weddingplanerApp.userExtra.privatePhoneNr">Private Phone Nr</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="mobilePhoneNr"><span jhiTranslate="weddingplanerApp.userExtra.mobilePhoneNr">Mobile Phone Nr</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="guestInvitationDate"><span jhiTranslate="weddingplanerApp.userExtra.guestInvitationDate">Guest Invitation Date</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="guestCommitted"><span jhiTranslate="weddingplanerApp.userExtra.guestCommitted">Guest Committed</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="gender"><span jhiTranslate="weddingplanerApp.userExtra.gender">Gender</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="ageGroup"><span jhiTranslate="weddingplanerApp.userExtra.ageGroup">Age Group</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="user.id"><span jhiTranslate="weddingplanerApp.userExtra.user">User</span> <span class="fa fa-sort"></span></th>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.code">Code</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.addressLine1">Address Line 1</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.addressLine2">Address Line 2</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.city">City</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.zipCode">Zip Code</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.country">Country</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.businessPhoneNr">Business Phone Nr</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.privatePhoneNr">Private Phone Nr</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.mobilePhoneNr">Mobile Phone Nr</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.guestInvitationDate">Guest Invitation Date</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.guestCommitted">Guest Committed</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.gender">Gender</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.ageGroup">Age Group</span></th>
+            <th><span jhiTranslate="weddingplanerApp.userExtra.user">User</span></th>
             <th></th>
             </tr>
             </thead>
-            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tbody>
             <tr *ngFor="let userExtra of userExtras ;trackBy: trackId">
                 <td><a [routerLink]="['../user-extra', userExtra.id ]">{{userExtra.id}}</a></td>
                 <td>{{userExtra.code}}</td>
