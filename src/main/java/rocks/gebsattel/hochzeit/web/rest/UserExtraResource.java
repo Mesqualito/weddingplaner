@@ -5,14 +5,9 @@ import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.web.rest.errors.BadRequestAlertException;
 import rocks.gebsattel.hochzeit.web.rest.util.HeaderUtil;
-import rocks.gebsattel.hochzeit.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,17 +83,14 @@ public class UserExtraResource {
     /**
      * GET  /user-extras : get all the userExtras.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of userExtras in body
      */
     @GetMapping("/user-extras")
     @Timed
-    public ResponseEntity<List<UserExtra>> getAllUserExtras(Pageable pageable) {
-        log.debug("REST request to get a page of UserExtras");
-        Page<UserExtra> page = userExtraService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-extras");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
+    public List<UserExtra> getAllUserExtras() {
+        log.debug("REST request to get all UserExtras");
+        return userExtraService.findAll();
+        }
 
     /**
      * GET  /user-extras/:id : get the "id" userExtra.
@@ -133,16 +125,13 @@ public class UserExtraResource {
      * to the query.
      *
      * @param query the query of the userExtra search
-     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/user-extras")
     @Timed
-    public ResponseEntity<List<UserExtra>> searchUserExtras(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of UserExtras for query {}", query);
-        Page<UserExtra> page = userExtraService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/user-extras");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<UserExtra> searchUserExtras(@RequestParam String query) {
+        log.debug("REST request to search UserExtras for query {}", query);
+        return userExtraService.search(query);
     }
 
 }
