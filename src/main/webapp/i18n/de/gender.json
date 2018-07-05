@@ -2,8 +2,8 @@
     "weddingplanerApp": {
         "Gender" : {
             "null": "",
-            "FEMALE": "weiblich",
-            "MALE": "männlich"
+            "FEMALE": "FEMALE",
+            "MALE": "MALE"
         }
     }
 }
