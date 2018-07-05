@@ -2,9 +2,9 @@
     "weddingplanerApp": {
         "AgeGroup" : {
             "null": "",
-            "PRE_BOUNCER_CASTLE": "pre-Hüpfburg-Alter",
-            "BOUNCER_CASTLE": "Hüpfburg-Alter",
-            "POST_BOUNCER_CASTLE": "post-Hüpfburg-Alter"
+            "PRE_BOUNCER_CASTLE": "PRE_BOUNCER_CASTLE",
+            "BOUNCER_CASTLE": "BOUNCER_CASTLE",
+            "POST_BOUNCER_CASTLE": "POST_BOUNCER_CASTLE"
         }
     }
 }

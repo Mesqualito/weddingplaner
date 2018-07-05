@@ -14,7 +14,6 @@ import {
     UserExtraDeleteDialogComponent,
     userExtraRoute,
     userExtraPopupRoute,
-    UserExtraResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -46,7 +45,6 @@ const ENTITY_STATES = [
     providers: [
         UserExtraService,
         UserExtraPopupService,
-        UserExtraResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

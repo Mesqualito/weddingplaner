@@ -111,7 +111,7 @@
     "javadoc": "'User' is a predesigned special entity\nand can not have additional attributes etc.\n\nList to see User-fields (without constraints, pattern...)\nentity User {\nlogin String\npassword String\nfirstName String\nlastName String\nemail String\nactivated Boolean\nlangKey String\nimageUrl String\nactivationKey String\nresetKey String\nresetDate Instant\n}",
     "entityTableName": "user_extra",
     "dto": "no",
-    "pagination": "pagination",
+    "pagination": "infinite-scroll",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false
 }
