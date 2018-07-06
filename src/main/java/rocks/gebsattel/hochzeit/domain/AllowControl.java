@@ -36,8 +36,8 @@ public class AllowControl implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "allow_control_controlled_group",
                joinColumns = @JoinColumn(name="allow_controls_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="controlled_groups_id", referencedColumnName="user_id"))
-    private Set<UserExtra> controlledGroup = new HashSet<>();
+               inverseJoinColumns = @JoinColumn(name="controlled_groups_id", referencedColumnName="id"))
+    private Set<UserExtra> controlledGroups = new HashSet<>();
 
     @ManyToOne
     private UserExtra controlGroup;
@@ -64,29 +64,29 @@ public class AllowControl implements Serializable {
         this.allowGroup = allowGroup;
     }
 
-    public Set<UserExtra> getControlledGroup() {
-        return controlledGroup;
+    public Set<UserExtra> getControlledGroups() {
+        return controlledGroups;
     }
 
-    public AllowControl controlledGroup(Set<UserExtra> userExtras) {
-        this.controlledGroup = userExtras;
+    public AllowControl controlledGroups(Set<UserExtra> userExtras) {
+        this.controlledGroups = userExtras;
         return this;
     }
 
     public AllowControl addControlledGroup(UserExtra userExtra) {
-        this.controlledGroup.add(userExtra);
+        this.controlledGroups.add(userExtra);
         userExtra.getAllowedUsers().add(this);
         return this;
     }
 
     public AllowControl removeControlledGroup(UserExtra userExtra) {
-        this.controlledGroup.remove(userExtra);
+        this.controlledGroups.remove(userExtra);
         userExtra.getAllowedUsers().remove(this);
         return this;
     }
 
-    public void setControlledGroup(Set<UserExtra> userExtras) {
-        this.controlledGroup = userExtras;
+    public void setControlledGroups(Set<UserExtra> userExtras) {
+        this.controlledGroups = userExtras;
     }
 
     public UserExtra getControlGroup() {

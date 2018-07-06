@@ -114,7 +114,7 @@ public class UserExtra implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Message> ownedMessages = new HashSet<>();
 
-    @ManyToMany(mappedBy = "controlledGroup")
+    @ManyToMany(mappedBy = "controlledGroups")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AllowControl> allowedUsers = new HashSet<>();
@@ -401,13 +401,13 @@ public class UserExtra implements Serializable {
 
     public UserExtra addAllowedUser(AllowControl allowControl) {
         this.allowedUsers.add(allowControl);
-        allowControl.getControlledGroup().add(this);
+        allowControl.getControlledGroups().add(this);
         return this;
     }
 
     public UserExtra removeAllowedUser(AllowControl allowControl) {
         this.allowedUsers.remove(allowControl);
-        allowControl.getControlledGroup().remove(this);
+        allowControl.getControlledGroups().remove(this);
         return this;
     }
 

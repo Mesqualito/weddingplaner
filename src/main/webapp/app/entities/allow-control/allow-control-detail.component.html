@@ -10,7 +10,7 @@
         </dd>
         <dt><span jhiTranslate="weddingplanerApp.allowControl.controlledGroup">Controlled Group</span></dt>
         <dd>
-            <span *ngFor="let controlledGroup of allowControl.controlledGroup; let last = last">
+            <span *ngFor="let controlledGroup of allowControl.controlledGroups; let last = last">
                 <a [routerLink]="['/user-extra', controlledGroup?.id ]">{{controlledGroup.user_id}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
