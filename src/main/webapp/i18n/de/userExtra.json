@@ -16,6 +16,8 @@
             "detail": {
                 "title": "Hochzeitsgast"
             },
+            "userFirstName": "Vorname",
+            "userLastName": "Nachname",
             "code": "Drop-In Code (s. Einladungskarte)",
             "addressLine1": "Straße",
             "addressLine2": "Zweite Adresszeile",
@@ -27,6 +29,8 @@
             "mobilePhoneNr": "Handynr.",
             "guestInvitationDate": "Datum der Einladung",
             "guestCommitted": "Einladung zugesagt",
+            "gender": "Geschlecht",
+            "ageGroup": "Altersgruppe",
             "user": "Benutzer",
             "partyFood": "Speisen & Getränke",
             "owner": "Absender",

@@ -46,7 +46,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="user_extra_user_id" type="bigint">
+            <column name="user_extra_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

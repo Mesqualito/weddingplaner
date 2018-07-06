@@ -1,6 +1,7 @@
 package rocks.gebsattel.hochzeit.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.security.access.prepost.PreAuthorize;
 import rocks.gebsattel.hochzeit.domain.PartyFood;
 import rocks.gebsattel.hochzeit.service.PartyFoodService;
 import rocks.gebsattel.hochzeit.web.rest.errors.BadRequestAlertException;
@@ -122,6 +123,7 @@ public class PartyFoodResource {
      */
     @DeleteMapping("/party-foods/{id}")
     @Timed
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deletePartyFood(@PathVariable Long id) {
         log.debug("REST request to delete PartyFood : {}", id);
         partyFoodService.delete(id);

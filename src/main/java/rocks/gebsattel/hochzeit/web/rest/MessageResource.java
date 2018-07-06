@@ -1,6 +1,7 @@
 package rocks.gebsattel.hochzeit.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.security.access.prepost.PreAuthorize;
 import rocks.gebsattel.hochzeit.domain.Message;
 import rocks.gebsattel.hochzeit.service.MessageService;
 import rocks.gebsattel.hochzeit.web.rest.errors.BadRequestAlertException;
@@ -74,6 +75,7 @@ public class MessageResource {
      */
     @PutMapping("/messages")
     @Timed
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Message> updateMessage(@Valid @RequestBody Message message) throws URISyntaxException {
         log.debug("REST request to update Message : {}", message);
         if (message.getId() == null) {
@@ -122,6 +124,7 @@ public class MessageResource {
      */
     @DeleteMapping("/messages/{id}")
     @Timed
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteMessage(@PathVariable Long id) {
         log.debug("REST request to delete Message : {}", id);
         messageService.delete(id);

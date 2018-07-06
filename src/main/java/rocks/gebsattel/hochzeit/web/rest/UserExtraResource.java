@@ -1,6 +1,7 @@
 package rocks.gebsattel.hochzeit.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.security.access.prepost.PreAuthorize;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.web.rest.errors.BadRequestAlertException;
@@ -47,6 +48,7 @@ public class UserExtraResource {
      */
     @PostMapping("/user-extras")
     @Timed
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserExtra> createUserExtra(@Valid @RequestBody UserExtra userExtra) throws URISyntaxException {
         log.debug("REST request to save UserExtra : {}", userExtra);
         if (userExtra.getId() != null) {
@@ -69,6 +71,7 @@ public class UserExtraResource {
      */
     @PutMapping("/user-extras")
     @Timed
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserExtra> updateUserExtra(@Valid @RequestBody UserExtra userExtra) throws URISyntaxException {
         log.debug("REST request to update UserExtra : {}", userExtra);
         if (userExtra.getId() == null) {
@@ -100,6 +103,7 @@ public class UserExtraResource {
      */
     @GetMapping("/user-extras/{id}")
     @Timed
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserExtra> getUserExtra(@PathVariable Long id) {
         log.debug("REST request to get UserExtra : {}", id);
         UserExtra userExtra = userExtraService.findOne(id);
@@ -114,6 +118,7 @@ public class UserExtraResource {
      */
     @DeleteMapping("/user-extras/{id}")
     @Timed
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteUserExtra(@PathVariable Long id) {
         log.debug("REST request to delete UserExtra : {}", id);
         userExtraService.delete(id);
