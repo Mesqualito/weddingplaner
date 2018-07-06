@@ -85,7 +85,7 @@ public class AllowControl implements Serializable {
         return this;
     }
 
-    public void setControlledGroups(Set<UserExtra> userExtras) {
+    public void setControlledGroup(Set<UserExtra> userExtras) {
         this.controlledGroup = userExtras;
     }
 
