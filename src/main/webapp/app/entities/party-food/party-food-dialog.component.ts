@@ -20,22 +20,17 @@ export class PartyFoodDialogComponent implements OnInit {
     partyFood: PartyFood;
     isSaving: boolean;
 
-    userextras: UserExtra[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private dataUtils: JhiDataUtils,
         private jhiAlertService: JhiAlertService,
         private partyFoodService: PartyFoodService,
-        private userExtraService: UserExtraService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.userExtraService.query()
-            .subscribe((res: HttpResponse<UserExtra[]>) => { this.userextras = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {

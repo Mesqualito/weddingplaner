@@ -1,13 +1,8 @@
 package rocks.gebsattel.hochzeit.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import org.springframework.security.access.prepost.PreAuthorize;
-import rocks.gebsattel.hochzeit.domain.PartyFood;
-import rocks.gebsattel.hochzeit.service.PartyFoodService;
-import rocks.gebsattel.hochzeit.web.rest.errors.BadRequestAlertException;
-import rocks.gebsattel.hochzeit.web.rest.util.HeaderUtil;
-import rocks.gebsattel.hochzeit.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.elasticsearch.common.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,17 +10,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import rocks.gebsattel.hochzeit.domain.PartyFood;
+import rocks.gebsattel.hochzeit.domain.UserExtra;
+import rocks.gebsattel.hochzeit.security.SecurityUtils;
+import rocks.gebsattel.hochzeit.service.PartyFoodService;
+import rocks.gebsattel.hochzeit.service.UserExtraService;
+import rocks.gebsattel.hochzeit.web.rest.errors.BadRequestAlertException;
+import rocks.gebsattel.hochzeit.web.rest.util.HeaderUtil;
+import rocks.gebsattel.hochzeit.web.rest.util.PaginationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing PartyFood.
@@ -45,6 +45,14 @@ public class PartyFoodResource {
     }
 
     /**
+     * We add the logged in user into a relation to newly created records of the entity PartyFood.
+     * The user will be the owner of the PartyFood.
+     */
+    @Inject
+    private UserExtraService userExtraService;
+
+
+    /**
      * POST  /party-foods : Create a new partyFood.
      *
      * @param partyFood the partyFood to create
@@ -58,6 +66,18 @@ public class PartyFoodResource {
         if (partyFood.getId() != null) {
             throw new BadRequestAlertException("A new partyFood cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        // set UserExtra from logged in User (jhi_user) as Owner of PartyFood-Object
+        String userLogin = SecurityUtils.getCurrentUserLogin().get();
+        if(userLogin == ""){
+            throw new IllegalArgumentException("userLogin can not be empty!");
+        }
+        log.debug("userLogin is '" + userLogin + "'");
+        UserExtra userExtra = new UserExtra();
+        userExtra = userExtraService.findOneByUserLogin(userLogin);
+        log.debug("userExtra gefunden : {}", userExtra);
+        partyFood.setUserExtra(userExtra);
+
         PartyFood result = partyFoodService.save(partyFood);
         return ResponseEntity.created(new URI("/api/party-foods/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -134,7 +154,7 @@ public class PartyFoodResource {
      * SEARCH  /_search/party-foods?query=:query : search for the partyFood corresponding
      * to the query.
      *
-     * @param query the query of the partyFood search
+     * @param query    the query of the partyFood search
      * @param pageable the pagination information
      * @return the result of the search
      */

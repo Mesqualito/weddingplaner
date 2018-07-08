@@ -1,5 +1,6 @@
 package rocks.gebsattel.hochzeit.service;
 
+import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
 import java.util.List;
 
@@ -42,8 +43,17 @@ public interface UserExtraService {
      * Search for the userExtra corresponding to the query.
      *
      * @param query the query of the search
-     * 
+     *
      * @return the list of entities
      */
     List<UserExtra> search(String query);
+
+    /**
+     * Search for the userExtra corresponding to the user.
+     *
+     * @param login the login of the user
+     *
+     * @return the userExtra
+     */
+    UserExtra findOneByUserLogin(String login);
 }

@@ -69,14 +69,6 @@
                 [(ngModel)]="partyFood.foodProposalAccepted" />
         </div>
 
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="weddingplanerApp.partyFood.userExtra" for="field_userExtra">User Extra</label>
-            <select class="form-control" id="field_userExtra" name="userExtra" [(ngModel)]="partyFood.userExtra" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="userExtraOption.id === partyFood.userExtra?.id ? partyFood.userExtra : userExtraOption" *ngFor="let userExtraOption of userextras; trackBy: trackUserExtraById">{{userExtraOption.id}}</option>
-            </select>
-        </div>
-    </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>

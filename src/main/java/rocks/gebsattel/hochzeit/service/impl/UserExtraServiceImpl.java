@@ -1,5 +1,6 @@
 package rocks.gebsattel.hochzeit.service.impl;
 
+import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
@@ -97,5 +98,11 @@ public class UserExtraServiceImpl implements UserExtraService {
         return StreamSupport
             .stream(userExtraSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserExtra findOneByUserLogin(String login) {
+        log.debug("Request to search UserExtras for user {}", login);
+        return userExtraRepository.findOneByUserLogin(login);
     }
 }

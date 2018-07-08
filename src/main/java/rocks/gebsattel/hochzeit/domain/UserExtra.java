@@ -48,8 +48,12 @@ public class UserExtra implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne
+    @MapsId
+    private User user;
 
     @NotNull
     @Size(min = 8, max = 15)
@@ -93,11 +97,6 @@ public class UserExtra implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "age_group")
     private AgeGroup ageGroup;
-
-    @OneToOne(optional = false)
-    @NotNull
-    @JoinColumn(unique = true)
-    private User user;
 
     @OneToMany(mappedBy = "controlGroup")
     @JsonIgnore

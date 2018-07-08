@@ -19,7 +19,7 @@
                                  referencedColumnNames="user_id"
                                  referencedTableName="user_extra"/>
 
-        <addForeignKeyConstraint baseColumnNames="control_group_id"
+        <addForeignKeyConstraint baseColumnNames="control_group_user_id"
                                  baseTableName="allow_control"
                                  constraintName="fk_allow_control_control_group_id"
                                  referencedColumnNames="user_id"
