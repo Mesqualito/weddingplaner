@@ -1,5 +1,7 @@
 package rocks.gebsattel.hochzeit.service.impl;
 
+import rocks.gebsattel.hochzeit.domain.User;
+import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.service.MessageService;
 import rocks.gebsattel.hochzeit.domain.Message;
 import rocks.gebsattel.hochzeit.repository.MessageRepository;
@@ -10,7 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import rocks.gebsattel.hochzeit.service.UserExtraService;
+import rocks.gebsattel.hochzeit.service.UserService;
 
+
+import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -27,9 +33,17 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageSearchRepository messageSearchRepository;
 
-    public MessageServiceImpl(MessageRepository messageRepository, MessageSearchRepository messageSearchRepository) {
+
+    private final UserService userService;
+
+    private final UserExtraService userExtraService;
+
+    public MessageServiceImpl(MessageRepository messageRepository, MessageSearchRepository messageSearchRepository,
+                              UserService userService, UserExtraService userExtraService) {
         this.messageRepository = messageRepository;
         this.messageSearchRepository = messageSearchRepository;
+        this.userService = userService;
+        this.userExtraService = userExtraService;
     }
 
     /**
@@ -41,6 +55,24 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message save(Message message) {
         log.debug("Request to save Message : {}", message);
+
+        /**
+         * Add the logged in user into a relation to newly created records of the entity Message.
+         * The user will be the sender of the Message.
+         */
+
+        final Optional<User> isUser = userService.getUserWithAuthorities();
+        if (!isUser.isPresent()) {
+            log.debug("User is not logged in");
+        }
+
+        final User user = isUser.get();
+
+        UserExtra userExtra = new UserExtra();
+        userExtra = userExtraService.findOneByUserId(user.getId());
+        log.debug("userExtra found : {}", userExtra.getUser().getLogin());
+        message.setFrom(userExtra);
+
         Message result = messageRepository.save(message);
         messageSearchRepository.save(result);
         return result;

@@ -62,7 +62,7 @@ public class Message implements Serializable {
     private Set<UserExtra> tos = new HashSet<>();
 
     @ManyToOne(optional = false)
-    @NotNull
+    // @NotNull
     private UserExtra from;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
