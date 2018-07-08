@@ -13,10 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rocks.gebsattel.hochzeit.domain.PartyFood;
-import rocks.gebsattel.hochzeit.domain.UserExtra;
-import rocks.gebsattel.hochzeit.security.SecurityUtils;
 import rocks.gebsattel.hochzeit.service.PartyFoodService;
 import rocks.gebsattel.hochzeit.service.UserExtraService;
+import rocks.gebsattel.hochzeit.service.UserService;
 import rocks.gebsattel.hochzeit.web.rest.errors.BadRequestAlertException;
 import rocks.gebsattel.hochzeit.web.rest.util.HeaderUtil;
 import rocks.gebsattel.hochzeit.web.rest.util.PaginationUtil;
@@ -44,13 +43,6 @@ public class PartyFoodResource {
         this.partyFoodService = partyFoodService;
     }
 
-    /**
-     * We add the logged in user into a relation to newly created records of the entity PartyFood.
-     * The user will be the owner of the PartyFood.
-     */
-    @Inject
-    private UserExtraService userExtraService;
-
 
     /**
      * POST  /party-foods : Create a new partyFood.
@@ -66,17 +58,6 @@ public class PartyFoodResource {
         if (partyFood.getId() != null) {
             throw new BadRequestAlertException("A new partyFood cannot already have an ID", ENTITY_NAME, "idexists");
         }
-
-        // set UserExtra from logged in User (jhi_user) as Owner of PartyFood-Object
-        String userLogin = SecurityUtils.getCurrentUserLogin().get();
-        if(userLogin == ""){
-            throw new IllegalArgumentException("userLogin can not be empty!");
-        }
-        log.debug("userLogin is '" + userLogin + "'");
-        UserExtra userExtra = new UserExtra();
-        userExtra = userExtraService.findOneByUserLogin(userLogin);
-        log.debug("userExtra gefunden : {}", userExtra);
-        partyFood.setUserExtra(userExtra);
 
         PartyFood result = partyFoodService.save(partyFood);
         return ResponseEntity.created(new URI("/api/party-foods/" + result.getId()))

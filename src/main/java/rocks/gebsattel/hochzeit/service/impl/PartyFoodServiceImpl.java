@@ -1,5 +1,8 @@
 package rocks.gebsattel.hochzeit.service.impl;
 
+import org.elasticsearch.common.inject.Inject;
+import rocks.gebsattel.hochzeit.domain.User;
+import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.service.PartyFoodService;
 import rocks.gebsattel.hochzeit.domain.PartyFood;
 import rocks.gebsattel.hochzeit.repository.PartyFoodRepository;
@@ -10,7 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import rocks.gebsattel.hochzeit.service.UserExtraService;
+import rocks.gebsattel.hochzeit.service.UserService;
 
+
+import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -27,9 +34,16 @@ public class PartyFoodServiceImpl implements PartyFoodService {
 
     private final PartyFoodSearchRepository partyFoodSearchRepository;
 
-    public PartyFoodServiceImpl(PartyFoodRepository partyFoodRepository, PartyFoodSearchRepository partyFoodSearchRepository) {
+    private final UserService userService;
+
+    private final UserExtraService userExtraService;
+
+    public PartyFoodServiceImpl(PartyFoodRepository partyFoodRepository, PartyFoodSearchRepository partyFoodSearchRepository,
+                                UserService userService, UserExtraService userExtraService) {
         this.partyFoodRepository = partyFoodRepository;
         this.partyFoodSearchRepository = partyFoodSearchRepository;
+        this.userService = userService;
+        this.userExtraService = userExtraService;
     }
 
     /**
@@ -41,6 +55,24 @@ public class PartyFoodServiceImpl implements PartyFoodService {
     @Override
     public PartyFood save(PartyFood partyFood) {
         log.debug("Request to save PartyFood : {}", partyFood);
+
+     /**
+     * Add the logged in user into a relation to newly created records of the entity PartyFood.
+     * The user will be the owner of the PartyFood.
+     */
+
+        final Optional<User> isUser = userService.getUserWithAuthorities();
+        if (!isUser.isPresent()) {
+            log.debug("User is not logged in");
+        }
+
+        final User user = isUser.get();
+
+        UserExtra userExtra = new UserExtra();
+        userExtra = userExtraService.findOneByUserId(user.getId());
+        log.debug("userExtra found : {}", userExtra.getUser().getLogin());
+        partyFood.setUserExtra(userExtra);
+
         PartyFood result = partyFoodRepository.save(partyFood);
         partyFoodSearchRepository.save(result);
         return result;

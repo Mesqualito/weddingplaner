@@ -101,8 +101,8 @@ public class UserExtraServiceImpl implements UserExtraService {
     }
 
     @Override
-    public UserExtra findOneByUserLogin(String login) {
-        log.debug("Request to search UserExtras for user {}", login);
-        return userExtraRepository.findOneByUserLogin(login);
+    public UserExtra findOneByUserId(Long id) {
+        log.debug("Request to search UserExtras for user {}", id);
+        return userExtraRepository.findOneByUserId(id);
     }
 }
