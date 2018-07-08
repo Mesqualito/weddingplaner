@@ -24,7 +24,7 @@
         <div class="form-group">
             <label jhiTranslate="weddingplanerApp.allowControl.controlledGroup" for="field_controlledGroup">Controlled Group</label>
             <p-autoComplete id="field_controlledGroup" name="controlledGroup"
-                            [(ngModel)]="allowControl.controlledGroup"
+                            [(ngModel)]="allowControl.controlledGroups"
                             [required]="true"
                             placeholder="Enter receivers names" [suggestions]="userExtraOptions"
                             (completeMethod)="search($event)"
