@@ -99,8 +99,19 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Transactional(readOnly = true)
     public Message findOne(Long id) {
-        log.debug("Request to get Message : {}", id);
-        return messageRepository.findOneWithEagerRelationships(id);
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            log.debug("Request to get all Messages");
+            return messageRepository.findOneWithEagerRelationships(id);
+        } else {
+            UserExtra userExtra = this.getUserExtra();
+            log.debug("userExtra found : {}", userExtra.getUser().getLogin());
+            Message returnMessage = messageRepository.findOneWithEagerRelationships(id);
+            if(returnMessage.getTos().contains(userExtra)){
+                return returnMessage;
+            } else
+                return null;
+        }
+
     }
 
     /**
