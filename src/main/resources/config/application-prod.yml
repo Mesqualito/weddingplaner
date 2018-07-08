@@ -52,11 +52,8 @@ spring:
             hibernate.cache.hazelcast.use_lite_member: true
     data:
         elasticsearch:
-                    jest:
-                        uris: https://jasmine-9463077.eu-west-1.bonsaisearch.net
-                        read-timeout: 10000
-                        username: doqoc2ow0j
-                        password: ggkmn9autq
+                    cluster-name:
+                    cluster-nodes: localhost:9300
     mail:
         host: localhost
         port: 25
