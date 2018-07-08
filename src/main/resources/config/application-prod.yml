@@ -53,7 +53,7 @@ spring:
     data:
         elasticsearch:
                     jest:
-                        uris: https://doqoc2ow0j:ggkmn9autq@jasmine-9463077.eu-west-1.bonsaisearch.net
+                        uris: https://jasmine-9463077.eu-west-1.bonsaisearch.net
                         read-timeout: 10000
                         username: doqoc2ow0j
                         password: ggkmn9autq
