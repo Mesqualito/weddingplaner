@@ -2,6 +2,8 @@ package rocks.gebsattel.hochzeit.service.impl;
 
 import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
+import rocks.gebsattel.hochzeit.security.AuthoritiesConstants;
+import rocks.gebsattel.hochzeit.security.SecurityUtils;
 import rocks.gebsattel.hochzeit.service.MessageService;
 import rocks.gebsattel.hochzeit.domain.Message;
 import rocks.gebsattel.hochzeit.repository.MessageRepository;
@@ -19,6 +21,7 @@ import rocks.gebsattel.hochzeit.service.UserService;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
+import static rocks.gebsattel.hochzeit.domain.PartyFood_.userExtra;
 
 /**
  * Service Implementation for managing Message.
@@ -32,7 +35,6 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
 
     private final MessageSearchRepository messageSearchRepository;
-
 
     private final UserService userService;
 
@@ -60,16 +62,7 @@ public class MessageServiceImpl implements MessageService {
          * Add the logged in user into a relation to newly created records of the entity Message.
          * The corresponding userExtra will be the sender of the Message.
          */
-
-        final Optional<User> isUser = userService.getUserWithAuthorities();
-        if (!isUser.isPresent()) {
-            log.debug("User is not logged in");
-        }
-
-        final User user = isUser.get();
-
-        UserExtra userExtra = new UserExtra();
-        userExtra = userExtraService.findOneByUserId(user.getId());
+        UserExtra userExtra = this.getUserExtra();
         log.debug("userExtra found : {}", userExtra.getUser().getLogin());
         message.setFrom(userExtra);
 
@@ -87,8 +80,14 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Transactional(readOnly = true)
     public Page<Message> findAll(Pageable pageable) {
-        log.debug("Request to get all Messages");
-        return messageRepository.findAll(pageable);
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            log.debug("Request to get all Messages");
+            return messageRepository.findAll(pageable);
+        } else {
+            UserExtra userExtra = this.getUserExtra();
+            log.debug("userExtra found : {}", userExtra.getUser().getLogin());
+            return messageRepository.findAllByTos(pageable, userExtra);
+        }
     }
 
     /**
@@ -119,7 +118,7 @@ public class MessageServiceImpl implements MessageService {
     /**
      * Search for the message corresponding to the query.
      *
-     * @param query the query of the search
+     * @param query    the query of the search
      * @param pageable the pagination information
      * @return the list of entities
      */
@@ -129,5 +128,20 @@ public class MessageServiceImpl implements MessageService {
         log.debug("Request to search for a page of Messages for query {}", query);
         Page<Message> result = messageSearchRepository.search(queryStringQuery(query), pageable);
         return result;
+    }
+
+    public User getLoggedInUser() {
+
+        final Optional<User> isUser = userService.getUserWithAuthorities();
+        if (!isUser.isPresent()) {
+            log.debug("User is not logged in");
+        }
+
+        final User user = isUser.get();
+        return user;
+    }
+
+    public UserExtra getUserExtra() {
+        return userExtraService.findOneByUserId(this.getLoggedInUser().getId());
     }
 }
