@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Xmx256m -jar build/libs/*.war --spring.profiles.active=prod,heroku --server.port=$PORT -Dspring.datasource.url=jdbc:mysql://jfrpocyduwfg38kq.chr7pe7iynqr.eu-west-1.rds.amazonaws.com
+web: java $JAVA_OPTS -Xmx256m -jar build/libs/*.war --spring.profiles.active=prod,heroku --server.port=$PORT 
