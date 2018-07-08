@@ -1,5 +1,7 @@
 package rocks.gebsattel.hochzeit.service.impl;
 
+import rocks.gebsattel.hochzeit.domain.User;
+import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.service.AllowControlService;
 import rocks.gebsattel.hochzeit.domain.AllowControl;
 import rocks.gebsattel.hochzeit.repository.AllowControlRepository;
@@ -10,7 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import rocks.gebsattel.hochzeit.service.UserExtraService;
+import rocks.gebsattel.hochzeit.service.UserService;
 
+
+import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -27,9 +33,16 @@ public class AllowControlServiceImpl implements AllowControlService {
 
     private final AllowControlSearchRepository allowControlSearchRepository;
 
-    public AllowControlServiceImpl(AllowControlRepository allowControlRepository, AllowControlSearchRepository allowControlSearchRepository) {
+    private final UserService userService;
+
+    private final UserExtraService userExtraService;
+
+    public AllowControlServiceImpl(AllowControlRepository allowControlRepository, AllowControlSearchRepository allowControlSearchRepository,
+                                   UserService userService, UserExtraService userExtraService) {
         this.allowControlRepository = allowControlRepository;
         this.allowControlSearchRepository = allowControlSearchRepository;
+        this.userService = userService;
+        this.userExtraService = userExtraService;
     }
 
     /**
@@ -41,6 +54,24 @@ public class AllowControlServiceImpl implements AllowControlService {
     @Override
     public AllowControl save(AllowControl allowControl) {
         log.debug("Request to save AllowControl : {}", allowControl);
+
+        /**
+         * Add the logged in user into a relation to newly created records of the entity AllowControl.
+         * The corresponding userExtra will be the controlGroup of the Message.
+         */
+
+        final Optional<User> isUser = userService.getUserWithAuthorities();
+        if (!isUser.isPresent()) {
+            log.debug("User is not logged in");
+        }
+
+        final User user = isUser.get();
+
+        UserExtra userExtra = new UserExtra();
+        userExtra = userExtraService.findOneByUserId(user.getId());
+        log.debug("userExtra found : {}", userExtra.getUser().getLogin());
+        allowControl.setControlGroup(userExtra);
+
         AllowControl result = allowControlRepository.save(allowControl);
         allowControlSearchRepository.save(result);
         return result;

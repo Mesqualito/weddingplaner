@@ -58,7 +58,7 @@ public class MessageServiceImpl implements MessageService {
 
         /**
          * Add the logged in user into a relation to newly created records of the entity Message.
-         * The user will be the sender of the Message.
+         * The corresponding userExtra will be the sender of the Message.
          */
 
         final Optional<User> isUser = userService.getUserWithAuthorities();

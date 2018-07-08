@@ -58,7 +58,7 @@ public class PartyFoodServiceImpl implements PartyFoodService {
 
      /**
      * Add the logged in user into a relation to newly created records of the entity PartyFood.
-     * The user will be the owner of the PartyFood.
+     * The corresponding userExtra will be the owner of the PartyFood.
      */
 
         final Optional<User> isUser = userService.getUserWithAuthorities();
