@@ -17,3 +17,5 @@ services:
         extends:
             file: elasticsearch.yml
             service: weddingplaner-elasticsearch
+volumes:
+    postgresql-data:
