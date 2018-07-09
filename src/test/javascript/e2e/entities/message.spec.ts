@@ -1,11 +1,13 @@
 import { browser, element, by } from 'protractor';
 import { NavBarPage } from './../page-objects/jhi-page-objects';
-
+import * as path from 'path';
 describe('Message e2e test', () => {
 
     let navBarPage: NavBarPage;
     let messageDialogPage: MessageDialogPage;
     let messageComponentsPage: MessageComponentsPage;
+    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
+    const absolutePath = path.resolve(__dirname, fileToUpload);
 
     beforeAll(() => {
         browser.get('/');
@@ -43,8 +45,9 @@ describe('Message e2e test', () => {
         expect(messageDialogPage.getMessageValidFromInput()).toMatch('2001-12-31T02:30');
         messageDialogPage.setMessageValidUntilInput(12310020012301);
         expect(messageDialogPage.getMessageValidUntilInput()).toMatch('2001-12-31T02:30');
-        messageDialogPage.fromSelectLastOption();
+        messageDialogPage.setImageInput(absolutePath);
         // messageDialogPage.toSelectLastOption();
+        messageDialogPage.fromSelectLastOption();
         messageDialogPage.save();
         expect(messageDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });*/
@@ -76,8 +79,9 @@ export class MessageDialogPage {
     messageTextInput = element(by.css('textarea#field_messageText'));
     messageValidFromInput = element(by.css('input#field_messageValidFrom'));
     messageValidUntilInput = element(by.css('input#field_messageValidUntil'));
-    fromSelect = element(by.css('select#field_from'));
+    imageInput = element(by.css('input#file_image'));
     toSelect = element(by.css('select#field_to'));
+    fromSelect = element(by.css('select#field_from'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -123,20 +127,12 @@ export class MessageDialogPage {
         return this.messageValidUntilInput.getAttribute('value');
     };
 
-    fromSelectLastOption = function() {
-        this.fromSelect.all(by.tagName('option')).last().click();
+    setImageInput = function(image) {
+        this.imageInput.sendKeys(image);
     };
 
-    fromSelectOption = function(option) {
-        this.fromSelect.sendKeys(option);
-    };
-
-    getFromSelect = function() {
-        return this.fromSelect;
-    };
-
-    getFromSelectedOption = function() {
-        return this.fromSelect.element(by.css('option:checked')).getText();
+    getImageInput = function() {
+        return this.imageInput.getAttribute('value');
     };
 
     toSelectLastOption = function() {
@@ -153,6 +149,22 @@ export class MessageDialogPage {
 
     getToSelectedOption = function() {
         return this.toSelect.element(by.css('option:checked')).getText();
+    };
+
+    fromSelectLastOption = function() {
+        this.fromSelect.all(by.tagName('option')).last().click();
+    };
+
+    fromSelectOption = function(option) {
+        this.fromSelect.sendKeys(option);
+    };
+
+    getFromSelect = function() {
+        return this.fromSelect;
+    };
+
+    getFromSelectedOption = function() {
+        return this.fromSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

@@ -18,8 +18,8 @@
                 "title": "Allow Control"
             },
             "allowGroup": "Allow Group",
-            "controlGroup": "Control Group",
-            "controlledGroup": "Controlled Group"
+            "controlledGroup": "Controlled Group",
+            "controlGroup": "Control Group"
         }
     }
 }

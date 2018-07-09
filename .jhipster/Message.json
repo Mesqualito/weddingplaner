@@ -2,13 +2,6 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
-            "relationshipValidateRules": "required",
-            "relationshipName": "from",
-            "otherEntityName": "userExtra",
-            "otherEntityField": "user_id"
-        },
-        {
             "relationshipType": "many-to-many",
             "relationshipValidateRules": "required",
             "otherEntityRelationshipName": "receivedMessage",
@@ -16,6 +9,13 @@
             "otherEntityName": "userExtra",
             "otherEntityField": "user_id",
             "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "from",
+            "otherEntityName": "userExtra",
+            "otherEntityField": "user_id"
         }
     ],
     "fields": [
@@ -46,6 +46,11 @@
         {
             "fieldName": "messageValidUntil",
             "fieldType": "Instant"
+        },
+        {
+            "fieldName": "image",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
         }
     ],
     "changelogDate": "20180616143747",

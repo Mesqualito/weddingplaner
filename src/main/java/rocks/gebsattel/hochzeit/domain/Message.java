@@ -46,9 +46,12 @@ public class Message implements Serializable {
     @Column(name = "message_valid_until")
     private Instant messageValidUntil;
 
-    @ManyToOne(optional = false)
-    @NotNull
-    private UserExtra from;
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+
+    @Column(name = "image_content_type")
+    private String imageContentType;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -57,6 +60,10 @@ public class Message implements Serializable {
                joinColumns = @JoinColumn(name="messages_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="tos_id", referencedColumnName="user_id"))
     private Set<UserExtra> tos = new HashSet<>();
+
+    @ManyToOne(optional = false)
+    // @NotNull
+    private UserExtra from;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -132,17 +139,30 @@ public class Message implements Serializable {
         this.messageValidUntil = messageValidUntil;
     }
 
-    public UserExtra getFrom() {
-        return from;
+    public byte[] getImage() {
+        return image;
     }
 
-    public Message from(UserExtra userExtra) {
-        this.from = userExtra;
+    public Message image(byte[] image) {
+        this.image = image;
         return this;
     }
 
-    public void setFrom(UserExtra userExtra) {
-        this.from = userExtra;
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getImageContentType() {
+        return imageContentType;
+    }
+
+    public Message imageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
+        return this;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
     }
 
     public Set<UserExtra> getTos() {
@@ -168,6 +188,19 @@ public class Message implements Serializable {
 
     public void setTos(Set<UserExtra> userExtras) {
         this.tos = userExtras;
+    }
+
+    public UserExtra getFrom() {
+        return from;
+    }
+
+    public Message from(UserExtra userExtra) {
+        this.from = userExtra;
+        return this;
+    }
+
+    public void setFrom(UserExtra userExtra) {
+        this.from = userExtra;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -200,6 +233,8 @@ public class Message implements Serializable {
             ", messageText='" + getMessageText() + "'" +
             ", messageValidFrom='" + getMessageValidFrom() + "'" +
             ", messageValidUntil='" + getMessageValidUntil() + "'" +
+            ", image='" + getImage() + "'" +
+            ", imageContentType='" + getImageContentType() + "'" +
             "}";
     }
 }

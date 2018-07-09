@@ -68,7 +68,7 @@ class UserExtraGatlingTest extends Simulation {
             .exec(http("Create new userExtra")
             .post("/api/user-extras")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "code":"SAMPLE_TEXT", "addressLine1":"SAMPLE_TEXT", "addressLine2":"SAMPLE_TEXT", "city":"SAMPLE_TEXT", "zipCode":"SAMPLE_TEXT", "country":"SAMPLE_TEXT", "businessPhoneNr":"SAMPLE_TEXT", "privatePhoneNr":"SAMPLE_TEXT", "mobilePhoneNr":"SAMPLE_TEXT", "guestInvitationDate":"2020-01-01T00:00:00.000Z", "guestCommitted":null}""")).asJSON
+            .body(StringBody("""{"id":null, "code":"SAMPLE_TEXT", "addressLine1":"SAMPLE_TEXT", "addressLine2":"SAMPLE_TEXT", "city":"SAMPLE_TEXT", "zipCode":"SAMPLE_TEXT", "country":"SAMPLE_TEXT", "businessPhoneNr":"SAMPLE_TEXT", "privatePhoneNr":"SAMPLE_TEXT", "mobilePhoneNr":"SAMPLE_TEXT", "guestInvitationDate":"2020-01-01T00:00:00.000Z", "guestCommitted":null, "gender":null, "ageGroup":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_userExtra_url"))).exitHereIfFailed
             .pause(10)

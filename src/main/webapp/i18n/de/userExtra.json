@@ -1,39 +1,42 @@
-
 {
     "weddingplanerApp": {
         "userExtra" : {
             "home": {
-                "title": "Benutzer",
-                "createLabel": "Benutzer erstellen",
-                "createOrEditLabel": "Benutzer erstellen oder bearbeiten",
-                "search": "Suche nach Benutzer"
+                "title": "Hochzeitsgast",
+                "createLabel": "Hochzeitsgast erstellen",
+                "createOrEditLabel": "Hochzeitsgast erstellen oder bearbeiten",
+                "search": "Suche nach Hochzeitsgast"
             },
-            "created": "Benutzer erstellt mit ID {{ param }}",
-            "updated": "Benutzer aktualisiert mit ID {{ param }}",
-            "deleted": "Benutzer gelöscht mit ID {{ param }}",
+            "created": "Hochzeitsgast erstellt mit ID {{ param }}",
+            "updated": "Hochzeitsgast aktualisiert mit ID {{ param }}",
+            "deleted": "Hochzeitsgast gelöscht mit ID {{ param }}",
             "delete": {
-                "question": "Soll Benutzer {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll Hochzeitsgast {{ id }} wirklich dauerhaft gelöscht werden?"
             },
             "detail": {
-                "title": "Benutzer"
+                "title": "Hochzeitsgast"
             },
-            "code": "Code",
+            "userFirstName": "Vorname",
+            "userLastName": "Nachname",
+            "code": "Drop-In Code (s. Einladungskarte)",
             "addressLine1": "Straße",
-            "addressLine2": "Address Line 2",
+            "addressLine2": "Zweite Adresszeile",
             "city": "Stadt",
             "zipCode": "PLZ",
             "country": "Land",
-            "businessPhoneNr": "Business Phone Nr",
-            "privatePhoneNr": "Telefon",
-            "mobilePhoneNr": "Mobile Phone Nr",
-            "guestInvitationDate": "Guest Invitation Date",
-            "guestCommitted": "Guest Committed",
-            "user": "User",
-            "partyFood": "Party Food",
-            "owner": "Owner",
-            "ownedMessage": "Owned Message",
-            "allowedUser": "Allowed User",
-            "receivedMessage": "Received Message"
+            "businessPhoneNr": "Telefon (Büro)",
+            "privatePhoneNr": "Telefon (privat)",
+            "mobilePhoneNr": "Handynr.",
+            "guestInvitationDate": "Datum der Einladung",
+            "guestCommitted": "Einladung zugesagt",
+            "gender": "Geschlecht",
+            "ageGroup": "Altersgruppe",
+            "user": "Benutzer",
+            "partyFood": "Speisen & Getränke",
+            "owner": "Absender",
+            "ownedMessage": "eigene Nachricht",
+            "allowedUser": "genehmigte Benutzer",
+            "receivedMessage": "empfangene Nachricht"
         }
     }
 }

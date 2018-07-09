@@ -1,8 +1,8 @@
 package rocks.gebsattel.hochzeit.service;
 
+import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 /**
  * Service Interface for managing UserExtra.
@@ -20,10 +20,9 @@ public interface UserExtraService {
     /**
      * Get all the userExtras.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<UserExtra> findAll(Pageable pageable);
+    List<UserExtra> findAll();
 
     /**
      * Get the "id" userExtra.
@@ -44,9 +43,17 @@ public interface UserExtraService {
      * Search for the userExtra corresponding to the query.
      *
      * @param query the query of the search
-     * 
-     * @param pageable the pagination information
+     *
      * @return the list of entities
      */
-    Page<UserExtra> search(String query, Pageable pageable);
+    List<UserExtra> search(String query);
+
+    /**
+     * Search for the userExtra corresponding to the user.
+     *
+     * @param login the login of the user
+     *
+     * @return the userExtra
+     */
+    UserExtra findOneByUserId(Long id);
 }

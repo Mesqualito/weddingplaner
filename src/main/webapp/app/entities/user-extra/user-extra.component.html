@@ -1,9 +1,11 @@
 <div>
     <h2>
         <span jhiTranslate="weddingplanerApp.userExtra.home.title">User Extras</span>
-        <button class="btn btn-primary float-right jh-create-entity create-user-extra" [routerLink]="['/', { outlets: { popup: ['user-extra-new'] } }]">
+        <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                class="btn btn-primary float-right jh-create-entity create-user-extra"
+                [routerLink]="['/', { outlets: { popup: ['user-extra-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="weddingplanerApp.userExtra.home.createLabel">
+            <span class="hidden-sm-down" jhiTranslate="weddingplanerApp.userExtra.home.createLabel">
             Create new User Extra
             </span>
         </button>
@@ -13,7 +15,9 @@
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'weddingplanerApp.userExtra.home.search' | translate }}">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch"
+                           name="currentSearch"
+                           placeholder="{{ 'weddingplanerApp.userExtra.home.search' | translate }}">
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                         <span class="fa fa-search"></span>
                     </button>
@@ -28,49 +32,65 @@
     <div class="table-responsive" *ngIf="userExtras">
         <table class="table table-striped">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="code"><span jhiTranslate="weddingplanerApp.userExtra.code">Code</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="addressLine1"><span jhiTranslate="weddingplanerApp.userExtra.addressLine1">Address Line 1</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="addressLine2"><span jhiTranslate="weddingplanerApp.userExtra.addressLine2">Address Line 2</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="city"><span jhiTranslate="weddingplanerApp.userExtra.city">City</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="zipCode"><span jhiTranslate="weddingplanerApp.userExtra.zipCode">Zip Code</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="country"><span jhiTranslate="weddingplanerApp.userExtra.country">Country</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="businessPhoneNr"><span jhiTranslate="weddingplanerApp.userExtra.businessPhoneNr">Business Phone Nr</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="privatePhoneNr"><span jhiTranslate="weddingplanerApp.userExtra.privatePhoneNr">Private Phone Nr</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="mobilePhoneNr"><span jhiTranslate="weddingplanerApp.userExtra.mobilePhoneNr">Mobile Phone Nr</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="guestInvitationDate"><span jhiTranslate="weddingplanerApp.userExtra.guestInvitationDate">Guest Invitation Date</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="guestCommitted"><span jhiTranslate="weddingplanerApp.userExtra.guestCommitted">Guest Committed</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="user.id"><span jhiTranslate="weddingplanerApp.userExtra.user">User</span> <span class="fa fa-sort"></span></th>
-            <th></th>
+            <tr>
+
+                <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="global.field.id">ID</span></th>
+                <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.code">Code</span>
+                </th>
+                <th><span jhiTranslate="weddingplanerApp.userExtra.userFirstName">First Name</span></th>
+                <th><span jhiTranslate="weddingplanerApp.userExtra.userLastName">Last Name</span></th>
+                <th><span jhiTranslate="weddingplanerApp.userExtra.addressLine1">Address Line 1</span></th>
+                <!--<th><span jhiTranslate="weddingplanerApp.userExtra.addressLine2">Address Line 2</span></th>-->
+                <th><span jhiTranslate="weddingplanerApp.userExtra.zipCode">Zip Code</span></th>
+                <th><span jhiTranslate="weddingplanerApp.userExtra.city">City</span></th>
+
+                <!--<th><span jhiTranslate="weddingplanerApp.userExtra.country">Country</span></th>
+                <th><span jhiTranslate="weddingplanerApp.userExtra.businessPhoneNr">Business Phone Nr</span></th>
+                <th><span jhiTranslate="weddingplanerApp.userExtra.privatePhoneNr">Private Phone Nr</span></th>
+                <th><span jhiTranslate="weddingplanerApp.userExtra.mobilePhoneNr">Mobile Phone Nr</span></th>-->
+                <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span
+                    jhiTranslate="weddingplanerApp.userExtra.guestInvitationDate">Guest Invitation Date</span></th>
+                <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.guestCommitted">Guest Committed</span>
+                </th>
+                <th><span jhiTranslate="weddingplanerApp.userExtra.gender">Gender</span></th>
+                <th><span jhiTranslate="weddingplanerApp.userExtra.ageGroup">Age Group</span></th>
+                <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.user">User</span>
+                </th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let userExtra of userExtras ;trackBy: trackId">
-                <td><a [routerLink]="['../user-extra', userExtra.id ]">{{userExtra.id}}</a></td>
-                <td>{{userExtra.code}}</td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'"><a [routerLink]="['../user-extra', userExtra.id ]">{{userExtra.id}}</a>
+                </td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra.code}}</td>
+                <td>{{userExtra.user.firstName}}</td>
+                <td>{{userExtra.user.lastName}}</td>
                 <td>{{userExtra.addressLine1}}</td>
-                <td>{{userExtra.addressLine2}}</td>
-                <td>{{userExtra.city}}</td>
+                <!--<td>{{userExtra.addressLine2}}</td>-->
+
                 <td>{{userExtra.zipCode}}</td>
-                <td>{{userExtra.country}}</td>
+                <td>{{userExtra.city}}</td>
+                <!--<td>{{userExtra.country}}</td>
                 <td>{{userExtra.businessPhoneNr}}</td>
                 <td>{{userExtra.privatePhoneNr}}</td>
-                <td>{{userExtra.mobilePhoneNr}}</td>
-                <td>{{userExtra.guestInvitationDate | date:'mediumDate'}}</td>
-                <td>{{userExtra.guestCommitted}}</td>
-                <td>
+                <td>{{userExtra.mobilePhoneNr}}</td>-->
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra.guestInvitationDate | date:'mediumDate'}}</td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra.guestCommitted}}</td>
+                <td jhiTranslate="{{'weddingplanerApp.Gender.' + userExtra.gender}}">{{userExtra.gender}}</td>
+                <td jhiTranslate="{{'weddingplanerApp.AgeGroup.' + userExtra.ageGroup}}">{{userExtra.ageGroup}}</td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
                     {{userExtra.user?.id}}
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
+                        <button  *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                 [routerLink]="['../user-extra', userExtra.id ]"
                                 class="btn btn-info btn-sm">
                             <span class="fa fa-eye"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit"
+                        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'user-extra/'+ userExtra.id + '/edit'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
@@ -78,7 +98,7 @@
                             <span class="fa fa-pencil"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit"
+                        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'user-extra/'+ userExtra.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
@@ -91,13 +111,5 @@
             </tr>
             </tbody>
         </table>
-    </div>
-    <div *ngIf="userExtras && userExtras.length">
-        <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-        </div>
-        <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
-        </div>
     </div>
 </div>

@@ -32,15 +32,15 @@ public class AllowControl implements Serializable {
     @Column(name = "allow_group")
     private AllowGroup allowGroup;
 
-    @ManyToOne
-    private UserExtra controlGroup;
-
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "allow_control_controlled_group",
                joinColumns = @JoinColumn(name="allow_controls_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="controlled_groups_id", referencedColumnName="user_id"))
     private Set<UserExtra> controlledGroups = new HashSet<>();
+
+    @ManyToOne
+    private UserExtra controlGroup;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -62,19 +62,6 @@ public class AllowControl implements Serializable {
 
     public void setAllowGroup(AllowGroup allowGroup) {
         this.allowGroup = allowGroup;
-    }
-
-    public UserExtra getControlGroup() {
-        return controlGroup;
-    }
-
-    public AllowControl controlGroup(UserExtra userExtra) {
-        this.controlGroup = userExtra;
-        return this;
-    }
-
-    public void setControlGroup(UserExtra userExtra) {
-        this.controlGroup = userExtra;
     }
 
     public Set<UserExtra> getControlledGroups() {
@@ -100,6 +87,19 @@ public class AllowControl implements Serializable {
 
     public void setControlledGroups(Set<UserExtra> userExtras) {
         this.controlledGroups = userExtras;
+    }
+
+    public UserExtra getControlGroup() {
+        return controlGroup;
+    }
+
+    public AllowControl controlGroup(UserExtra userExtra) {
+        this.controlGroup = userExtra;
+        return this;
+    }
+
+    public void setControlGroup(UserExtra userExtra) {
+        this.controlGroup = userExtra;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

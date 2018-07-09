@@ -7,6 +7,9 @@ docker:
        docker run --detach --name postgresql --mount source=postgresql-weddingplaner-db,target=/var/lib/postgresql/data --publish=5432:5432 --env POSTGRES_PASSWORD=[POSTGRES_SUPERUSER_PASSWORD] --env POSTGRES_USER=[POSTGRES_SUPERUSER] --env POSTGRES_DB=[POSTGRES_DBNAME] postgres(:tag)
   jenkins2:
     - docker container run -d --name jenkins2 -p 18080:8080 -p 50000:50000 -v $PWD/jenkins:/var/jenkins_home:z -t jenkinsci/jenkins
+  phpmyadmin:
+    - docker run --name phpmyadmin -d -e PMA_HOST=jfrpocyduwfg38kq.chr7pe7iynqr.eu-west-1.rds.amazonaws.com -p 8099:80 phpmyadmin/phpmyadmin
+
 
 heroku:
 needed once:
@@ -14,6 +17,8 @@ needed once:
 - heroku login
 - jhipster heroku
 - heroku plugins:install heroku-cli-deploy
+
 can be deployed manually:
 - ./gradlew -Pprod bootRepackage -x test heroku war:deploy build/libs/*war --app weddingplaner
-or deploy with git and jenkins2!
+- deploy with git and jenkins2
+- deploy by heroku server watching master-branch of git

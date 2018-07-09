@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
@@ -29,6 +29,7 @@ export class MessageDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private messageService: MessageService,
         private userExtraService: UserExtraService,
+        private elementRef: ElementRef,
         private eventManager: JhiEventManager
     ) {
     }
@@ -49,6 +50,10 @@ export class MessageDialogComponent implements OnInit {
 
     setFileData(event, entity, field, isImage) {
         this.dataUtils.setFileData(event, entity, field, isImage);
+    }
+
+    clearInputImage(field: string, fieldContentType: string, idInput: string) {
+        this.dataUtils.clearInputImage(this.message, this.elementRef, field, fieldContentType, idInput);
     }
 
     clear() {

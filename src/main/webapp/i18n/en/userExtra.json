@@ -28,9 +28,11 @@
             "mobilePhoneNr": "Mobile Phone Nr",
             "guestInvitationDate": "Guest Invitation Date",
             "guestCommitted": "Guest Committed",
+            "gender": "Gender",
+            "ageGroup": "Age Group",
             "user": "User",
-            "partyFood": "Party Food",
             "owner": "Owner",
+            "partyFood": "Party Food",
             "ownedMessage": "Owned Message",
             "allowedUser": "Allowed User",
             "receivedMessage": "Received Message"

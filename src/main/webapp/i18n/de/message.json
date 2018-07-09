@@ -3,27 +3,28 @@
     "weddingplanerApp": {
         "message" : {
             "home": {
-                "title": "Messages",
-                "createLabel": "Message erstellen",
-                "createOrEditLabel": "Message erstellen oder bearbeiten",
-                "search": "Suche nach Message"
+                "title": "Nachrichten",
+                "createLabel": "Nachricht erstellen",
+                "createOrEditLabel": "Nachricht erstellen oder bearbeiten",
+                "search": "Suche nach Nachricht"
             },
-            "created": "Message erstellt mit ID {{ param }}",
-            "updated": "Message aktualisiert mit ID {{ param }}",
-            "deleted": "Message gelöscht mit ID {{ param }}",
+            "created": "Nachricht erstellt mit ID {{ param }}",
+            "updated": "Nachricht aktualisiert mit ID {{ param }}",
+            "deleted": "Nachricht gelöscht mit ID {{ param }}",
             "delete": {
-                "question": "Soll Message {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll die Nachricht {{ id }} wirklich dauerhaft gelöscht werden?"
             },
             "detail": {
-                "title": "Message"
+                "title": "Nachricht"
             },
-            "messageShortDescription": "Message Short Description",
-            "messageInitTime": "Message Init Time",
-            "messageText": "Message Text",
-            "messageValidFrom": "Message Valid From",
-            "messageValidUntil": "Message Valid Until",
-            "from": "From",
-            "to": "To"
+            "messageShortDescription": "Überschrift",
+            "messageInitTime": "Nachricht erzeugt am",
+            "messageText": "Text der Nachricht",
+            "messageValidFrom": "Anzeige der Nachricht von",
+            "messageValidUntil": "Anzeige bis",
+            "image": "Bild zur Nachricht",
+            "from": "Absender",
+            "to": "Nachrichtenempfänger"
         }
     }
 }

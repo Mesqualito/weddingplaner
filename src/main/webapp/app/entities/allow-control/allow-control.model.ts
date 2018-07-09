@@ -10,8 +10,8 @@ export class AllowControl implements BaseEntity {
     constructor(
         public id?: number,
         public allowGroup?: AllowGroup,
-        public controlGroup?: BaseEntity,
         public controlledGroups?: BaseEntity[],
+        public controlGroup?: BaseEntity,
     ) {
     }
 }

@@ -1,0 +1,88 @@
+// JDL definition for application 'weddingplaner' generated with command 'jhipster export-jdl'
+
+/**
+ * 'User' is a predesigned special entity
+ * and can not have additional attributes etc.
+ *
+ * List to see User-fields (without constraints, pattern...)
+ * entity User {
+ * login String
+ * password String
+ * firstName String
+ * lastName String
+ * email String
+ * activated Boolean
+ * langKey String
+ * imageUrl String
+ * activationKey String
+ * resetKey String
+ * resetDate Instant
+ * }
+ */
+entity UserExtra (user_extra) {
+  code String required minlength(8) maxlength(15),
+  addressLine1 String,
+  addressLine2 String,
+  city String,
+  zipCode String,
+  country String,
+  businessPhoneNr String,
+  privatePhoneNr String,
+  mobilePhoneNr String,
+  guestInvitationDate LocalDate,
+  guestCommitted Boolean,
+  gender Gender,
+  ageGroup AgeGroup
+}
+entity AllowControl (allow_control) {
+  allowGroup AllowGroup
+}
+entity PartyFood (party_food) {
+  foodName String required minlength(6) maxlength(80),
+  foodShortDescription String minlength(20) maxlength(1024),
+  foodLongDescription TextBlob,
+  foodQuantityPersons Integer,
+  foodBestServeTime Instant,
+  foodProposalAccepted Boolean
+}
+entity Message (message) {
+  messageShortDescription String required minlength(6) maxlength(80),
+  messageInitTime Instant,
+  messageText TextBlob,
+  messageValidFrom Instant,
+  messageValidUntil Instant,
+  image ImageBlob
+}
+
+enum AllowGroup {
+  ADRESSE,
+  EMAIL,
+  TELEFON
+}
+
+enum Gender {
+  FEMALE,
+  MALE
+}
+
+enum AgeGroup {
+  PRE_BOUNCER_CASTLE,
+  BOUNCER_CASTLE,
+  POST_BOUNCER_CASTLE
+}
+
+relationship OneToOne {
+  UserExtra{user required} to User
+}
+relationship OneToMany {
+  UserExtra{owner} to AllowControl{controlGroup(user_id)},
+  UserExtra{partyFood required} to PartyFood{userExtra(user_id)},
+  UserExtra{ownedMessage} to Message{from(user_id) required}
+}
+relationship ManyToMany {
+  AllowControl{controlledGroup(user_id)} to UserExtra{allowedUser},
+  Message{to(user_id) required} to UserExtra{receivedMessage}
+}
+
+paginate UserExtra, AllowControl, PartyFood, Message with pagination
+service UserExtra, AllowControl, PartyFood, Message with serviceImpl

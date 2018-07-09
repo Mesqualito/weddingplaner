@@ -12,16 +12,16 @@
         },
         {
             "relationshipType": "one-to-many",
+            "relationshipName": "owner",
+            "otherEntityName": "allowControl",
+            "otherEntityRelationshipName": "controlGroup"
+        },
+        {
+            "relationshipType": "one-to-many",
             "relationshipValidateRules": "required",
             "relationshipName": "partyFood",
             "otherEntityName": "partyFood",
             "otherEntityRelationshipName": "userExtra"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "owner",
-            "otherEntityName": "allowControl",
-            "otherEntityRelationshipName": "controlGroup"
         },
         {
             "relationshipType": "one-to-many",
@@ -95,13 +95,23 @@
         {
             "fieldName": "guestCommitted",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "gender",
+            "fieldType": "Gender",
+            "fieldValues": "FEMALE,MALE"
+        },
+        {
+            "fieldName": "ageGroup",
+            "fieldType": "AgeGroup",
+            "fieldValues": "PRE_BOUNCER_CASTLE,BOUNCER_CASTLE,POST_BOUNCER_CASTLE"
         }
     ],
     "changelogDate": "20180616143744",
     "javadoc": "'User' is a predesigned special entity\nand can not have additional attributes etc.\n\nList to see User-fields (without constraints, pattern...)\nentity User {\nlogin String\npassword String\nfirstName String\nlastName String\nemail String\nactivated Boolean\nlangKey String\nimageUrl String\nactivationKey String\nresetKey String\nresetDate Instant\n}",
     "entityTableName": "user_extra",
     "dto": "no",
-    "pagination": "pagination",
+    "pagination": "no",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false
 }

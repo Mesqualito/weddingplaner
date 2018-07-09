@@ -22,8 +22,9 @@
             "messageText": "Message Text",
             "messageValidFrom": "Message Valid From",
             "messageValidUntil": "Message Valid Until",
-            "from": "From",
-            "to": "To"
+            "image": "Image",
+            "to": "To",
+            "from": "From"
         }
     }
 }

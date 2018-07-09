@@ -15,6 +15,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+import rocks.gebsattel.hochzeit.domain.enumeration.Gender;
+
+import rocks.gebsattel.hochzeit.domain.enumeration.AgeGroup;
+
 /**
  * 'User' is a predesigned special entity
  * and can not have additional attributes etc.
@@ -46,6 +50,10 @@ public class UserExtra implements Serializable {
     @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne
+    @MapsId
+    private User user;
 
     @NotNull
     @Size(min = 8, max = 15)
@@ -82,21 +90,23 @@ public class UserExtra implements Serializable {
     @Column(name = "guest_committed")
     private Boolean guestCommitted;
 
-    // @NotNull
-    // @JoinColumn(unique = true)
-    @OneToOne
-    @MapsId
-    private User user;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    private Gender gender;
 
-    @OneToMany(mappedBy = "userExtra")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<PartyFood> partyFoods = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "age_group")
+    private AgeGroup ageGroup;
 
     @OneToMany(mappedBy = "controlGroup")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AllowControl> owners = new HashSet<>();
+
+    @OneToMany(mappedBy = "userExtra")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<PartyFood> partyFoods = new HashSet<>();
 
     @OneToMany(mappedBy = "from")
     @JsonIgnore
@@ -265,6 +275,32 @@ public class UserExtra implements Serializable {
         this.guestCommitted = guestCommitted;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public UserExtra gender(Gender gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public AgeGroup getAgeGroup() {
+        return ageGroup;
+    }
+
+    public UserExtra ageGroup(AgeGroup ageGroup) {
+        this.ageGroup = ageGroup;
+        return this;
+    }
+
+    public void setAgeGroup(AgeGroup ageGroup) {
+        this.ageGroup = ageGroup;
+    }
+
     public User getUser() {
         return user;
     }
@@ -276,31 +312,6 @@ public class UserExtra implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Set<PartyFood> getPartyFoods() {
-        return partyFoods;
-    }
-
-    public UserExtra partyFoods(Set<PartyFood> partyFoods) {
-        this.partyFoods = partyFoods;
-        return this;
-    }
-
-    public UserExtra addPartyFood(PartyFood partyFood) {
-        this.partyFoods.add(partyFood);
-        partyFood.setUserExtra(this);
-        return this;
-    }
-
-    public UserExtra removePartyFood(PartyFood partyFood) {
-        this.partyFoods.remove(partyFood);
-        partyFood.setUserExtra(null);
-        return this;
-    }
-
-    public void setPartyFoods(Set<PartyFood> partyFoods) {
-        this.partyFoods = partyFoods;
     }
 
     public Set<AllowControl> getOwners() {
@@ -326,6 +337,31 @@ public class UserExtra implements Serializable {
 
     public void setOwners(Set<AllowControl> allowControls) {
         this.owners = allowControls;
+    }
+
+    public Set<PartyFood> getPartyFoods() {
+        return partyFoods;
+    }
+
+    public UserExtra partyFoods(Set<PartyFood> partyFoods) {
+        this.partyFoods = partyFoods;
+        return this;
+    }
+
+    public UserExtra addPartyFood(PartyFood partyFood) {
+        this.partyFoods.add(partyFood);
+        partyFood.setUserExtra(this);
+        return this;
+    }
+
+    public UserExtra removePartyFood(PartyFood partyFood) {
+        this.partyFoods.remove(partyFood);
+        partyFood.setUserExtra(null);
+        return this;
+    }
+
+    public void setPartyFoods(Set<PartyFood> partyFoods) {
+        this.partyFoods = partyFoods;
     }
 
     public Set<Message> getOwnedMessages() {
@@ -439,6 +475,8 @@ public class UserExtra implements Serializable {
             ", mobilePhoneNr='" + getMobilePhoneNr() + "'" +
             ", guestInvitationDate='" + getGuestInvitationDate() + "'" +
             ", guestCommitted='" + isGuestCommitted() + "'" +
+            ", gender='" + getGender() + "'" +
+            ", ageGroup='" + getAgeGroup() + "'" +
             "}";
     }
 }

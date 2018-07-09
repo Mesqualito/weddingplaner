@@ -1,12 +1,8 @@
 package rocks.gebsattel.hochzeit.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import rocks.gebsattel.hochzeit.domain.PartyFood;
-import rocks.gebsattel.hochzeit.service.PartyFoodService;
-import rocks.gebsattel.hochzeit.web.rest.errors.BadRequestAlertException;
-import rocks.gebsattel.hochzeit.web.rest.util.HeaderUtil;
-import rocks.gebsattel.hochzeit.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.elasticsearch.common.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,17 +10,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import rocks.gebsattel.hochzeit.domain.PartyFood;
+import rocks.gebsattel.hochzeit.service.PartyFoodService;
+import rocks.gebsattel.hochzeit.service.UserExtraService;
+import rocks.gebsattel.hochzeit.service.UserService;
+import rocks.gebsattel.hochzeit.web.rest.errors.BadRequestAlertException;
+import rocks.gebsattel.hochzeit.web.rest.util.HeaderUtil;
+import rocks.gebsattel.hochzeit.web.rest.util.PaginationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing PartyFood.
@@ -43,6 +43,7 @@ public class PartyFoodResource {
         this.partyFoodService = partyFoodService;
     }
 
+
     /**
      * POST  /party-foods : Create a new partyFood.
      *
@@ -57,6 +58,7 @@ public class PartyFoodResource {
         if (partyFood.getId() != null) {
             throw new BadRequestAlertException("A new partyFood cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
         PartyFood result = partyFoodService.save(partyFood);
         return ResponseEntity.created(new URI("/api/party-foods/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -122,6 +124,7 @@ public class PartyFoodResource {
      */
     @DeleteMapping("/party-foods/{id}")
     @Timed
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deletePartyFood(@PathVariable Long id) {
         log.debug("REST request to delete PartyFood : {}", id);
         partyFoodService.delete(id);
@@ -132,7 +135,7 @@ public class PartyFoodResource {
      * SEARCH  /_search/party-foods?query=:query : search for the partyFood corresponding
      * to the query.
      *
-     * @param query the query of the partyFood search
+     * @param query    the query of the partyFood search
      * @param pageable the pagination information
      * @return the result of the search
      */

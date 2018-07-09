@@ -1,16 +1,18 @@
 package rocks.gebsattel.hochzeit.service.impl;
 
+import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
 import rocks.gebsattel.hochzeit.repository.search.UserExtraSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -49,14 +51,13 @@ public class UserExtraServiceImpl implements UserExtraService {
     /**
      * Get all the userExtras.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<UserExtra> findAll(Pageable pageable) {
+    public List<UserExtra> findAll() {
         log.debug("Request to get all UserExtras");
-        return userExtraRepository.findAll(pageable);
+        return userExtraRepository.findAll();
     }
 
     /**
@@ -88,14 +89,20 @@ public class UserExtraServiceImpl implements UserExtraService {
      * Search for the userExtra corresponding to the query.
      *
      * @param query the query of the search
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<UserExtra> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of UserExtras for query {}", query);
-        Page<UserExtra> result = userExtraSearchRepository.search(queryStringQuery(query), pageable);
-        return result;
+    public List<UserExtra> search(String query) {
+        log.debug("Request to search UserExtras for query {}", query);
+        return StreamSupport
+            .stream(userExtraSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserExtra findOneByUserId(Long id) {
+        log.debug("Request to search UserExtras for user {}", id);
+        return userExtraRepository.findOneByUserId(id);
     }
 }

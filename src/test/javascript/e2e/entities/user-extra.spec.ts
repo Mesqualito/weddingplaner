@@ -62,6 +62,8 @@ describe('UserExtra e2e test', () => {
                 expect(userExtraDialogPage.getGuestCommittedInput().isSelected()).toBeTruthy();
             }
         });
+        userExtraDialogPage.genderSelectLastOption();
+        userExtraDialogPage.ageGroupSelectLastOption();
         userExtraDialogPage.userSelectLastOption();
         userExtraDialogPage.save();
         expect(userExtraDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -100,6 +102,8 @@ export class UserExtraDialogPage {
     mobilePhoneNrInput = element(by.css('input#field_mobilePhoneNr'));
     guestInvitationDateInput = element(by.css('input#field_guestInvitationDate'));
     guestCommittedInput = element(by.css('input#field_guestCommitted'));
+    genderSelect = element(by.css('select#field_gender'));
+    ageGroupSelect = element(by.css('select#field_ageGroup'));
     userSelect = element(by.css('select#field_user'));
 
     getModalTitle() {
@@ -188,6 +192,28 @@ export class UserExtraDialogPage {
 
     getGuestCommittedInput = function() {
         return this.guestCommittedInput;
+    };
+    setGenderSelect = function(gender) {
+        this.genderSelect.sendKeys(gender);
+    };
+
+    getGenderSelect = function() {
+        return this.genderSelect.element(by.css('option:checked')).getText();
+    };
+
+    genderSelectLastOption = function() {
+        this.genderSelect.all(by.tagName('option')).last().click();
+    };
+    setAgeGroupSelect = function(ageGroup) {
+        this.ageGroupSelect.sendKeys(ageGroup);
+    };
+
+    getAgeGroupSelect = function() {
+        return this.ageGroupSelect.element(by.css('option:checked')).getText();
+    };
+
+    ageGroupSelectLastOption = function() {
+        this.ageGroupSelect.all(by.tagName('option')).last().click();
     };
     userSelectLastOption = function() {
         this.userSelect.all(by.tagName('option')).last().click();

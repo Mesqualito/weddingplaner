@@ -6,7 +6,11 @@
             "home": "Startseite",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
-                "main": "Entitäten",
+                "main": "Anwendungen",
+                "message": "Nachrichten",
+                "userExtra": "Gästeliste",
+                "allowControl": "Datenfreigaben",
+                "partyFood": "Speisen & Getränke",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -45,11 +49,9 @@
         },
         "messages": {
             "info": {
-                "authenticated": {
-                    "prefix": "Wenn Sie sich ",
-                    "link": "anmelden",
-                    "suffix": " möchten, versuchen Sie es mit <br/>- Administrator (Name=\"admin\" und Passwort=\"admin\")<br/>- Benutzer (Name=\"user\" und Passwort=\"user\")."
-                },
+                "authenticated":
+                    "Zur Anmeldung verwendet bitte neben Eurem Vor- und Nachnamen Euren persönlichen DropIn-Code, der auf der Einladungskarte aufgedruckt war.",
+
                 "register": {
                     "noaccount": "Sie haben noch keinen Zugang?",
                     "link": "Registrieren Sie sich"
@@ -128,5 +130,5 @@
         "emailexists": "Email wird bereits verwendet!",
         "idexists": "Ein neuer {{entityName}} kann noch keine ID haben"
     },
-    "footer": "Dies ist Ihre Fußzeile"
+    "footer": "Bei Problemen schreibt bitte eine eMail an <a href=\"mailto:jo@hassfurter.com?subject=Probleme%20mit%20hochzeit.gebsattel.rocks!\">Jochen</a>!"
 }
