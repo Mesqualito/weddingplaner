@@ -51,6 +51,10 @@ export class PartyFoodDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+
+        // convert booleans to ints
+        // this.partyFood.foodProposalAccepted = (this.partyFood.foodProposalAccepted) ? 1 : 0;
+
         if (this.partyFood.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.partyFoodService.update(this.partyFood));
