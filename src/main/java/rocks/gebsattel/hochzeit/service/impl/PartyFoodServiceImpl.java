@@ -70,7 +70,7 @@ public class PartyFoodServiceImpl implements PartyFoodService {
 
         UserExtra userExtra = new UserExtra();
         userExtra = userExtraService.findOneByUserId(user.getId());
-        log.debug("userExtra found : {}", userExtra.getUser().getLogin());
+        log.debug("userExtra found : {}", userExtra.getUser());
         partyFood.setUserExtra(userExtra);
 
         PartyFood result = partyFoodRepository.save(partyFood);

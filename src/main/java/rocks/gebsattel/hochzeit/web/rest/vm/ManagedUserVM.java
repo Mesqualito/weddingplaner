@@ -5,8 +5,6 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
 
-
-
 /**
  * View Model extending the UserDTO, which is meant to be used in the user management UI.
  */
@@ -27,6 +25,9 @@ public class ManagedUserVM extends UserDTO {
     private String country;
     private String businessPhoneNr;
     private String privatePhoneNr;
+    private String mobilePhoneNr;
+    private LocalDate guestInvitationDate;
+    private boolean guestCommitted;
 
     public String getCode() {
         return code;
@@ -115,10 +116,6 @@ public class ManagedUserVM extends UserDTO {
     public void setGuestCommitted(boolean guestCommitted) {
         this.guestCommitted = guestCommitted;
     }
-
-    private String mobilePhoneNr;
-    private LocalDate guestInvitationDate;
-    private boolean guestCommitted;
 
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
