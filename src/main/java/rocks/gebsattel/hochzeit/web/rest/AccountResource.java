@@ -55,19 +55,23 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @Timed
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {throw new LoginAlreadyUsedException();});
-        userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {throw new EmailAlreadyUsedException();});
+        userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {
+            throw new LoginAlreadyUsedException();
+        });
+        userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {
+            throw new EmailAlreadyUsedException();
+        });
 
         // User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.getCode(), managedUserVM.getAddressLine1(),
-        managedUserVM.getAddressLine2(), managedUserVM.getCity(), managedUserVM.getZipCode(), managedUserVM.getCountry(), managedUserVM.getBusinessPhoneNr(),
-        managedUserVM.getPrivatePhoneNr(), managedUserVM.getMobilePhoneNr(), managedUserVM.getGuestInvitationDate(), managedUserVM.isGuestCommitted());
+            managedUserVM.getAddressLine2(), managedUserVM.getCity(), managedUserVM.getZipCode(), managedUserVM.getCountry(), managedUserVM.getBusinessPhoneNr(),
+            managedUserVM.getPrivatePhoneNr(), managedUserVM.getMobilePhoneNr(), managedUserVM.getGuestInvitationDate(), managedUserVM.isGuestCommitted());
 
         // see UserService.java => auto-activate newUser
         // mailService.sendActivationEmail(user);

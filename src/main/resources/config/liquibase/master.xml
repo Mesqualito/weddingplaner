@@ -24,5 +24,6 @@
     <include file="config/liquibase/changelog/mesqualito_0006_dev_db_layout_UsersAuthorities.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/mesqualito_0007_prod_db_layout_UsersAuthorities.xml" relativeToChangelogFile="false"/>
 
-  <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+
 </databaseChangeLog>

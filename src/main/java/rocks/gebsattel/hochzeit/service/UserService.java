@@ -1,25 +1,5 @@
 package rocks.gebsattel.hochzeit.service;
 
-import org.elasticsearch.common.inject.Inject;
-import rocks.gebsattel.hochzeit.domain.UserExtra;
-import rocks.gebsattel.hochzeit.domain.UserExtra;
-import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
-import rocks.gebsattel.hochzeit.repository.search.UserExtraSearchRepository;
-
-import java.time.LocalDate;
-
-import rocks.gebsattel.hochzeit.config.CacheConfiguration;
-import rocks.gebsattel.hochzeit.domain.Authority;
-import rocks.gebsattel.hochzeit.domain.User;
-import rocks.gebsattel.hochzeit.repository.AuthorityRepository;
-import rocks.gebsattel.hochzeit.config.Constants;
-import rocks.gebsattel.hochzeit.repository.UserRepository;
-import rocks.gebsattel.hochzeit.repository.search.UserSearchRepository;
-import rocks.gebsattel.hochzeit.security.AuthoritiesConstants;
-import rocks.gebsattel.hochzeit.security.SecurityUtils;
-import rocks.gebsattel.hochzeit.service.util.RandomUtil;
-import rocks.gebsattel.hochzeit.service.dto.UserDTO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -29,9 +9,22 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import rocks.gebsattel.hochzeit.web.rest.AuditResource;
+import rocks.gebsattel.hochzeit.config.Constants;
+import rocks.gebsattel.hochzeit.domain.Authority;
+import rocks.gebsattel.hochzeit.domain.User;
+import rocks.gebsattel.hochzeit.domain.UserExtra;
+import rocks.gebsattel.hochzeit.repository.AuthorityRepository;
+import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
+import rocks.gebsattel.hochzeit.repository.UserRepository;
+import rocks.gebsattel.hochzeit.repository.search.UserExtraSearchRepository;
+import rocks.gebsattel.hochzeit.repository.search.UserSearchRepository;
+import rocks.gebsattel.hochzeit.security.AuthoritiesConstants;
+import rocks.gebsattel.hochzeit.security.SecurityUtils;
+import rocks.gebsattel.hochzeit.service.dto.UserDTO;
+import rocks.gebsattel.hochzeit.service.util.RandomUtil;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -59,15 +52,17 @@ public class UserService {
 
     private UserExtraSearchRepository userExtraSearchRepository;
 
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, UserExtraSearchRepository userExtraSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, UserExtraRepository userExtraRepository,
+                       PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository,
+                       UserExtraSearchRepository userExtraSearchRepository, AuthorityRepository authorityRepository,
+                       CacheManager cacheManager) {
         this.userRepository = userRepository;
-        this.userExtraRepository = userExtraRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
-        this.userExtraSearchRepository = userExtraSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.userExtraRepository = userExtraRepository;
+        this.userExtraSearchRepository = userExtraSearchRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -86,18 +81,18 @@ public class UserService {
     }
 
     public Optional<User> completePasswordReset(String newPassword, String key) {
-        log.debug("Reset user password for reset key {}", key);
+       log.debug("Reset user password for reset key {}", key);
 
-        return userRepository.findOneByResetKey(key)
-            .filter(user -> user.getResetDate().isAfter(Instant.now().minusSeconds(86400)))
-            .map(user -> {
+       return userRepository.findOneByResetKey(key)
+           .filter(user -> user.getResetDate().isAfter(Instant.now().minusSeconds(86400)))
+           .map(user -> {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
                 user.setResetDate(null);
                 cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).evict(user.getLogin());
                 cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).evict(user.getEmail());
                 return user;
-            });
+           });
     }
 
     public Optional<User> requestPasswordReset(String mail) {
@@ -113,7 +108,7 @@ public class UserService {
     }
 
     public User registerUser(UserDTO userDTO, String password, String code, String addressLine1, String addressLine2, String city, String zipCode, String country,
-        String businessPhoneNr, String privatePhoneNr, String mobilePhoneNr, LocalDate guestInvitationDate, boolean guestCommitted ) {
+                             String businessPhoneNr, String privatePhoneNr, String mobilePhoneNr, LocalDate guestInvitationDate, boolean guestCommitted ) {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
@@ -198,10 +193,10 @@ public class UserService {
      * Update basic information (first name, last name, email, language) for the current user.
      *
      * @param firstName first name of user
-     * @param lastName  last name of user
-     * @param email     email id of user
-     * @param langKey   language key
-     * @param imageUrl  image URL of user
+     * @param lastName last name of user
+     * @param email email id of user
+     * @param langKey language key
+     * @param imageUrl image URL of user
      */
     public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
         SecurityUtils.getCurrentUserLogin()
@@ -315,4 +310,5 @@ public class UserService {
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
+
 }
