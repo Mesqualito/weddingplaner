@@ -1,13 +1,17 @@
-version: '2'
+version: '2.1'
+
 services:
     weddingplaner-mysql:
         image: mysql:5.7.20
-        # volumes:
-        #     - ~/volumes/jhipster/weddingplaner/mysql/:/var/lib/mysql/
+        volumes:
+          - mysqldata:/var/lib/mysql
         environment:
             - MYSQL_USER=root
-            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-            - MYSQL_DATABASE=weddingplaner
+            - MYSQL_ALLOW_EMPTY_PASSWORD=no
+            - MYSQL_DATABASE=weddingplaner_db
+            - MYSQL_ROOT_PASSWORD=BalanTD1r#047k
+            - MYSQL_USER=weddingplaner
+            - MYSQL_PASSWORD=Z5rD1_45Gf29aSwk5
         ports:
             - 3306:3306
         command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8 --explicit_defaults_for_timestamp

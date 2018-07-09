@@ -2,7 +2,6 @@ package rocks.gebsattel.hochzeit.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.repository.UserRepository;
 import rocks.gebsattel.hochzeit.security.SecurityUtils;
@@ -55,7 +54,6 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @Timed
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         if (!checkPasswordLength(managedUserVM.getPassword())) {
@@ -63,14 +61,8 @@ public class AccountResource {
         }
         userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {throw new LoginAlreadyUsedException();});
         userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {throw new EmailAlreadyUsedException();});
-
-        // User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.getCode(), managedUserVM.getAddressLine1(),
-        managedUserVM.getAddressLine2(), managedUserVM.getCity(), managedUserVM.getZipCode(), managedUserVM.getCountry(), managedUserVM.getBusinessPhoneNr(),
-        managedUserVM.getPrivatePhoneNr(), managedUserVM.getMobilePhoneNr(), managedUserVM.getGuestInvitationDate(), managedUserVM.isGuestCommitted());
-
-        // see UserService.java => auto-activate newUser
-        // mailService.sendActivationEmail(user);
+        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        mailService.sendActivationEmail(user);
     }
 
     /**
