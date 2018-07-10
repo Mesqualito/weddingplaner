@@ -55,5 +55,5 @@ public interface UserExtraService {
      *
      * @return the userExtra
      */
-    UserExtra findOneByUserId(Long id);
+    UserExtra findOneByUserLogin(String login);
 }

@@ -1,6 +1,9 @@
 package rocks.gebsattel.hochzeit.service.impl;
 
+import rocks.gebsattel.hochzeit.domain.Message;
 import rocks.gebsattel.hochzeit.domain.User;
+import rocks.gebsattel.hochzeit.security.AuthoritiesConstants;
+import rocks.gebsattel.hochzeit.security.SecurityUtils;
 import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
@@ -70,7 +73,18 @@ public class UserExtraServiceImpl implements UserExtraService {
     @Transactional(readOnly = true)
     public UserExtra findOne(Long id) {
         log.debug("Request to get UserExtra : {}", id);
-        return userExtraRepository.findOne(id);
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            return userExtraRepository.findOne(id);
+        } else {
+            UserExtra userExtra = userExtraRepository.findOne(id);
+            if (userExtra.getAllowedUsers().equals(userExtra)) {
+                userExtra.getUser().setLastName(userExtra.getUser().getLastName().substring(1, 2) + ". baba");
+                return userExtra;
+            } else {
+                userExtra.getUser().setLastName(userExtra.getUser().getLastName().substring(1, 2) + ". baba");
+                return userExtra;
+            }
+        }
     }
 
     /**
@@ -101,8 +115,8 @@ public class UserExtraServiceImpl implements UserExtraService {
     }
 
     @Override
-    public UserExtra findOneByUserId(Long id) {
-        log.debug("Request to search UserExtras for user {}", id);
-        return userExtraRepository.findOneByUserId(id);
+    public UserExtra findOneByUserLogin(String login) {
+        log.debug("Request to search UserExtras for user {}", login);
+        return userExtraRepository.findOneByUserLogin(login);
     }
 }
