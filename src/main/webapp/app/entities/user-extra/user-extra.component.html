@@ -61,31 +61,24 @@
             </thead>
             <tbody>
             <tr *ngFor="let userExtra of userExtras ;trackBy: trackId">
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'"><a [routerLink]="['../user-extra', userExtra.id ]">{{userExtra.id}}</a>
-                </td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra.code}}</td>
-                <td>{{userExtra.user.firstName}}</td>
-                <td>{{userExtra.user.lastName}}</td>
-                <td>{{userExtra.addressLine1}}</td>
-                <!--<td>{{userExtra.addressLine2}}</td>-->
-
-                <td>{{userExtra.zipCode}}</td>
-                <td>{{userExtra.city}}</td>
-                <!--<td>{{userExtra.country}}</td>
-                <td>{{userExtra.businessPhoneNr}}</td>
-                <td>{{userExtra.privatePhoneNr}}</td>
-                <td>{{userExtra.mobilePhoneNr}}</td>-->
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra.guestInvitationDate | date:'mediumDate'}}</td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra.guestCommitted}}</td>
-                <td jhiTranslate="{{'weddingplanerApp.Gender.' + userExtra.gender}}">{{userExtra.gender}}</td>
-                <td jhiTranslate="{{'weddingplanerApp.AgeGroup.' + userExtra.ageGroup}}">{{userExtra.ageGroup}}</td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'"><a [routerLink]="['../user-extra', userExtra.id ]">{{userExtra?.id}}</a></td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra?.code}}</td>
+                <td>{{userExtra?.user.firstName}}</a></td>
+                <td>{{userExtra?.user.lastName}}</td>
+                <td>{{userExtra?.addressLine1}}</td>
+                <td>{{userExtra?.zipCode}}</td>
+                <td>{{userExtra?.city}}</td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra?.guestInvitationDate | date:'mediumDate'}}</td>
+                <td class="text-center" *jhiHasAnyAuthority="'ROLE_ADMIN'"><i class="fa fa-{{userExtra.guestCommitted ? 'check text-success' : 'times text-danger'}}" aria-hidden="true"></i></td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiTranslate="{{'weddingplanerApp.Gender.' + userExtra?.gender}}">{{userExtra?.gender}}</td>
+                <td jhiTranslate="{{'weddingplanerApp.AgeGroup.' + userExtra?.ageGroup}}">{{userExtra?.ageGroup}}</td>
                 <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
                     {{userExtra.user?.id}}
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button  *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
-                                [routerLink]="['../user-extra', userExtra.id ]"
+                                [routerLink]="['../user-extra', userExtra?.id ]"
                                 class="btn btn-info btn-sm">
                             <span class="fa fa-eye"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
