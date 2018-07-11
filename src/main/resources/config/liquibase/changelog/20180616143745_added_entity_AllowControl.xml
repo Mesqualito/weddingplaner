@@ -33,6 +33,8 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
+        <!-- <addUniqueConstraint columnNames="allow_group, control_group_user_id" tableName="allow_control"></addUniqueConstraint>-->
+
         <createTable tableName="allow_control_controlled_group">
             <column name="controlled_groups_id" type="bigint">
                 <constraints nullable="false"/>
@@ -43,6 +45,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="allow_controls_id, controlled_groups_id" tableName="allow_control_controlled_group"/>
+
 
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
