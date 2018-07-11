@@ -62,7 +62,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="guest_committed" type="bit">
+            <column name="guest_committed" type="boolean">
                 <constraints nullable="true" />
             </column>
 

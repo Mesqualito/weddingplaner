@@ -42,7 +42,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="food_proposal_accepted" type="bit">
+            <column name="food_proposal_accepted" type="boolean">
                 <constraints nullable="true" />
             </column>
 

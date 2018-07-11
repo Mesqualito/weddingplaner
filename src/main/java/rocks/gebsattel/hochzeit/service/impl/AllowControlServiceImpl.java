@@ -16,7 +16,7 @@ import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.service.UserService;
 
 
-import java.util.Optional;
+import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -68,8 +68,8 @@ public class AllowControlServiceImpl implements AllowControlService {
         final User user = isUser.get();
 
         UserExtra userExtra = new UserExtra();
-        userExtra = userExtraService.findOneByUserId(user.getId());
-        log.debug("userExtra found : {}", userExtra.getUser().getLogin());
+        userExtra = userExtraService.findOneByUserLogin(user.getLogin());
+        log.debug("userExtra found : {}", userExtra.getUser());
         allowControl.setControlGroup(userExtra);
 
         AllowControl result = allowControlRepository.save(allowControl);

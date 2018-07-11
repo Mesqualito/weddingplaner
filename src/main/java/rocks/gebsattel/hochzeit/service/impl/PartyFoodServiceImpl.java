@@ -69,8 +69,8 @@ public class PartyFoodServiceImpl implements PartyFoodService {
         final User user = isUser.get();
 
         UserExtra userExtra = new UserExtra();
-        userExtra = userExtraService.findOneByUserId(user.getId());
-        log.debug("userExtra found : {}", userExtra.getUser().getLogin());
+        userExtra = userExtraService.findOneByUserLogin(user.getLogin());
+        log.debug("userExtra found : {}", userExtra.getUser());
         partyFood.setUserExtra(userExtra);
 
         PartyFood result = partyFoodRepository.save(partyFood);
