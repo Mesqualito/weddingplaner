@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import rocks.gebsattel.hochzeit.domain.AllowControl;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 /**
@@ -57,6 +56,17 @@ public interface AllowControlService {
      * Search for the AllowGroups belonging to the UserExtra.
      *
      * @param userId the Long userId of the UserExtra
+     *
+     * @param pageable the pagination information
+     * @return the list of entities of type "AllowControl" belonging to the given UserExtra userId
+     */
+    Page<AllowControl> findAllByControlGroupUserId(Long userId, Pageable pageable);
+
+    /**
+     * Search for a list of all AllowGroups belonging to the UserExtra.
+     *
+     * @param userId the Long userId of the UserExtra
+     *
      * @return the list of entities of type "AllowControl" belonging to the given UserExtra userId
      */
     List<AllowControl> findAllByControlGroupUserId(Long userId);

@@ -70,50 +70,56 @@ public class UserExtraServiceImpl implements UserExtraService {
         log.debug("Request to get all UserExtras");
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             return userExtraRepository.findAll();
-        } else {
+        } else
+        // for all Users in other ROLEs than 'ROLE_ADMIN'
+        {
             List<UserExtra> userExtras = userExtraRepository.findAll();
-            userExtras.forEach((userExtra) -> {
-                userExtra.setCode("");
 
-                // Limiting AllowControls-List to the ones belonging to the logged in User / UserExtra
-                List<AllowControl> userExtraAllowControls = allowControlRepository
-                    .findAllByControlGroupUserId(
-                        userExtraRepository
-                            .findOneByUserLogin(
-                                userService.getUserWithAuthorities().get()
-                                    .getLogin()
-                            )
-                            .getId()
-                    );
-                userExtraAllowControls.forEach((userExtraAllowControl) -> {
-                    System.out.println( "User Extra Allow Control --> " + userExtraAllowControl.toString() + " <--\n"  );
-                });
+            // Limiting AllowControls-List to the ones belonging to the logged in User / UserExtra
+            List<AllowControl> userExtraAllowControls = allowControlRepository
+                .findAllByControlGroupUserId(
+                    userExtraRepository
+                        .findOneByUserLogin(
+                            userService.getUserWithAuthorities().get()
+                                .getLogin()
+                        )
+                        .getId()
+                );
 
-                List<AllowControl> allowControls = allowControlRepository.findAllWithEagerRelationships();
-                allowControls.forEach((allowControl) -> {
-                    System.out.println( "Allow Control --> " + allowControl.toString() + " <--\n"  );
-                });
-/*
-                if (!allowControls.("ADRESSE").contains(userExtra)) {
-                    userExtra.setZipCode("no permission granted, please ask user to allow it to be shown to you");
-                    userExtra.getUser().setLastName(userExtra.getUser().getLastName().substring(0, 1) + ".");
-                    userExtra.setAddressLine1("no permission granted, please ask user to allow it to be shown to you");
-                    userExtra.setAddressLine2("no permission granted, please ask user to allow it to be shown to you");
-                    userExtra.setCity("no permission granted, please ask user to allow it to be shown to you");
-                    userExtra.setCountry("no permission granted, please ask user to allow it to be shown to you");
+            // Limiting the data of the UserExtras according to the allow_control and allow_control_controlled_group - join-tables
+            userExtraAllowControls.forEach((userExtraAllowControl) -> {
+
+                if (!userExtraAllowControl.getAllowGroup().equals("ADRESSE")) {
+                    userExtras.forEach((userExtra) -> {
+                        if (!userExtraAllowControl.getControlledGroups().contains(userExtra)) {
+                            userExtra.setZipCode("no permission granted, please ask user to allow it to be shown to you");
+                            userExtra.getUser().setLastName(userExtra.getUser().getLastName().substring(0, 1) + ".");
+                            userExtra.setAddressLine1("no permission granted, please ask user to allow it to be shown to you");
+                            userExtra.setAddressLine2("no permission granted, please ask user to allow it to be shown to you");
+                            userExtra.setCity("no permission granted, please ask user to allow it to be shown to you");
+                            userExtra.setCountry("no permission granted, please ask user to allow it to be shown to you");
+                        }
+                    });
                 }
-                if (!allowControls.findAllByControlledGroupsId("EMAIL").contains(userExtra)) {
-                    userExtra.getUser().setEmail("no permission granted, please ask user to allow it to be shown to you");
+                if (!userExtraAllowControl.getAllowGroup().equals("EMAIL")) {
+                    userExtras.forEach((userExtra) -> {
+                        if (!userExtraAllowControl.getControlledGroups().contains(userExtra)) {
+                            userExtra.getUser().setEmail("no permission granted, please ask user to allow it to be shown to you");
+                        }
+                    });
                 }
-                if (!allowControlRepository.findAllByControlledGroupsId("TELEFON").contains(userExtra)) {
-                    userExtra.setBusinessPhoneNr("no permission granted, please ask user to allow it to be shown to you");
-                    userExtra.setMobilePhoneNr("no permission granted, please ask user to allow it to be shown to you");
-                    userExtra.setPrivatePhoneNr("no permission granted, please ask user to allow it to be shown to you");
+
+                if (!userExtraAllowControl.getAllowGroup().equals("TELEFON")) {
+                    userExtras.forEach((userExtra) -> {
+                        if (!userExtraAllowControl.getControlledGroups().contains(userExtra)) {
+                            userExtra.setBusinessPhoneNr("no permission granted, please ask user to allow it to be shown to you");
+                            userExtra.setMobilePhoneNr("no permission granted, please ask user to allow it to be shown to you");
+                            userExtra.setPrivatePhoneNr("no permission granted, please ask user to allow it to be shown to you");
+                        }
+                    });
                 }
             });
 
-            */
-            });
             return userExtras;
         }
     }

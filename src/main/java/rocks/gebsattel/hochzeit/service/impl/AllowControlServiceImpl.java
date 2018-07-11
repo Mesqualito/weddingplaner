@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rocks.gebsattel.hochzeit.domain.AllowControl;
-import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.repository.AllowControlRepository;
 import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
@@ -17,9 +16,7 @@ import rocks.gebsattel.hochzeit.security.SecurityUtils;
 import rocks.gebsattel.hochzeit.service.AllowControlService;
 import rocks.gebsattel.hochzeit.service.UserService;
 
-import java.awt.print.Pageable;
 import java.util.List;
-import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -65,6 +62,8 @@ public class AllowControlServiceImpl implements AllowControlService {
         UserExtra userExtra = userExtraRepository.findOneByUserLogin(userService.getUserWithAuthorities().get().getLogin());
         allowControl.setControlGroup(userExtra);
 
+        // TODO: test  if combination AllowGroup (enum like "ADRESSE", "EMAIL" or "TELEFON") and ControlGroupUserId exists:
+
         AllowControl result = allowControlRepository.save(allowControl);
         allowControlSearchRepository.save(result);
         return result;
@@ -79,8 +78,15 @@ public class AllowControlServiceImpl implements AllowControlService {
     @Override
     @Transactional(readOnly = true)
     public Page<AllowControl> findAll(Pageable pageable) {
-        log.debug("Request to get all AllowControls");
-        return allowControlRepository.findAll(pageable);
+
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            log.debug("Request to get all Messages from : {}", userService.getUserWithAuthorities().get().getLogin());
+            return allowControlRepository.findAll(pageable);
+        } else {
+            UserExtra userExtra = userExtraRepository.findOneByUserLogin(userService.getUserWithAuthorities().get().getLogin());
+            log.debug("userExtra found : {}", userExtra.getUser().getLogin());
+            return allowControlRepository.findAllByControlGroupUserId(pageable, userExtra.getId());
+        }
     }
 
     /**
@@ -121,6 +127,12 @@ public class AllowControlServiceImpl implements AllowControlService {
         log.debug("Request to search for a page of AllowControls for query {}", query);
         Page<AllowControl> result = allowControlSearchRepository.search(queryStringQuery(query), pageable);
         return result;
+    }
+
+    @Override
+    public Page<AllowControl> findAllByControlGroupUserId(Long userId, Pageable pageable) {
+        log.debug("Request to get the paged List of AllowControls  granted by UserExtra userId : {}", userId);
+        return allowControlRepository.findAllByControlGroupUserId(pageable, userId);
     }
 
     @Override
