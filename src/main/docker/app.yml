@@ -7,8 +7,24 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:postgresql://weddingplaner-postgresql:5432/weddingplaner
             - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
             - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=weddingplaner-elasticsearch:9300
-        ports:
-            - 8080:8080
+        expose:
+            - "8080"
+        depends_on:
+            weddingplaner-elasticsearch:
+              condition: service_healthy
+            weddingplaner-postgresql:
+              condition: service_healthy
+        restart: always
+        networks:
+            - web
+            - default
+        labels:
+            - "traefik.docker.network=web"
+            - "traefik.enable=true"
+            - "traefik.frontend.rule=Host:hochzeit.gebsattel.rocks"
+            - "traefik.port=8080"
+            - "traefik.protocol=http"
+
     weddingplaner-postgresql:
         extends:
             file: postgresql.yml
@@ -17,5 +33,10 @@ services:
         extends:
             file: elasticsearch.yml
             service: weddingplaner-elasticsearch
+
 volumes:
     postgresql-data:
+
+networks:
+  web:
+    external: true
