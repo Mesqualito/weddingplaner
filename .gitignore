@@ -151,3 +151,13 @@ Desktop.ini
 /src/main/resources/config/liquibase/users_authorities-prod.csv
 /src/main/resources/config/liquibase/users_authorities-dev.csv
 /src/main/resources/config/application-prod.yml
+/src/main/META-INF/
+/elasticsearch.gz
+/postgres.gz
+/weddingplaner.gz
+/NAME.gz
+/backup.tar
+/elasticsearch_nightly.gz
+/postgresql_nightly.gz
+/weddingplaner_nightly.gz
+/src/main/docker/weddingplaner_nightly.tar
