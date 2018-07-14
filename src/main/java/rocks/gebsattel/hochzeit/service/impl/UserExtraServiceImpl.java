@@ -1,12 +1,16 @@
 package rocks.gebsattel.hochzeit.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rocks.gebsattel.hochzeit.domain.AllowControl;
+import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
+import rocks.gebsattel.hochzeit.domain.enumeration.AllowGroup;
 import rocks.gebsattel.hochzeit.repository.AllowControlRepository;
 import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
 import rocks.gebsattel.hochzeit.repository.search.UserExtraSearchRepository;
@@ -15,7 +19,12 @@ import rocks.gebsattel.hochzeit.security.SecurityUtils;
 import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.service.UserService;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -71,55 +80,93 @@ public class UserExtraServiceImpl implements UserExtraService {
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             return userExtraRepository.findAll();
         } else
-        // for all Users in other ROLEs than 'ROLE_ADMIN'
+        // ------------ for all Users in other ROLEs than 'ROLE_ADMIN' ------------
         {
-            List<UserExtra> userExtras = userExtraRepository.findAll();
-
-            // Limiting AllowControls-List to the ones belonging to the logged in User / UserExtra
-            List<AllowControl> userExtraAllowControls = allowControlRepository
-                .findAllByControlGroupUserId(
-                    userExtraRepository
-                        .findOneByUserLogin(
-                            userService.getUserWithAuthorities().get()
-                                .getLogin()
-                        )
-                        .getId()
+            UserExtra loggedInUserExtra = userExtraRepository
+                .findOneByUserLogin(
+                    userService.getUserWithAuthorities().get()
+                        .getLogin()
                 );
 
-            // Limiting the data of the UserExtras according to the allow_control and allow_control_controlled_group - join-tables
+            List<UserExtra> userExtras = userExtraRepository.findAll();
+            List<UserExtra> userExtraShadows = new ArrayList<>(); // = Collections.emptyList();
+
+            userExtras.forEach((userExtra) -> {
+                UserExtra userExtraShadow = userExtra.copyForAllowControl();
+                userExtraShadows.add(userExtraShadow);
+
+                // address-related fields
+                userExtra.getUser().setLastName(userExtra.getUser().getLastName().substring(0, 1) + ".");
+                userExtra.setAddressLine1("no permission granted");
+                userExtra.setAddressLine2("no permission granted");
+                userExtra.setZipCode("no permission granted");
+                userExtra.setCity("no permission granted");
+                userExtra.setCountry("no permission granted");
+                // eMail-related field
+                userExtra.getUser().setEmail("no permission granted");
+                // phone-related fields
+                userExtra.setBusinessPhoneNr("no permission granted");
+                userExtra.setMobilePhoneNr("no permission granted");
+                userExtra.setPrivatePhoneNr("no permission granted");
+
+                // Own data is shown
+                if (userExtra.equals(loggedInUserExtra)) {
+                    userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
+                    userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
+                    userExtra.setAddressLine1(userExtraShadow.getAddressLine1());
+                    userExtra.setAddressLine2(userExtraShadow.getAddressLine2());
+                    userExtra.setZipCode(userExtraShadow.getZipCode());
+                    userExtra.setCity(userExtraShadow.getCity());
+                    userExtra.setCountry(userExtraShadow.getCountry());
+                }
+            });
+
+            List<AllowControl> userExtraAllowControls = allowControlRepository.findAll();
+
+            // Unlock data of the UserExtra-Objects in the list
+            // according to the allow_control and allow_control_controlled_group - join-tables
             userExtraAllowControls.forEach((userExtraAllowControl) -> {
-
-                if (!userExtraAllowControl.getAllowGroup().equals("ADRESSE")) {
+                if (userExtraAllowControl.getAllowGroup().ADRESSE.equals(userExtraAllowControl.getAllowGroup().valueOf("ADRESSE"))) {
                     userExtras.forEach((userExtra) -> {
-                        if (!userExtraAllowControl.getControlledGroups().contains(userExtra)) {
-                            userExtra.setZipCode("no permission granted, please ask user to allow it to be shown to you");
-                            userExtra.getUser().setLastName(userExtra.getUser().getLastName().substring(0, 1) + ".");
-                            userExtra.setAddressLine1("no permission granted, please ask user to allow it to be shown to you");
-                            userExtra.setAddressLine2("no permission granted, please ask user to allow it to be shown to you");
-                            userExtra.setCity("no permission granted, please ask user to allow it to be shown to you");
-                            userExtra.setCountry("no permission granted, please ask user to allow it to be shown to you");
-                        }
-                    });
-                }
-                if (!userExtraAllowControl.getAllowGroup().equals("EMAIL")) {
-                    userExtras.forEach((userExtra) -> {
-                        if (!userExtraAllowControl.getControlledGroups().contains(userExtra)) {
-                            userExtra.getUser().setEmail("no permission granted, please ask user to allow it to be shown to you");
+                        if (userExtraAllowControl.getControlledGroups().contains(loggedInUserExtra)
+                            && userExtraAllowControl.getControlGroup().equals(userExtra)) {
+                            UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
+                            System.out.println("userExtra: " + userExtra.getUser().getLogin());
+                            System.out.println("loggedInUserExtra: " + loggedInUserExtra.getUser().getLogin());
+                            System.out.println("userExtraShadow: " + userExtraShadow.getUser().getLogin());
+                            userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
+                            userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
+                            userExtra.setAddressLine1(userExtraShadow.getAddressLine1());
+                            userExtra.setAddressLine2(userExtraShadow.getAddressLine2());
+                            userExtra.setZipCode(userExtraShadow.getZipCode());
+                            userExtra.setCity(userExtraShadow.getCity());
+                            userExtra.setCountry(userExtraShadow.getCountry());
                         }
                     });
                 }
 
-                if (!userExtraAllowControl.getAllowGroup().equals("TELEFON")) {
+                if (userExtraAllowControl.getAllowGroup().EMAIL.equals(userExtraAllowControl.getAllowGroup().valueOf("EMAIL"))) {
                     userExtras.forEach((userExtra) -> {
-                        if (!userExtraAllowControl.getControlledGroups().contains(userExtra)) {
-                            userExtra.setBusinessPhoneNr("no permission granted, please ask user to allow it to be shown to you");
-                            userExtra.setMobilePhoneNr("no permission granted, please ask user to allow it to be shown to you");
-                            userExtra.setPrivatePhoneNr("no permission granted, please ask user to allow it to be shown to you");
+                        if (userExtraAllowControl.getControlledGroups().contains(loggedInUserExtra)
+                            && userExtraAllowControl.getControlGroup().equals(userExtra)) {
+                            UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
+                            userExtra.getUser().setEmail((userExtraShadow.getUser().getEmail()));
+                        }
+                    });
+                }
+
+                if (userExtraAllowControl.getAllowGroup().TELEFON.equals(userExtraAllowControl.getAllowGroup().valueOf("TELEFON"))) {
+                    userExtras.forEach((userExtra) -> {
+                        if (userExtraAllowControl.getControlledGroups().contains(loggedInUserExtra)
+                            && userExtraAllowControl.getControlGroup().equals(userExtra)) {
+                            UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
+                            userExtra.setBusinessPhoneNr(userExtraShadow.getBusinessPhoneNr());
+                            userExtra.setMobilePhoneNr(userExtraShadow.getMobilePhoneNr());
+                            userExtra.setPrivatePhoneNr(userExtraShadow.getPrivatePhoneNr());
                         }
                     });
                 }
             });
-
             return userExtras;
         }
     }
@@ -141,7 +188,9 @@ public class UserExtraServiceImpl implements UserExtraService {
             if (userExtra.getAllowedUsers().equals(userExtra)) {
                 return userExtra;
             } else {
-                userExtra.getUser().setLastName(userExtra.getUser().getLastName().substring(1, 2) + ".");
+                // TODO:
+                // like in findAll(), the fields must be blanked according to
+                // the allow_control and allow_control_controlled_group - join-tables
                 return userExtra;
             }
         }
@@ -179,4 +228,5 @@ public class UserExtraServiceImpl implements UserExtraService {
         log.debug("Request to search UserExtras for user {}", login);
         return userExtraRepository.findOneByUserLogin(login);
     }
+
 }

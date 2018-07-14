@@ -52,10 +52,10 @@
                     jhiTranslate="weddingplanerApp.userExtra.guestInvitationDate">Guest Invitation Date</span></th>
                 <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.guestCommitted">Guest Committed</span>
                 </th>
-                <th><span jhiTranslate="weddingplanerApp.userExtra.gender">Gender</span></th>
-                <th><span jhiTranslate="weddingplanerApp.userExtra.ageGroup">Age Group</span></th>
-                <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.user">User</span>
-                </th>
+                <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.gender">Gender</span></th>
+                <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.ageGroup">Age Group</span></th>
+                <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.user">User</span></th>
+                <th><span jhiTranslate="weddingplanerApp.userExtra.email">Email</span></th>
                 <th></th>
             </tr>
             </thead>
@@ -72,9 +72,8 @@
                 <td class="text-center" *jhiHasAnyAuthority="'ROLE_ADMIN'"><i class="fa fa-{{userExtra.guestCommitted ? 'check text-success' : 'times text-danger'}}" aria-hidden="true"></i></td>
                 <td *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiTranslate="{{'weddingplanerApp.Gender.' + userExtra?.gender}}">{{userExtra?.gender}}</td>
                 <td jhiTranslate="{{'weddingplanerApp.AgeGroup.' + userExtra?.ageGroup}}">{{userExtra?.ageGroup}}</td>
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
-                    {{userExtra.user?.id}}
-                </td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra.user?.id}}</td>
+                <td>{{userExtra?.user.email}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button  *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"

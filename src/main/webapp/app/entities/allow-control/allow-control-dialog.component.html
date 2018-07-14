@@ -35,6 +35,8 @@
                 <ng-template let-value pTemplate="getSelected">
                     <span>{{value.user.firstName}} {{value.user.lastName}}</span>
                 </ng-template>
+                <input type="checkbox" class="form-control" name="allExtraUsers" id="field_allExtraUsers"
+                       [(ngModel)]="allowControl.allExtraUsers" />
         </div>
     </div>
     <div class="modal-footer">
