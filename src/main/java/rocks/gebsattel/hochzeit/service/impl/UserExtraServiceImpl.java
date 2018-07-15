@@ -108,6 +108,12 @@ public class UserExtraServiceImpl implements UserExtraService {
                 userExtra.setBusinessPhoneNr("no permission granted");
                 userExtra.setMobilePhoneNr("no permission granted");
                 userExtra.setPrivatePhoneNr("no permission granted");
+                // the rest of the fields
+                userExtra.setAgeGroup(null);
+                userExtra.setCode(null);
+                userExtra.setGender(null);
+                userExtra.setGuestInvitationDate(null);
+                userExtra.setGuestCommitted(null);
 
                 // Own data is shown
                 if (userExtra.equals(loggedInUserExtra)) {
@@ -118,6 +124,9 @@ public class UserExtraServiceImpl implements UserExtraService {
                     userExtra.setZipCode(userExtraShadow.getZipCode());
                     userExtra.setCity(userExtraShadow.getCity());
                     userExtra.setCountry(userExtraShadow.getCountry());
+                    userExtra.setAgeGroup(userExtraShadow.getAgeGroup());
+                    userExtra.setCode(userExtraShadow.getCode());
+                    userExtra.setGender(userExtra.getGender());
                 }
             });
 

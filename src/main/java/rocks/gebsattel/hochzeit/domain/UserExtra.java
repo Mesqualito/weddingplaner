@@ -497,6 +497,11 @@ public class UserExtra implements Serializable {
         copy.setPrivatePhoneNr(this.privatePhoneNr);
         copy.setMobilePhoneNr(this.mobilePhoneNr);
         copy.setBusinessPhoneNr(this.businessPhoneNr);
+        copy.setAgeGroup(this.ageGroup);
+        copy.setCode(this.code);
+        copy.setGender(this.gender);
+        copy.setGuestInvitationDate(this.guestInvitationDate);
+        copy.setGuestCommitted(this.guestCommitted);
 
         return copy;
     }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rocks.gebsattel.hochzeit.domain.AllowControl;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
+import rocks.gebsattel.hochzeit.domain.enumeration.AllowGroup;
 import rocks.gebsattel.hochzeit.repository.AllowControlRepository;
 import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
 import rocks.gebsattel.hochzeit.repository.search.AllowControlSearchRepository;
@@ -37,6 +38,8 @@ public class AllowControlServiceImpl implements AllowControlService {
 
     private final UserExtraRepository userExtraRepository;
 
+    private UserExtra loggedInUserExtra;
+
     public AllowControlServiceImpl(AllowControlRepository allowControlRepository, AllowControlSearchRepository allowControlSearchRepository,
                                    UserService userService, UserExtraRepository userExtraRepository) {
         this.allowControlRepository = allowControlRepository;
@@ -54,15 +57,27 @@ public class AllowControlServiceImpl implements AllowControlService {
     @Override
     public AllowControl save(AllowControl allowControl) {
         log.debug("Request to save AllowControl : {}", allowControl);
+        if(loggedInUserExtra == null) {
+            loggedInUserExtra = this.userExtraRepository.findOneByUserLogin(userService.getUserWithAuthorities().get().getLogin());
+        }
 
         /**
          * Add the logged in user into a relation to newly created records of the entity AllowControl.
          * The corresponding userExtra will be the controlGroup of the Message.
          */
-        UserExtra userExtra = userExtraRepository.findOneByUserLogin(userService.getUserWithAuthorities().get().getLogin());
-        allowControl.setControlGroup(userExtra);
+        allowControl.setControlGroup(loggedInUserExtra);
 
-        // TODO: test  if combination AllowGroup (enum like "ADRESSE", "EMAIL" or "TELEFON") and ControlGroupUserId exists:
+        /**
+         * group AllowControls by Enum "AllowGroup" (ADRESSE, EMAIL, TELEFON)
+         */
+        if (allowControl.getControlGroup().equals(loggedInUserExtra)
+            && allowControlRepository.findOneByControlGroupUserIdAndAllowGroup(loggedInUserExtra.getId(), allowControl.getAllowGroup()) != null) {
+            AllowControl existingAllowControl = allowControlRepository.findOneByControlGroupUserIdAndAllowGroup(loggedInUserExtra.getId(), allowControl.getAllowGroup());
+            allowControl.setId(existingAllowControl.getId());
+            existingAllowControl.getControlledGroups().forEach((controlledGroup) -> {
+                allowControl.addControlledGroup(controlledGroup);
+            });
+        }
 
         AllowControl result = allowControlRepository.save(allowControl);
         allowControlSearchRepository.save(result);
@@ -80,12 +95,12 @@ public class AllowControlServiceImpl implements AllowControlService {
     public Page<AllowControl> findAll(Pageable pageable) {
 
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-            log.debug("Request to get all Messages from : {}", userService.getUserWithAuthorities().get().getLogin());
             return allowControlRepository.findAll(pageable);
         } else {
-            UserExtra userExtra = userExtraRepository.findOneByUserLogin(userService.getUserWithAuthorities().get().getLogin());
-            log.debug("userExtra found : {}", userExtra.getUser().getLogin());
-            return allowControlRepository.findAllByControlGroupUserId(pageable, userExtra.getId());
+            if(loggedInUserExtra == null) {
+                loggedInUserExtra = this.userExtraRepository.findOneByUserLogin(userService.getUserWithAuthorities().get().getLogin());
+            }
+            return allowControlRepository.findAllByControlGroupUserId(pageable, loggedInUserExtra.getId());
         }
     }
 
@@ -139,5 +154,11 @@ public class AllowControlServiceImpl implements AllowControlService {
     public List<AllowControl> findAllByControlGroupUserId(Long userId) {
         log.debug("Request to get the List of AllowControls  granted by UserExtra userId : {}", userId);
         return allowControlRepository.findAllByControlGroupUserId(userId);
+    }
+
+    @Override
+    public AllowControl findOneByControlGroupUserIdAndAllowGroup(Long userExtraId, AllowGroup allowGroup) {
+        log.debug("Request to get the AllowControl with ControlGroupUserId : {} and AllowGroup : {}", userExtraId, allowGroup);
+        return allowControlRepository.findOneByControlGroupUserIdAndAllowGroup(userExtraId, allowGroup);
     }
 }

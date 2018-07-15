@@ -1,6 +1,6 @@
 
 <div *ngIf="allowControl">
-    <h2><span jhiTranslate="weddingplanerApp.allowControl.detail.title">Allow Control</span> {{allowControl.id}}</h2>
+    <h2><span jhiTranslate="weddingplanerApp.allowControl.detail.title">Allow Control</span> {{allowControl.controlGroup.user.firstName}} {{allowControl.controlGroup.user.lastName}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
@@ -11,13 +11,13 @@
         <dt><span jhiTranslate="weddingplanerApp.allowControl.controlledGroup">Controlled Group</span></dt>
         <dd>
             <span *ngFor="let controlledGroup of allowControl.controlledGroups; let last = last">
-                <a [routerLink]="['/user-extra', controlledGroup?.id ]">{{controlledGroup.user_id}}</a>{{last ? '' : ', '}}
+                <a [routerLink]="['/user-extra', controlledGroup?.id ]"><span *jhiHasAnyAuthority="'ROLE_ADMIN'">({{controlledGroup?.id}}) - </span>{{controlledGroup?.user.firstName}} {{controlledGroup?.user.lastName}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
-        <dt><span jhiTranslate="weddingplanerApp.allowControl.controlGroup">Control Group</span></dt>
-        <dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.allowControl.controlGroup">Control Group</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <div *ngIf="allowControl.controlGroup">
-                <a [routerLink]="['/user-extra', allowControl.controlGroup?.id]">{{allowControl.controlGroup?.user_id}}</a>
+                <a [routerLink]="['/user-extra', allowControl.controlGroup?.id]">({{allowControl.controlGroup?.id}}) - {{allowControl.controlGroup?.user.firstName}} {{allowControl.controlGroup?.user.lastName}}</a>
             </div>
         </dd>
     </dl>
