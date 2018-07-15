@@ -119,6 +119,7 @@ public class UserExtraServiceImpl implements UserExtraService {
                 if (userExtra.equals(loggedInUserExtra)) {
                     userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
                     userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
+                    userExtra.getUser().setEmail(userExtraShadow.getUser().getEmail());
                     userExtra.setAddressLine1(userExtraShadow.getAddressLine1());
                     userExtra.setAddressLine2(userExtraShadow.getAddressLine2());
                     userExtra.setZipCode(userExtraShadow.getZipCode());
