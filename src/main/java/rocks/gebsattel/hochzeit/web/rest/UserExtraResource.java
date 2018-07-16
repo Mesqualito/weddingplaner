@@ -103,7 +103,7 @@ public class UserExtraResource {
      */
     @GetMapping("/user-extras/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserExtra> getUserExtra(@PathVariable Long id) {
         log.debug("REST request to get UserExtra : {}", id);
         UserExtra userExtra = userExtraService.findOne(id);

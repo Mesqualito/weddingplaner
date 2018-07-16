@@ -64,7 +64,7 @@ public interface AllowControlService {
     Page<AllowControl> findAllByControlGroupUserId(Long userExtraId, Pageable pageable);
 
     /**
-     * Search for a list of all AllowGroups belonging to the UserExtra.
+     * Search for a list of all AllowControls belonging to the UserExtra.
      *
      * @param userExtraId the Long userId of the UserExtra
      *
@@ -80,4 +80,14 @@ public interface AllowControlService {
      * @return the "AllowControl" belonging to the given UserExtra userId and AllowGroup
      */
     AllowControl findOneByControlGroupUserIdAndAllowGroup(Long userExtraId, AllowGroup allowGroup);
+
+    /**
+     * Search for a list of all AllowControls belonging to the UserExtra and Enum "AllowGroup" (ADRESSE, EMAIL, TELEFON).
+     *
+     * @param userExtraId the Long userId of the UserExtra
+     *
+     * @return the "AllowControl" belonging to the given UserExtra userId and AllowGroup
+     */
+    List<AllowControl> findAllByControlledGroupsIdAndAllowGroup(Long userExtraId, AllowGroup allowGroup);
+
 }

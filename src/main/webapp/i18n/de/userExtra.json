@@ -18,6 +18,7 @@
             },
             "userFirstName": "Vorname",
             "userLastName": "Nachname",
+            "userEmail": "eMail",
             "code": "Drop-In Code (s. Einladungskarte)",
             "addressLine1": "Straße",
             "addressLine2": "Zweite Adresszeile",

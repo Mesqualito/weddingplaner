@@ -20,10 +20,7 @@ import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.service.UserService;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -47,11 +44,19 @@ public class UserExtraServiceImpl implements UserExtraService {
 
     private final AllowControlRepository allowControlRepository;
 
+    private final List<UserExtra> userExtras;
+
+    private final List<UserExtra> userExtraShadows;
+
     public UserExtraServiceImpl(UserService userService, UserExtraRepository userExtraRepository, UserExtraSearchRepository userExtraSearchRepository, AllowControlRepository allowControlRepository) {
         this.userExtraRepository = userExtraRepository;
         this.userExtraSearchRepository = userExtraSearchRepository;
         this.allowControlRepository = allowControlRepository;
         this.userService = userService;
+
+        userExtras = this.userExtraRepository.findAll();
+        userExtraShadows = new ArrayList<>();
+
     }
 
     /**
@@ -82,55 +87,11 @@ public class UserExtraServiceImpl implements UserExtraService {
         } else
         // ------------ for all Users in other ROLEs than 'ROLE_ADMIN' ------------
         {
-            UserExtra loggedInUserExtra = userExtraRepository
-                .findOneByUserLogin(
-                    userService.getUserWithAuthorities().get()
-                        .getLogin()
-                );
-
-            List<UserExtra> userExtras = userExtraRepository.findAll();
-            List<UserExtra> userExtraShadows = new ArrayList<>(); // = Collections.emptyList();
-
             userExtras.forEach((userExtra) -> {
-                UserExtra userExtraShadow = userExtra.copyForAllowControl();
-                userExtraShadows.add(userExtraShadow);
-
-                // address-related fields
-                userExtra.getUser().setLastName(userExtra.getUser().getLastName().substring(0, 1) + ".");
-                userExtra.setAddressLine1("no permission granted");
-                userExtra.setAddressLine2("no permission granted");
-                userExtra.setZipCode("no permission granted");
-                userExtra.setCity("no permission granted");
-                userExtra.setCountry("no permission granted");
-                // eMail-related field
-                userExtra.getUser().setEmail("no permission granted");
-                // phone-related fields
-                userExtra.setBusinessPhoneNr("no permission granted");
-                userExtra.setMobilePhoneNr("no permission granted");
-                userExtra.setPrivatePhoneNr("no permission granted");
-                // the rest of the fields
-                userExtra.setAgeGroup(null);
-                userExtra.setCode(null);
-                userExtra.setGender(null);
-                userExtra.setGuestInvitationDate(null);
-                userExtra.setGuestCommitted(null);
-
-                // Own data is shown
-                if (userExtra.equals(loggedInUserExtra)) {
-                    userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
-                    userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
-                    userExtra.getUser().setEmail(userExtraShadow.getUser().getEmail());
-                    userExtra.setAddressLine1(userExtraShadow.getAddressLine1());
-                    userExtra.setAddressLine2(userExtraShadow.getAddressLine2());
-                    userExtra.setZipCode(userExtraShadow.getZipCode());
-                    userExtra.setCity(userExtraShadow.getCity());
-                    userExtra.setCountry(userExtraShadow.getCountry());
-                    userExtra.setAgeGroup(userExtraShadow.getAgeGroup());
-                    userExtra.setCode(userExtraShadow.getCode());
-                    userExtra.setGender(userExtra.getGender());
-                }
+                this.hideAllData(userExtra);
             });
 
+            UserExtra loggedInUserExtra = this.getLoggedInUserExtra();
             List<AllowControl> userExtraAllowControls = allowControlRepository.findAll();
 
             // Unlock data of the UserExtra-Objects in the list
@@ -140,17 +101,7 @@ public class UserExtraServiceImpl implements UserExtraService {
                     userExtras.forEach((userExtra) -> {
                         if (userExtraAllowControl.getControlledGroups().contains(loggedInUserExtra)
                             && userExtraAllowControl.getControlGroup().equals(userExtra)) {
-                            UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
-                            System.out.println("userExtra: " + userExtra.getUser().getLogin());
-                            System.out.println("loggedInUserExtra: " + loggedInUserExtra.getUser().getLogin());
-                            System.out.println("userExtraShadow: " + userExtraShadow.getUser().getLogin());
-                            userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
-                            userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
-                            userExtra.setAddressLine1(userExtraShadow.getAddressLine1());
-                            userExtra.setAddressLine2(userExtraShadow.getAddressLine2());
-                            userExtra.setZipCode(userExtraShadow.getZipCode());
-                            userExtra.setCity(userExtraShadow.getCity());
-                            userExtra.setCountry(userExtraShadow.getCountry());
+                            this.showAddressData(userExtra);
                         }
                     });
                 }
@@ -159,8 +110,7 @@ public class UserExtraServiceImpl implements UserExtraService {
                     userExtras.forEach((userExtra) -> {
                         if (userExtraAllowControl.getControlledGroups().contains(loggedInUserExtra)
                             && userExtraAllowControl.getControlGroup().equals(userExtra)) {
-                            UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
-                            userExtra.getUser().setEmail((userExtraShadow.getUser().getEmail()));
+                            this.showEmailData(userExtra);
                         }
                     });
                 }
@@ -169,10 +119,7 @@ public class UserExtraServiceImpl implements UserExtraService {
                     userExtras.forEach((userExtra) -> {
                         if (userExtraAllowControl.getControlledGroups().contains(loggedInUserExtra)
                             && userExtraAllowControl.getControlGroup().equals(userExtra)) {
-                            UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
-                            userExtra.setBusinessPhoneNr(userExtraShadow.getBusinessPhoneNr());
-                            userExtra.setMobilePhoneNr(userExtraShadow.getMobilePhoneNr());
-                            userExtra.setPrivatePhoneNr(userExtraShadow.getPrivatePhoneNr());
+                            this.showPhoneData(userExtra);
                         }
                     });
                 }
@@ -193,16 +140,42 @@ public class UserExtraServiceImpl implements UserExtraService {
         log.debug("Request to get UserExtra : {}", id);
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             return userExtraRepository.findOne(id);
-        } else {
+        } else
+        // ------------ for all Users in other ROLEs than 'ROLE_ADMIN' ------------
+        {
+            UserExtra loggedInUserExtra = this.getLoggedInUserExtra();
             UserExtra userExtra = userExtraRepository.findOne(id);
-            if (userExtra.getAllowedUsers().equals(userExtra)) {
-                return userExtra;
-            } else {
-                // TODO:
-                // like in findAll(), the fields must be blanked according to
-                // the allow_control and allow_control_controlled_group - join-tables
-                return userExtra;
-            }
+            this.hideAllData(userExtra);
+
+            List<AllowControl> allowControls = allowControlRepository.findAll();
+
+            // Unlock data of the UserExtra-Object in the list
+            // according to the allow_control and allow_control_controlled_group - join-tables
+            allowControls.forEach((allowControl) -> {
+
+                if (allowControlRepository.findAllByControlledGroupsIdAndAllowGroup(loggedInUserExtra.getId(), allowControl.getControlGroup().valueOf("ADRESSE")
+                        .contains(allowControl))) {
+                    if (userExtraAllowControl.getControlledGroups().contains(loggedInUserExtra)
+                        && userExtraAllowControl.getControlGroup().equals(userExtra)) {
+                        this.showAddressData(userExtra);
+                    }
+                }
+
+                if (userExtraAllowControl.getAllowGroup().EMAIL.equals(userExtraAllowControl.getAllowGroup().valueOf("EMAIL"))) {
+                    if (userExtraAllowControl.getControlledGroups().contains(loggedInUserExtra)
+                        && userExtraAllowControl.getControlGroup().equals(userExtra)) {
+                        this.showEmailData(userExtra);
+                    }
+                }
+
+                if (userExtraAllowControl.getAllowGroup().TELEFON.equals(userExtraAllowControl.getAllowGroup().valueOf("TELEFON"))) {
+                    if (userExtraAllowControl.getControlledGroups().contains(loggedInUserExtra)
+                        && userExtraAllowControl.getControlGroup().equals(userExtra)) {
+                        this.showPhoneData(userExtra);
+                    }
+                }
+            });
+            return userExtra;
         }
     }
 
@@ -237,6 +210,93 @@ public class UserExtraServiceImpl implements UserExtraService {
     public UserExtra findOneByUserLogin(String login) {
         log.debug("Request to search UserExtras for user {}", login);
         return userExtraRepository.findOneByUserLogin(login);
+    }
+
+    private UserExtra hideAllData(UserExtra userExtra) {
+
+        UserExtra loggedInUserExtra = this.getLoggedInUserExtra();
+        UserExtra userExtraShadow = userExtra.copyForAllowControl();
+        userExtraShadows.add(userExtraShadow);
+
+        // address-related fields
+        userExtra.getUser().setLastName(userExtra.getUser().getLastName().substring(0, 1) + ".");
+        userExtra.setAddressLine1("no permission granted");
+        userExtra.setAddressLine2("no permission granted");
+        userExtra.setZipCode("no permission granted");
+        userExtra.setCity("no permission granted");
+        userExtra.setCountry("no permission granted");
+        // eMail-related field
+        userExtra.getUser().setEmail("no permission granted");
+        // phone-related fields
+        userExtra.setBusinessPhoneNr("no permission granted");
+        userExtra.setMobilePhoneNr("no permission granted");
+        userExtra.setPrivatePhoneNr("no permission granted");
+        // the rest of the fields
+        userExtra.setAgeGroup(null);
+        userExtra.setCode(null);
+        userExtra.setGender(null);
+        userExtra.setGuestInvitationDate(null);
+        userExtra.setGuestCommitted(null);
+
+        // Own data is shown
+        if (userExtra.equals(loggedInUserExtra)) {
+            userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
+            userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
+            userExtra.getUser().setEmail(userExtraShadow.getUser().getEmail());
+            userExtra.setAddressLine1(userExtraShadow.getAddressLine1());
+            userExtra.setAddressLine2(userExtraShadow.getAddressLine2());
+            userExtra.setZipCode(userExtraShadow.getZipCode());
+            userExtra.setCity(userExtraShadow.getCity());
+            userExtra.setCountry(userExtraShadow.getCountry());
+            userExtra.setAgeGroup(userExtraShadow.getAgeGroup());
+            userExtra.setCode(userExtraShadow.getCode());
+            userExtra.setGender(userExtra.getGender());
+        }
+        return userExtra;
+    }
+
+    private UserExtra showAddressData(UserExtra userExtra) {
+
+        UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
+        userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
+        userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
+        userExtra.setAddressLine1(userExtraShadow.getAddressLine1());
+        userExtra.setAddressLine2(userExtraShadow.getAddressLine2());
+        userExtra.setZipCode(userExtraShadow.getZipCode());
+        userExtra.setCity(userExtraShadow.getCity());
+        userExtra.setCountry(userExtraShadow.getCountry());
+
+        return userExtra;
+    }
+
+    private UserExtra showEmailData(UserExtra userExtra) {
+
+        UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
+        userExtra.getUser().setEmail((userExtraShadow.getUser().getEmail()));
+
+        return userExtra;
+    }
+
+    private UserExtra showPhoneData(UserExtra userExtra) {
+
+        UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
+        userExtra.setBusinessPhoneNr(userExtraShadow.getBusinessPhoneNr());
+        userExtra.setMobilePhoneNr(userExtraShadow.getMobilePhoneNr());
+        userExtra.setPrivatePhoneNr(userExtraShadow.getPrivatePhoneNr());
+
+        return userExtra;
+    }
+
+    private UserExtra getLoggedInUserExtra() {
+
+        UserExtra loggedInUserExtra = userExtraRepository
+            .findOneByUserLogin(
+                userService.getUserWithAuthorities().get()
+                    .getLogin()
+            );
+
+        return loggedInUserExtra;
+
     }
 
 }

@@ -28,5 +28,6 @@ public interface AllowControlRepository extends JpaRepository<AllowControl, Long
     List<AllowControl> findAllByControlGroupUserId(Long userId);
 
     AllowControl findOneByControlGroupUserIdAndAllowGroup(Long userExtraId, AllowGroup allowGroup);
+    List<AllowControl> findAllByControlledGroupsIdAndAllowGroup(Long userExtraId, AllowGroup allowGroup);
 
 }
