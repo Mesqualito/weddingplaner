@@ -479,4 +479,31 @@ public class UserExtra implements Serializable {
             ", ageGroup='" + getAgeGroup() + "'" +
             "}";
     }
+
+    public UserExtra copyForAllowControl() {
+        UserExtra copy = new UserExtra();
+
+        copy.setId(this.id);
+        copy.setUser(new User());
+        copy.user.setLogin(this.user.getLogin());
+        copy.user.setEmail(this.user.getEmail());
+        copy.user.setFirstName(this.user.getFirstName());
+        copy.user.setLastName(this.user.getLastName());
+        copy.setAddressLine1(this.addressLine1);
+        copy.setAddressLine2(this.addressLine2);
+        copy.setCity(this.city);
+        copy.setCountry(this.country);
+        copy.setZipCode(this.zipCode);
+        copy.setPrivatePhoneNr(this.privatePhoneNr);
+        copy.setMobilePhoneNr(this.mobilePhoneNr);
+        copy.setBusinessPhoneNr(this.businessPhoneNr);
+        copy.setAgeGroup(this.ageGroup);
+        copy.setCode(this.code);
+        copy.setGender(this.gender);
+        copy.setGuestInvitationDate(this.guestInvitationDate);
+        copy.setGuestCommitted(this.guestCommitted);
+
+        return copy;
+    }
+
 }
