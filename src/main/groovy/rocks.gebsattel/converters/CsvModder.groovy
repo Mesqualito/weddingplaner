@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 def absoluteFilePath = "./"
 def sourceFile = "hochzeitsgaeste.csv"
 // hochzeitsgaeste.csv columns:
-// nr;first_name;last_name;code;address_line_1;address_line_1_nr;zip_code;city
+// nr,first_name,last_name,address_line_1,address_line_1_nr,zip_code,city,age_group,gender,guest_committed,code
 
 def data = parseCsv(new FileReader(absoluteFilePath + sourceFile))
 def userOrigin = [:]
@@ -45,6 +45,9 @@ for (line in data) {
         benutzer.mobilePhoneNr = ''
         benutzer.privatePhoneNr = ''
         benutzer.businessPhoneNr = ''
+        benutzer.gender = line.gender
+        benutzer.guestCommitted = line.guest_committed
+        benutzer.ageGroup = line.age_group
 
         userOrigin[line.nr] = benutzer
     }
@@ -74,7 +77,7 @@ userOrigin.each { key, entry ->
 // address_line_1;address_line_2;business_phone_nr;code;country;guest_committed;guest_invitation_date;mobile_phone_nr;private_phone_nr;user_id;zip_code
 File usersExtraFile = new File(absoluteFilePath + "user_extras-prod.csv")
 usersExtraFile.write(
-    "address_line_1;address_line_2;business_phone_nr;code;country;guest_committed;guest_invitation_date;mobile_phone_nr;private_phone_nr;user_id;zip_code;city\n")
+    "address_line_1;address_line_2;business_phone_nr;code;country;guest_committed;guest_invitation_date;mobile_phone_nr;private_phone_nr;user_id;zip_code;city;age_group;gender\n")
 
 userOrigin.each { key, entry ->
     usersExtraFile.append(entry.addressLine1 + ";"
@@ -88,7 +91,9 @@ userOrigin.each { key, entry ->
         + entry.privatePhoneNr + ";"
         + entry.userId + ";"
         + entry.zipCode + ";"
-        + entry.city + "\n")
+        + entry.city + ";"
+        + entry.ageGroup + ";"
+        + entry.gender + "\n")
 }
 
 // users_authorities-prod.csv - from benutzer:
@@ -168,4 +173,6 @@ class Benutzer {
     String privatePhoneNr
     String zipCode
     String city
+    String gender
+    String ageGroup
 }
