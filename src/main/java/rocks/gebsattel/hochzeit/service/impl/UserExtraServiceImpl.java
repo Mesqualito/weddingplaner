@@ -84,7 +84,7 @@ public class UserExtraServiceImpl implements UserExtraService {
         } else
         // ------------ for all Users in other ROLEs than 'ROLE_ADMIN' ------------
         {
-            List<UserExtra> userExtras = this.userExtraRepository.findAll();
+            List<UserExtra> userExtras = userExtraRepository.findAll();
             userExtras.forEach((userExtra) -> {
                 this.hideAllData(userExtra);
             });
@@ -166,9 +166,11 @@ public class UserExtraServiceImpl implements UserExtraService {
     }
 
     private void hideAllData(UserExtra userExtra) {
+        System.out.println("userExtra: " + userExtra.getUser().getLogin());
 
         UserExtra loggedInUserExtra = this.getLoggedInUserExtra();
         UserExtra userExtraShadow = userExtra.copyForAllowControl();
+        System.out.println("userExtraShadow: " + userExtraShadow.getUser().getLogin());
         userExtraShadows.add(userExtraShadow);
 
         // address-related fields
@@ -193,6 +195,7 @@ public class UserExtraServiceImpl implements UserExtraService {
 
         // Own data is shown
         if (userExtra.equals(loggedInUserExtra)) {
+            System.out.println("loggedInUserExtra: " + loggedInUserExtra.getUser().getLogin());
             userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
             userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
             userExtra.getUser().setEmail(userExtraShadow.getUser().getEmail());
