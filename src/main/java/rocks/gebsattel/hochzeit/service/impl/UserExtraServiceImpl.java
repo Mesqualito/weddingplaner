@@ -120,9 +120,7 @@ public class UserExtraServiceImpl implements UserExtraService {
 
             List<AllowControl> allowControls = allowControlRepository.findAll();
 
-            // to not write extra method for one userExtra,
-            // I put it in a list...
-            List<UserExtra> userExtras = Collections.EMPTY_LIST;
+            List<UserExtra> userExtras = new ArrayList<>();
             userExtras.add(userExtra);
 
             allowControls.forEach((allowControl) -> {
@@ -170,7 +168,6 @@ public class UserExtraServiceImpl implements UserExtraService {
 
         UserExtra loggedInUserExtra = this.getLoggedInUserExtra();
         UserExtra userExtraShadow = userExtra.copyForAllowControl();
-        System.out.println("userExtraShadow: " + userExtraShadow.getUser().getLogin());
         userExtraShadows.add(userExtraShadow);
 
         // address-related fields
@@ -195,7 +192,6 @@ public class UserExtraServiceImpl implements UserExtraService {
 
         // Own data is shown
         if (userExtra.equals(loggedInUserExtra)) {
-            System.out.println("loggedInUserExtra: " + loggedInUserExtra.getUser().getLogin());
             userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
             userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
             userExtra.getUser().setEmail(userExtraShadow.getUser().getEmail());
@@ -211,46 +207,46 @@ public class UserExtraServiceImpl implements UserExtraService {
     }
 
     private void showData(AllowControl allowControl, UserExtra loggedInUserExtra, List<UserExtra> userExtras) {
-        for (AllowGroup allowGroup : allowControl.getAllowGroup().values()) {
-            if (allowGroup.equals("ADRESSE")) {
-                userExtras.forEach((userExtra) -> {
-                    if (allowControl.getControlledGroups().contains(loggedInUserExtra)
-                        && allowControl.getControlGroup().equals(userExtra)) {
-                        UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
-                        userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
-                        userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
-                        userExtra.setAddressLine1(userExtraShadow.getAddressLine1());
-                        userExtra.setAddressLine2(userExtraShadow.getAddressLine2());
-                        userExtra.setZipCode(userExtraShadow.getZipCode());
-                        userExtra.setCity(userExtraShadow.getCity());
-                        userExtra.setCountry(userExtraShadow.getCountry());
-                    }
-                });
-            }
+        if (allowControl.getAllowGroup() == AllowGroup.ADRESSE) {
+            userExtras.forEach((userExtra) -> {
+                if (allowControl.getControlledGroups().contains(loggedInUserExtra)
+                    && allowControl.getControlGroup().equals(userExtra)) {
+                    UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
+                    userExtra.getUser().setFirstName(userExtraShadow.getUser().getFirstName());
+                    userExtra.getUser().setLastName(userExtraShadow.getUser().getLastName());
+                    userExtra.setAddressLine1(userExtraShadow.getAddressLine1());
+                    userExtra.setAddressLine2(userExtraShadow.getAddressLine2());
+                    userExtra.setZipCode(userExtraShadow.getZipCode());
+                    userExtra.setCity(userExtraShadow.getCity());
+                    userExtra.setCountry(userExtraShadow.getCountry());
+                    userExtra.setAgeGroup(userExtraShadow.getAgeGroup());
+                }
+            });
+        }
 
-            if (allowGroup.equals("EMAIL")) {
-                userExtras.forEach((userExtra) -> {
-                    if (allowControl.getControlledGroups().contains(loggedInUserExtra)
-                        && allowControl.getControlGroup().equals(userExtra)) {
-                        UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
-                        userExtra.getUser().setEmail((userExtraShadow.getUser().getEmail()));
-                    }
-                });
-            }
+        if (allowControl.getAllowGroup() == AllowGroup.EMAIL) {
+            userExtras.forEach((userExtra) -> {
+                if (allowControl.getControlledGroups().contains(loggedInUserExtra)
+                    && allowControl.getControlGroup().equals(userExtra)) {
+                    UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
+                    userExtra.getUser().setEmail((userExtraShadow.getUser().getEmail()));
+                }
+            });
+        }
 
-            if (allowGroup.equals("TELEFON")) {
-                userExtras.forEach((userExtra) -> {
-                    if (allowControl.getControlledGroups().contains(loggedInUserExtra)
-                        && allowControl.getControlGroup().equals(userExtra)) {
-                        UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
-                        userExtra.setBusinessPhoneNr(userExtraShadow.getBusinessPhoneNr());
-                        userExtra.setMobilePhoneNr(userExtraShadow.getMobilePhoneNr());
-                        userExtra.setPrivatePhoneNr(userExtraShadow.getPrivatePhoneNr());
-                    }
-                });
-            }
+        if (allowControl.getAllowGroup() == AllowGroup.TELEFON) {
+            userExtras.forEach((userExtra) -> {
+                if (allowControl.getControlledGroups().contains(loggedInUserExtra)
+                    && allowControl.getControlGroup().equals(userExtra)) {
+                    UserExtra userExtraShadow = userExtraShadows.get(userExtraShadows.indexOf(userExtra));
+                    userExtra.setBusinessPhoneNr(userExtraShadow.getBusinessPhoneNr());
+                    userExtra.setMobilePhoneNr(userExtraShadow.getMobilePhoneNr());
+                    userExtra.setPrivatePhoneNr(userExtraShadow.getPrivatePhoneNr());
+                }
+            });
         }
     }
+
 
     private UserExtra getLoggedInUserExtra() {
         UserExtra loggedInUserExtra = userExtraRepository
