@@ -61,10 +61,10 @@
             </thead>
             <tbody>
             <tr *ngFor="let userExtra of userExtras ;trackBy: trackId">
-                <td *jhiHasAnyAuthority="'ROLE_ADMIN'"><a [routerLink]="['../user-extra', userExtra.id ]">{{userExtra?.id}}</a></td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra?.id}}</td>
                 <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{userExtra?.code}}</td>
-                <td>{{userExtra?.user.firstName}}</a></td>
-                <td>{{userExtra?.user.lastName}}</td>
+                <td><a [routerLink]="['../user-extra', userExtra.id ]">{{userExtra?.user.firstName}}</a></td>
+                <td><a [routerLink]="['../user-extra', userExtra.id ]">{{userExtra?.user.lastName}}</a></td>
                 <td>{{userExtra?.addressLine1}}</td>
                 <td>{{userExtra?.zipCode}}</td>
                 <td>{{userExtra?.city}}</td>

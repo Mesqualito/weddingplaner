@@ -161,4 +161,11 @@ public class AllowControlServiceImpl implements AllowControlService {
         log.debug("Request to get the AllowControl with ControlGroupUserId : {} and AllowGroup : {}", userExtraId, allowGroup);
         return allowControlRepository.findOneByControlGroupUserIdAndAllowGroup(userExtraId, allowGroup);
     }
+
+    @Override
+    public List<AllowControl> findAllByControlledGroupsIdAndAllowGroup(Long userExtraId, AllowGroup allowGroup){
+        log.debug("Request to get a list of AllowControls with ControlledGroups containing userExtra userID : {} and AllowGroup : {}", userExtraId, allowGroup);
+        return allowControlRepository.findAllByControlledGroupsIdAndAllowGroup(userExtraId, allowGroup);
+    }
+
 }

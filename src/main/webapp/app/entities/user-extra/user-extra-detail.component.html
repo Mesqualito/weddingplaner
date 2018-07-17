@@ -1,6 +1,6 @@
 
 <div *ngIf="userExtra">
-    <h2><span jhiTranslate="weddingplanerApp.userExtra.detail.title">User Extra</span> {{userExtra.id}}</h2>
+    <h2><span jhiTranslate="weddingplanerApp.userExtra.detail.title">User Extra</span> {{userExtra.user.firstName}} {{userExtra.user.lastName}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
@@ -28,6 +28,10 @@
         <dd>
             <span>{{userExtra.country}}</span>
         </dd>
+        <dt><span jhiTranslate="weddingplanerApp.userExtra.userEmail">eMail</span></dt>
+        <dd>
+            <span>{{userExtra.user.email}}</span>
+        </dd>
         <dt><span jhiTranslate="weddingplanerApp.userExtra.businessPhoneNr">Business Phone Nr</span></dt>
         <dd>
             <span>{{userExtra.businessPhoneNr}}</span>
@@ -40,24 +44,24 @@
         <dd>
             <span>{{userExtra.mobilePhoneNr}}</span>
         </dd>
-        <dt><span jhiTranslate="weddingplanerApp.userExtra.guestInvitationDate">Guest Invitation Date</span></dt>
-        <dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.guestInvitationDate">Guest Invitation Date</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span>{{userExtra.guestInvitationDate | date:'mediumDate'}}</span>
         </dd>
-        <dt><span jhiTranslate="weddingplanerApp.userExtra.guestCommitted">Guest Committed</span></dt>
-        <dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.guestCommitted">Guest Committed</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span>{{userExtra.guestCommitted}}</span>
         </dd>
-        <dt><span jhiTranslate="weddingplanerApp.userExtra.gender">Gender</span></dt>
-        <dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.gender">Gender</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span jhiTranslate="{{'weddingplanerApp.Gender.' + userExtra.gender}}">{{userExtra.gender}}</span>
         </dd>
         <dt><span jhiTranslate="weddingplanerApp.userExtra.ageGroup">Age Group</span></dt>
         <dd>
             <span jhiTranslate="{{'weddingplanerApp.AgeGroup.' + userExtra.ageGroup}}">{{userExtra.ageGroup}}</span>
         </dd>
-        <dt><span jhiTranslate="weddingplanerApp.userExtra.user">User</span></dt>
-        <dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.userExtra.user">User</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             {{userExtra.user?.id}}
         </dd>
     </dl>
