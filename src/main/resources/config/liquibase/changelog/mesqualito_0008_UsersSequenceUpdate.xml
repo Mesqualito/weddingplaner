@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="mesqualito_0008_UsersSequenceUpdate_1st_step" author="mesqualito">
+        <createSequence sequenceName="user_registration_seq" startValue="500000"/>
+    </changeSet>
+    <changeSet id="mesqualito_0008_UsersSequenceUpdate_2nd_step" author="mesqualito">
+        <sql dbms="postgresql" endDelimiter=";\n" splitStatements="true" stripComments="true">
+            ALTER TABLE jhi_user ALTER COLUMN id SET DEFAULT nextval('user_registration_seq');
+            ALTER TABLE user_extra ALTER COLUMN user_id SET DEFAULT nextval('user_registration_seq');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

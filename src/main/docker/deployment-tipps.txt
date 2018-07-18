@@ -13,6 +13,12 @@ docker:
 Copy postgres volume from dev to prod:
     - docker run --rm -v <SOURCE_DATA_VOLUME_NAME>:/from alpine ash -c "cd /from ; tar -cf - . " | ssh <TARGET_HOST> 'docker run --rm -i -v <TARGET_DATA_VOLUME_NAME>:/to alpine ash -c "cd /to ; tar -xpvf - " '
 
+TODO: Switch hibernate_sequence for User/UserExtra-Registration in Postgresql
+    - ALTER SEQUENCE hibernate_sequence RESTART WITH 500000; (not working)
+    (liquibase changeset "mesqualito_0008_UsersSequenceUpdate.xml" (not working)
+    see: https://stackoverflow.com/questions/8745051/postgres-manually-alter-sequence, http://www.neilconway.org/docs/sequences/,
+    http://www.liquibase.org/documentation/changes/alter_sequence.html u.a.)
+
 
 heroku:
 needed once:
