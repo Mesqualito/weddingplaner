@@ -10,6 +10,9 @@ docker:
   phpmyadmin:
     - docker run --name phpmyadmin -d -e PMA_HOST=jfrpocyduwfg38kq.chr7pe7iynqr.eu-west-1.rds.amazonaws.com -p 8099:80 phpmyadmin/phpmyadmin
 
+Copy postgres volume from dev to prod:
+    - docker run --rm -v <SOURCE_DATA_VOLUME_NAME>:/from alpine ash -c "cd /from ; tar -cf - . " | ssh <TARGET_HOST> 'docker run --rm -i -v <TARGET_DATA_VOLUME_NAME>:/to alpine ash -c "cd /to ; tar -xpvf - " '
+
 
 heroku:
 needed once:

@@ -164,7 +164,6 @@ public class UserExtraServiceImpl implements UserExtraService {
     }
 
     private void hideAllData(UserExtra userExtra) {
-        System.out.println("userExtra: " + userExtra.getUser().getLogin());
 
         UserExtra loggedInUserExtra = this.getLoggedInUserExtra();
         UserExtra userExtraShadow = userExtra.copyForAllowControl();
@@ -200,6 +199,9 @@ public class UserExtraServiceImpl implements UserExtraService {
             userExtra.setZipCode(userExtraShadow.getZipCode());
             userExtra.setCity(userExtraShadow.getCity());
             userExtra.setCountry(userExtraShadow.getCountry());
+            userExtra.setBusinessPhoneNr(userExtraShadow.getBusinessPhoneNr());
+            userExtra.setMobilePhoneNr(userExtraShadow.getMobilePhoneNr());
+            userExtra.setPrivatePhoneNr(userExtraShadow.getPrivatePhoneNr());
             userExtra.setAgeGroup(userExtraShadow.getAgeGroup());
             userExtra.setCode(userExtraShadow.getCode());
             userExtra.setGender(userExtra.getGender());
