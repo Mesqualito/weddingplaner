@@ -9,15 +9,7 @@ services:
             - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=weddingplaner-elasticsearch:9300
         expose:
             - "8080"
-        depends_on:
-            weddingplaner-elasticsearch:
-              condition: service_healthy
-            weddingplaner-postgresql:
-              condition: service_healthy
         restart: always
-        networks:
-            - web
-            - default
         labels:
             - "traefik.docker.network=web"
             - "traefik.enable=true"
@@ -36,7 +28,3 @@ services:
 
 volumes:
     postgresql-data:
-
-networks:
-  web:
-    external: true
