@@ -6,6 +6,7 @@
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
 
+    <include file="config/liquibase/changelog/mesqualito_0001_generic_UserExtra.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/mesqualito_0002_dev_db_layout_User.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/mesqualito_0003_prod_db_layout_User.xml" relativeToChangelogFile="false"/>
 
