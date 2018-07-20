@@ -165,6 +165,8 @@ public class UserExtraServiceImpl implements UserExtraService {
 
     private void hideAllData(UserExtra userExtra) {
 
+        System.out.println("userExtras data will get hidden: " + userExtra.getUser().getLogin() + ", userExtra userId: " + userExtra.getId());
+
         UserExtra loggedInUserExtra = this.getLoggedInUserExtra();
         UserExtra userExtraShadow = userExtra.copyForAllowControl();
         userExtraShadows.add(userExtraShadow);

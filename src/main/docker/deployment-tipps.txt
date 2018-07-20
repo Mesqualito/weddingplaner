@@ -12,6 +12,8 @@ docker:
 
 Copy postgres volume from dev to prod:
     - docker run --rm -v <SOURCE_DATA_VOLUME_NAME>:/from alpine ash -c "cd /from ; tar -cf - . " | ssh <TARGET_HOST> 'docker run --rm -i -v <TARGET_DATA_VOLUME_NAME>:/to alpine ash -c "cd /to ; tar -xpvf - " '
+...and vice versa:
+    - ssh jochen.hassfurter@dockerserver01.eigenbaumarkt.com 'docker run --rm -v gen_postgresql-data:/from alpine ash -c "cd /from ; tar -cf - . "' | docker run --rm -i -v docker_postgresql-data:/to alpine ash -c "cd /to ; tar -xpvf - "
 
 TODO: Switch hibernate_sequence for User/UserExtra-Registration in Postgresql
     - ALTER SEQUENCE hibernate_sequence RESTART WITH 500000; (not working)

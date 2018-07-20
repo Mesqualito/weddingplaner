@@ -18,11 +18,11 @@
                 "title": "Getränk bzw. Speise"
             },
             "foodName": "Bezeichnung",
-            "foodShortDescription": "Kurzbeschreibung",
+            "foodShortDescription": "Beschreibung",
             "foodLongDescription": "Lange Beschreibung, Rezept, Anmerkungen...",
-            "foodQuantityPersons": "Menge reicht für (Anzahl Personen)",
-            "foodBestServeTime": "Beste Uhrzeit zum Servieren",
-            "foodProposalAccepted": "Dein Vorschlag wurde angenommen",
+            "foodQuantityPersons": "Ø P",
+            "foodBestServeTime": "Servierzeit",
+            "foodProposalAccepted": "eingecheckt",
             "userExtra": "Vorschlag eingereicht von Hochzeitsgast"
         }
     }
