@@ -10,7 +10,7 @@
                 "message": "Nachrichten",
                 "userExtra": "Gästeliste",
                 "allowControl": "Datenfreigaben",
-                "partyFood": "Speisen & Getränke",
+                "partyFood": "Getränke & Speisen",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

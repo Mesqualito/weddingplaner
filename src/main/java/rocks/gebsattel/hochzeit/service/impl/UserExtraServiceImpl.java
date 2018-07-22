@@ -86,6 +86,7 @@ public class UserExtraServiceImpl implements UserExtraService {
         {
             List<UserExtra> userExtras = userExtraRepository.findAll();
             userExtras.forEach((userExtra) -> {
+                System.out.println("Data hidden @ userExtra \'" + userExtra.getUser().getLogin() + "\', userId: " + userExtra.getId());
                 this.hideAllData(userExtra);
             });
 
@@ -152,9 +153,22 @@ public class UserExtraServiceImpl implements UserExtraService {
     @Transactional(readOnly = true)
     public List<UserExtra> search(String query) {
         log.debug("Request to search UserExtras for query {}", query);
-        return StreamSupport
+         List<UserExtra> userExtras = StreamSupport
             .stream(userExtraSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+
+        userExtras.forEach((userExtra) -> {
+            this.hideAllData(userExtra);
+        });
+
+        UserExtra loggedInUserExtra = this.getLoggedInUserExtra();
+        List<AllowControl> allowControls = allowControlRepository.findAll();
+
+        allowControls.forEach((allowControl) -> {
+            this.showData(allowControl, loggedInUserExtra, userExtras);
+        });
+
+        return userExtras;
     }
 
     @Override

@@ -17,14 +17,17 @@
             "detail": {
                 "title": "Nachricht"
             },
-            "messageShortDescription": "Überschrift",
+            "receivedMessages": "Empfangene Nachrichten",
+            "sendMessages": "Gesendete Nachrichten",
+            "messageShortDescription": "Betreff",
             "messageInitTime": "Nachricht erzeugt am",
             "messageText": "Text der Nachricht",
             "messageValidFrom": "Anzeige der Nachricht von",
             "messageValidUntil": "Anzeige bis",
             "image": "Bild zur Nachricht",
             "from": "Absender",
-            "to": "Nachrichtenempfänger"
+            "to": "Nachrichtenempfänger",
+            "messageSave": "Abschicken"
         }
     }
 }

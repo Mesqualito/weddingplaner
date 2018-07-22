@@ -3158,7 +3158,7 @@ follow-redirects@^1.0.0:
   dependencies:
     debug "^3.1.0"
 
-font-awesome@4.7.0:
+font-awesome@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
@@ -6791,9 +6791,9 @@ pretty-error@^2.0.2:
     renderkid "^2.0.1"
     utila "~0.4"
 
-primeng@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/primeng/-/primeng-6.0.0.tgz#73a3523098f2b95da0f18d3705d86cf66f6f0d0e"
+primeng@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/primeng/-/primeng-6.0.1.tgz#51e79189713b4497d6facbcd4e00a49768dbbdce"
 
 private@^0.1.6, private@~0.1.5:
   version "0.1.8"
