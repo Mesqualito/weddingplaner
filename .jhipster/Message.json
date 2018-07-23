@@ -1,0 +1,62 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipValidateRules": "required",
+            "otherEntityRelationshipName": "receivedMessage",
+            "relationshipName": "to",
+            "otherEntityName": "userExtra",
+            "otherEntityField": "user_id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "from",
+            "otherEntityName": "userExtra",
+            "otherEntityField": "user_id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "messageShortDescription",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 6,
+            "fieldValidateRulesMaxlength": 80
+        },
+        {
+            "fieldName": "messageInitTime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "messageText",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "messageValidFrom",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "messageValidUntil",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "image",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        }
+    ],
+    "changelogDate": "20180616143747",
+    "entityTableName": "message",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

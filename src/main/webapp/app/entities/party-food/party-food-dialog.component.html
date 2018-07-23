@@ -1,0 +1,88 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myPartyFoodLabel" jhiTranslate="weddingplanerApp.partyFood.home.createOrEditLabel">Create or edit a Party Food</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!partyFood.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="partyFood.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.partyFood.foodName" for="field_foodName">Food Name</label>
+            <input type="text" class="form-control" name="foodName" id="field_foodName"
+                [(ngModel)]="partyFood.foodName" required minlength="6" maxlength="80"/>
+            <div [hidden]="!(editForm.controls.foodName?.dirty && editForm.controls.foodName?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.foodName?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.foodName?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 6 }">
+                   This field is required to be at least 6 characters.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.foodName?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 80 }">
+                   This field cannot be longer than 80 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.partyFood.foodShortDescription" for="field_foodShortDescription">Food Short Description</label>
+            <input type="text" class="form-control" name="foodShortDescription" id="field_foodShortDescription"
+                [(ngModel)]="partyFood.foodShortDescription" minlength="20" maxlength="1024"/>
+            <div [hidden]="!(editForm.controls.foodShortDescription?.dirty && editForm.controls.foodShortDescription?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.foodShortDescription?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 20 }">
+                   This field is required to be at least 20 characters.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.foodShortDescription?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 1024 }">
+                   This field cannot be longer than 1024 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.partyFood.foodLongDescription" for="field_foodLongDescription">Food Long Description</label>
+            <textarea class="form-control" name="foodLongDescription" id="field_foodLongDescription"
+                [(ngModel)]="partyFood.foodLongDescription" ></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.partyFood.foodQuantityPersons" for="field_foodQuantityPersons">Food Quantity Persons</label>
+            <input type="number" class="form-control" name="foodQuantityPersons" id="field_foodQuantityPersons"
+                [(ngModel)]="partyFood.foodQuantityPersons" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.partyFood.foodBestServeTime" for="field_foodBestServeTime">Food Best Serve Time</label>
+            <div class="d-flex">
+                <input id="field_foodBestServeTime" type="datetime-local" class="form-control" name="foodBestServeTime" [(ngModel)]="partyFood.foodBestServeTime"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.partyFood.foodProposalAccepted" for="field_foodProposalAccepted">Food Proposal Accepted</label>
+            <input type="checkbox" class="form-control" name="foodProposalAccepted" id="field_foodProposalAccepted"
+                [(ngModel)]="partyFood.foodProposalAccepted" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="weddingplanerApp.partyFood.userExtra" for="field_userExtra">User Extra</label>
+            <select class="form-control" id="field_userExtra" name="userExtra" [(ngModel)]="partyFood.userExtra" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userExtraOption.id === partyFood.userExtra?.id ? partyFood.userExtra : userExtraOption" *ngFor="let userExtraOption of userextras; trackBy: trackUserExtraById">{{userExtraOption.user_id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

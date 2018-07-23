@@ -1,0 +1,117 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "userExtra"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "owner",
+            "otherEntityName": "allowControl",
+            "otherEntityRelationshipName": "controlGroup"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipValidateRules": "required",
+            "relationshipName": "partyFood",
+            "otherEntityName": "partyFood",
+            "otherEntityRelationshipName": "userExtra"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "ownedMessage",
+            "otherEntityName": "message",
+            "otherEntityRelationshipName": "from"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "allowedUser",
+            "otherEntityName": "allowControl",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "controlledGroup"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "receivedMessage",
+            "otherEntityName": "message",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "to"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "code",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 8,
+            "fieldValidateRulesMaxlength": 15
+        },
+        {
+            "fieldName": "addressLine1",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "addressLine2",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "city",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "zipCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "country",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "businessPhoneNr",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "privatePhoneNr",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "mobilePhoneNr",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "guestInvitationDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "guestCommitted",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "gender",
+            "fieldType": "Gender",
+            "fieldValues": "FEMALE,MALE"
+        },
+        {
+            "fieldName": "ageGroup",
+            "fieldType": "AgeGroup",
+            "fieldValues": "PRE_BOUNCER_CASTLE,BOUNCER_CASTLE,POST_BOUNCER_CASTLE"
+        }
+    ],
+    "changelogDate": "20180616143744",
+    "javadoc": "'User' is a predesigned special entity\nand can not have additional attributes etc.\n\nList to see User-fields (without constraints, pattern...)\nentity User {\nlogin String\npassword String\nfirstName String\nlastName String\nemail String\nactivated Boolean\nlangKey String\nimageUrl String\nactivationKey String\nresetKey String\nresetDate Instant\n}",
+    "entityTableName": "user_extra",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

@@ -1,0 +1,32 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "allowedUser",
+            "relationshipName": "controlledGroup",
+            "otherEntityName": "userExtra",
+            "otherEntityField": "user_id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "controlGroup",
+            "otherEntityName": "userExtra",
+            "otherEntityField": "user_id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "allowGroup",
+            "fieldType": "AllowGroup",
+            "fieldValues": "ADRESSE,EMAIL,TELEFON"
+        }
+    ],
+    "changelogDate": "20180616143745",
+    "entityTableName": "allow_control",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

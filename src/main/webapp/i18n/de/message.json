@@ -1,0 +1,30 @@
+
+{
+    "weddingplanerApp": {
+        "message" : {
+            "home": {
+                "title": "Messages",
+                "createLabel": "Message erstellen",
+                "createOrEditLabel": "Message erstellen oder bearbeiten",
+                "search": "Suche nach Message"
+            },
+            "created": "Message erstellt mit ID {{ param }}",
+            "updated": "Message aktualisiert mit ID {{ param }}",
+            "deleted": "Message gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Message {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Message"
+            },
+            "messageShortDescription": "Message Short Description",
+            "messageInitTime": "Message Init Time",
+            "messageText": "Message Text",
+            "messageValidFrom": "Message Valid From",
+            "messageValidUntil": "Message Valid Until",
+            "image": "Image",
+            "to": "To",
+            "from": "From"
+        }
+    }
+}

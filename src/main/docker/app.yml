@@ -1,0 +1,19 @@
+version: '2'
+services:
+    weddingplaner-app:
+        image: weddingplaner
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://weddingplaner-postgresql:5432/weddingplaner
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=weddingplaner-elasticsearch:9300
+        ports:
+            - 8080:8080
+    weddingplaner-postgresql:
+        extends:
+            file: postgresql.yml
+            service: weddingplaner-postgresql
+    weddingplaner-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: weddingplaner-elasticsearch

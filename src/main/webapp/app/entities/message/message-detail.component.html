@@ -1,0 +1,63 @@
+
+<div *ngIf="message">
+    <h2><span jhiTranslate="weddingplanerApp.message.detail.title">Message</span> {{message.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="weddingplanerApp.message.messageShortDescription">Message Short Description</span></dt>
+        <dd>
+            <span>{{message.messageShortDescription}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.message.messageInitTime">Message Init Time</span></dt>
+        <dd>
+            <span>{{message.messageInitTime | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.message.messageText">Message Text</span></dt>
+        <dd>
+            <span>{{message.messageText}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.message.messageValidFrom">Message Valid From</span></dt>
+        <dd>
+            <span>{{message.messageValidFrom | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.message.messageValidUntil">Message Valid Until</span></dt>
+        <dd>
+            <span>{{message.messageValidUntil | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.message.image">Image</span></dt>
+        <dd>
+            <div *ngIf="message.image">
+                <a (click)="openFile(message.imageContentType, message.image)">
+                    <img [src]="'data:' + message.imageContentType + ';base64,' + message.image" style="max-width: 100%;" alt="message image"/>
+                </a>
+                {{message.imageContentType}}, {{byteSize(message.image)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.message.to">To</span></dt>
+        <dd>
+            <span *ngFor="let to of message.tos; let last = last">
+                <a [routerLink]="['/user-extra', to?.id ]">{{to.user_id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="weddingplanerApp.message.from">From</span></dt>
+        <dd>
+            <div *ngIf="message.from">
+                <a [routerLink]="['/user-extra', message.from?.id]">{{message.from?.user_id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'message/'+ message.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

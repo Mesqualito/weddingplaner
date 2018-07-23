@@ -1,0 +1,41 @@
+
+{
+    "weddingplanerApp": {
+        "userExtra" : {
+            "home": {
+                "title": "User Extras",
+                "createLabel": "Create a new User Extra",
+                "createOrEditLabel": "Create or edit a User Extra",
+                "search": "Search for User Extra"
+            },
+            "created": "A new User Extra is created with identifier {{ param }}",
+            "updated": "A User Extra is updated with identifier {{ param }}",
+            "deleted": "A User Extra is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete User Extra {{ id }}?"
+            },
+            "detail": {
+                "title": "User Extra"
+            },
+            "code": "Code",
+            "addressLine1": "Address Line 1",
+            "addressLine2": "Address Line 2",
+            "city": "City",
+            "zipCode": "Zip Code",
+            "country": "Country",
+            "businessPhoneNr": "Business Phone Nr",
+            "privatePhoneNr": "Private Phone Nr",
+            "mobilePhoneNr": "Mobile Phone Nr",
+            "guestInvitationDate": "Guest Invitation Date",
+            "guestCommitted": "Guest Committed",
+            "gender": "Gender",
+            "ageGroup": "Age Group",
+            "user": "User",
+            "owner": "Owner",
+            "partyFood": "Party Food",
+            "ownedMessage": "Owned Message",
+            "allowedUser": "Allowed User",
+            "receivedMessage": "Received Message"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "weddingplanerApp": {
+        "AllowGroup" : {
+            "null": "",
+            "ADRESSE": "ADRESSE",
+            "EMAIL": "EMAIL",
+            "TELEFON": "TELEFON"
+        }
+    }
+}

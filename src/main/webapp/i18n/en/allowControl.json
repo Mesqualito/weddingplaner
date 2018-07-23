@@ -1,0 +1,25 @@
+
+{
+    "weddingplanerApp": {
+        "allowControl" : {
+            "home": {
+                "title": "Allow Controls",
+                "createLabel": "Create a new Allow Control",
+                "createOrEditLabel": "Create or edit a Allow Control",
+                "search": "Search for Allow Control"
+            },
+            "created": "A new Allow Control is created with identifier {{ param }}",
+            "updated": "A Allow Control is updated with identifier {{ param }}",
+            "deleted": "A Allow Control is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Allow Control {{ id }}?"
+            },
+            "detail": {
+                "title": "Allow Control"
+            },
+            "allowGroup": "Allow Group",
+            "controlledGroup": "Controlled Group",
+            "controlGroup": "Control Group"
+        }
+    }
+}
