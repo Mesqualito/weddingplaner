@@ -4,8 +4,8 @@ import rocks.gebsattel.hochzeit.WeddingplanerApp;
 
 import rocks.gebsattel.hochzeit.domain.PartyFood;
 import rocks.gebsattel.hochzeit.repository.PartyFoodRepository;
-import rocks.gebsattel.hochzeit.service.PartyFoodService;
 import rocks.gebsattel.hochzeit.repository.search.PartyFoodSearchRepository;
+import rocks.gebsattel.hochzeit.service.PartyFoodService;
 import rocks.gebsattel.hochzeit.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -14,6 +14,8 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -26,11 +28,15 @@ import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.List;
+
 
 import static rocks.gebsattel.hochzeit.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -64,11 +70,18 @@ public class PartyFoodResourceIntTest {
     @Autowired
     private PartyFoodRepository partyFoodRepository;
 
+    
+
     @Autowired
     private PartyFoodService partyFoodService;
 
+    /**
+     * This repository is mocked in the rocks.gebsattel.hochzeit.repository.search test package.
+     *
+     * @see rocks.gebsattel.hochzeit.repository.search.PartyFoodSearchRepositoryMockConfiguration
+     */
     @Autowired
-    private PartyFoodSearchRepository partyFoodSearchRepository;
+    private PartyFoodSearchRepository mockPartyFoodSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -116,7 +129,6 @@ public class PartyFoodResourceIntTest {
 
     @Before
     public void initTest() {
-        partyFoodSearchRepository.deleteAll();
         partyFood = createEntity(em);
     }
 
@@ -143,8 +155,7 @@ public class PartyFoodResourceIntTest {
         assertThat(testPartyFood.isFoodProposalAccepted()).isEqualTo(DEFAULT_FOOD_PROPOSAL_ACCEPTED);
 
         // Validate the PartyFood in Elasticsearch
-        PartyFood partyFoodEs = partyFoodSearchRepository.findOne(testPartyFood.getId());
-        assertThat(partyFoodEs).isEqualToIgnoringGivenFields(testPartyFood);
+        verify(mockPartyFoodSearchRepository, times(1)).save(testPartyFood);
     }
 
     @Test
@@ -164,6 +175,9 @@ public class PartyFoodResourceIntTest {
         // Validate the PartyFood in the database
         List<PartyFood> partyFoodList = partyFoodRepository.findAll();
         assertThat(partyFoodList).hasSize(databaseSizeBeforeCreate);
+
+        // Validate the PartyFood in Elasticsearch
+        verify(mockPartyFoodSearchRepository, times(0)).save(partyFood);
     }
 
     @Test
@@ -202,6 +216,7 @@ public class PartyFoodResourceIntTest {
             .andExpect(jsonPath("$.[*].foodBestServeTime").value(hasItem(DEFAULT_FOOD_BEST_SERVE_TIME.toString())))
             .andExpect(jsonPath("$.[*].foodProposalAccepted").value(hasItem(DEFAULT_FOOD_PROPOSAL_ACCEPTED.booleanValue())));
     }
+    
 
     @Test
     @Transactional
@@ -221,7 +236,6 @@ public class PartyFoodResourceIntTest {
             .andExpect(jsonPath("$.foodBestServeTime").value(DEFAULT_FOOD_BEST_SERVE_TIME.toString()))
             .andExpect(jsonPath("$.foodProposalAccepted").value(DEFAULT_FOOD_PROPOSAL_ACCEPTED.booleanValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingPartyFood() throws Exception {
@@ -235,11 +249,13 @@ public class PartyFoodResourceIntTest {
     public void updatePartyFood() throws Exception {
         // Initialize the database
         partyFoodService.save(partyFood);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockPartyFoodSearchRepository);
 
         int databaseSizeBeforeUpdate = partyFoodRepository.findAll().size();
 
         // Update the partyFood
-        PartyFood updatedPartyFood = partyFoodRepository.findOne(partyFood.getId());
+        PartyFood updatedPartyFood = partyFoodRepository.findById(partyFood.getId()).get();
         // Disconnect from session so that the updates on updatedPartyFood are not directly saved in db
         em.detach(updatedPartyFood);
         updatedPartyFood
@@ -267,8 +283,7 @@ public class PartyFoodResourceIntTest {
         assertThat(testPartyFood.isFoodProposalAccepted()).isEqualTo(UPDATED_FOOD_PROPOSAL_ACCEPTED);
 
         // Validate the PartyFood in Elasticsearch
-        PartyFood partyFoodEs = partyFoodSearchRepository.findOne(testPartyFood.getId());
-        assertThat(partyFoodEs).isEqualToIgnoringGivenFields(testPartyFood);
+        verify(mockPartyFoodSearchRepository, times(1)).save(testPartyFood);
     }
 
     @Test
@@ -282,11 +297,14 @@ public class PartyFoodResourceIntTest {
         restPartyFoodMockMvc.perform(put("/api/party-foods")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(partyFood)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the PartyFood in the database
         List<PartyFood> partyFoodList = partyFoodRepository.findAll();
-        assertThat(partyFoodList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(partyFoodList).hasSize(databaseSizeBeforeUpdate);
+
+        // Validate the PartyFood in Elasticsearch
+        verify(mockPartyFoodSearchRepository, times(0)).save(partyFood);
     }
 
     @Test
@@ -302,13 +320,12 @@ public class PartyFoodResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean partyFoodExistsInEs = partyFoodSearchRepository.exists(partyFood.getId());
-        assertThat(partyFoodExistsInEs).isFalse();
-
         // Validate the database is empty
         List<PartyFood> partyFoodList = partyFoodRepository.findAll();
         assertThat(partyFoodList).hasSize(databaseSizeBeforeDelete - 1);
+
+        // Validate the PartyFood in Elasticsearch
+        verify(mockPartyFoodSearchRepository, times(1)).deleteById(partyFood.getId());
     }
 
     @Test
@@ -316,7 +333,8 @@ public class PartyFoodResourceIntTest {
     public void searchPartyFood() throws Exception {
         // Initialize the database
         partyFoodService.save(partyFood);
-
+        when(mockPartyFoodSearchRepository.search(queryStringQuery("id:" + partyFood.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(partyFood), PageRequest.of(0, 1), 1));
         // Search the partyFood
         restPartyFoodMockMvc.perform(get("/api/_search/party-foods?query=id:" + partyFood.getId()))
             .andExpect(status().isOk())

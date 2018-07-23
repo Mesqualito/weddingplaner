@@ -1,8 +1,11 @@
 package rocks.gebsattel.hochzeit.service;
 
 import rocks.gebsattel.hochzeit.domain.PartyFood;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing PartyFood.
@@ -25,13 +28,14 @@ public interface PartyFoodService {
      */
     Page<PartyFood> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" partyFood.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    PartyFood findOne(Long id);
+    Optional<PartyFood> findOne(Long id);
 
     /**
      * Delete the "id" partyFood.

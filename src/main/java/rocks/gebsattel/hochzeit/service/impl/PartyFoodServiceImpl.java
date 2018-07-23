@@ -9,6 +9,7 @@ import rocks.gebsattel.hochzeit.repository.PartyFoodRepository;
 import rocks.gebsattel.hochzeit.repository.search.PartyFoodSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,7 @@ public class PartyFoodServiceImpl implements PartyFoodService {
      */
     @Override
     public PartyFood save(PartyFood partyFood) {
+<<<<<<< HEAD
         log.debug("Request to save PartyFood : {}", partyFood);
 
      /**
@@ -74,6 +76,9 @@ public class PartyFoodServiceImpl implements PartyFoodService {
         partyFood.setUserExtra(userExtra);
 
         PartyFood result = partyFoodRepository.save(partyFood);
+=======
+        log.debug("Request to save PartyFood : {}", partyFood);        PartyFood result = partyFoodRepository.save(partyFood);
+>>>>>>> jhipster_upgrade
         partyFoodSearchRepository.save(result);
         return result;
     }
@@ -91,6 +96,7 @@ public class PartyFoodServiceImpl implements PartyFoodService {
         return partyFoodRepository.findAll(pageable);
     }
 
+
     /**
      * Get one partyFood by id.
      *
@@ -99,9 +105,9 @@ public class PartyFoodServiceImpl implements PartyFoodService {
      */
     @Override
     @Transactional(readOnly = true)
-    public PartyFood findOne(Long id) {
+    public Optional<PartyFood> findOne(Long id) {
         log.debug("Request to get PartyFood : {}", id);
-        return partyFoodRepository.findOne(id);
+        return partyFoodRepository.findById(id);
     }
 
     /**
@@ -112,8 +118,8 @@ public class PartyFoodServiceImpl implements PartyFoodService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete PartyFood : {}", id);
-        partyFoodRepository.delete(id);
-        partyFoodSearchRepository.delete(id);
+        partyFoodRepository.deleteById(id);
+        partyFoodSearchRepository.deleteById(id);
     }
 
     /**
@@ -127,7 +133,5 @@ public class PartyFoodServiceImpl implements PartyFoodService {
     @Transactional(readOnly = true)
     public Page<PartyFood> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of PartyFoods for query {}", query);
-        Page<PartyFood> result = partyFoodSearchRepository.search(queryStringQuery(query), pageable);
-        return result;
-    }
+        return partyFoodSearchRepository.search(queryStringQuery(query), pageable);    }
 }

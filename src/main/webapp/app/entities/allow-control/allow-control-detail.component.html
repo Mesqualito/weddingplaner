@@ -1,4 +1,29 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="allowControl">
+            <h2><span jhiTranslate="weddingplanerApp.allowControl.detail.title">Allow Control</span> {{allowControl.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="weddingplanerApp.allowControl.allowGroup">Allow Group</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'weddingplanerApp.AllowGroup.' + allowControl.allowGroup}}">{{allowControl.allowGroup}}</span>
+                </dd>
+                <dt><span jhiTranslate="weddingplanerApp.allowControl.controlledGroup">Controlled Group</span></dt>
+                <dd>
+                    <span *ngFor="let controlledGroup of allowControl.controlledGroups; let last = last">
+                        <a [routerLink]="['/user-extra', controlledGroup?.id, 'view' ]">{{controlledGroup.user_id}}</a>{{last ? '' : ', '}}
+                    </span>
+                </dd>
+                <dt><span jhiTranslate="weddingplanerApp.allowControl.controlGroup">Control Group</span></dt>
+                <dd>
+                    <div *ngIf="allowControl.controlGroup">
+                        <a [routerLink]="['/user-extra', allowControl.controlGroup?.id, 'view']">{{allowControl.controlGroup?.user_id}}</a>
+                    </div>
+                </dd>
+            </dl>
 
+<<<<<<< HEAD
 <div *ngIf="allowControl">
     <h2><span jhiTranslate="weddingplanerApp.allowControl.detail.title">Allow Control</span> {{allowControl.controlGroup.user.firstName}} {{allowControl.controlGroup.user.lastName}}</h2>
     <hr>
@@ -35,4 +60,19 @@
             class="btn btn-sm btn-outline-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button>
+=======
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/allow-control', allowControl.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+>>>>>>> jhipster_upgrade
 </div>

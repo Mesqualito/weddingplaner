@@ -1,11 +1,18 @@
 package rocks.gebsattel.hochzeit.service;
 
+<<<<<<< HEAD
+=======
+import rocks.gebsattel.hochzeit.domain.AllowControl;
+
+>>>>>>> jhipster_upgrade
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import rocks.gebsattel.hochzeit.domain.AllowControl;
 import rocks.gebsattel.hochzeit.domain.enumeration.AllowGroup;
 
 import java.util.List;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing AllowControl.
@@ -29,12 +36,19 @@ public interface AllowControlService {
     Page<AllowControl> findAll(Pageable pageable);
 
     /**
+     * Get all the AllowControl with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    Page<AllowControl> findAllWithEagerRelationships(Pageable pageable);
+    
+    /**
      * Get the "id" allowControl.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    AllowControl findOne(Long id);
+    Optional<AllowControl> findOne(Long id);
 
     /**
      * Delete the "id" allowControl.

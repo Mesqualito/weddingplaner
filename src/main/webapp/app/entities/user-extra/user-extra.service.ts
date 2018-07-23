@@ -1,87 +1,81 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IUserExtra } from 'app/shared/model/user-extra.model';
 
-import { UserExtra } from './user-extra.model';
-import { createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IUserExtra>;
+type EntityArrayResponseType = HttpResponse<IUserExtra[]>;
 
-export type EntityResponseType = HttpResponse<UserExtra>;
-
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserExtraService {
-
-    private resourceUrl =  SERVER_API_URL + 'api/user-extras';
+    private resourceUrl = SERVER_API_URL + 'api/user-extras';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/user-extras';
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
+    constructor(private http: HttpClient) {}
 
-    create(userExtra: UserExtra): Observable<EntityResponseType> {
-        const copy = this.convert(userExtra);
-        return this.http.post<UserExtra>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    create(userExtra: IUserExtra): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(userExtra);
+        return this.http
+            .post<IUserExtra>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update(userExtra: UserExtra): Observable<EntityResponseType> {
-        const copy = this.convert(userExtra);
-        return this.http.put<UserExtra>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    update(userExtra: IUserExtra): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(userExtra);
+        return this.http
+            .put<IUserExtra>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<UserExtra>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
+        return this.http
+            .get<IUserExtra>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<HttpResponse<UserExtra[]>> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<UserExtra[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<UserExtra[]>) => this.convertArrayResponse(res));
+        return this.http
+            .get<IUserExtra[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    search(req?: any): Observable<HttpResponse<UserExtra[]>> {
+    search(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<UserExtra[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<UserExtra[]>) => this.convertArrayResponse(res));
+        return this.http
+            .get<IUserExtra[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: UserExtra = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<UserExtra[]>): HttpResponse<UserExtra[]> {
-        const jsonResponse: UserExtra[] = res.body;
-        const body: UserExtra[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to UserExtra.
-     */
-    private convertItemFromServer(userExtra: UserExtra): UserExtra {
-        const copy: UserExtra = Object.assign({}, userExtra);
-        copy.guestInvitationDate = this.dateUtils
-            .convertLocalDateFromServer(userExtra.guestInvitationDate);
+    private convertDateFromClient(userExtra: IUserExtra): IUserExtra {
+        const copy: IUserExtra = Object.assign({}, userExtra, {
+            guestInvitationDate:
+                userExtra.guestInvitationDate != null && userExtra.guestInvitationDate.isValid()
+                    ? userExtra.guestInvitationDate.format(DATE_FORMAT)
+                    : null
+        });
         return copy;
     }
 
-    /**
-     * Convert a UserExtra to a JSON which can be sent to the server.
-     */
-    private convert(userExtra: UserExtra): UserExtra {
-        const copy: UserExtra = Object.assign({}, userExtra);
-        copy.guestInvitationDate = this.dateUtils
-            .convertLocalDateToServer(userExtra.guestInvitationDate);
-        return copy;
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.guestInvitationDate = res.body.guestInvitationDate != null ? moment(res.body.guestInvitationDate) : null;
+        return res;
+    }
+
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((userExtra: IUserExtra) => {
+            userExtra.guestInvitationDate = userExtra.guestInvitationDate != null ? moment(userExtra.guestInvitationDate) : null;
+        });
+        return res;
     }
 }

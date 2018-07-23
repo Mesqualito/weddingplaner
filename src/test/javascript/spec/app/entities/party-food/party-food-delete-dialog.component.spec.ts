@@ -1,15 +1,14 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { WeddingplanerTestModule } from '../../../test.module';
-import { PartyFoodDeleteDialogComponent } from '../../../../../../main/webapp/app/entities/party-food/party-food-delete-dialog.component';
-import { PartyFoodService } from '../../../../../../main/webapp/app/entities/party-food/party-food.service';
+import { PartyFoodDeleteDialogComponent } from 'app/entities/party-food/party-food-delete-dialog.component';
+import { PartyFoodService } from 'app/entities/party-food/party-food.service';
 
 describe('Component Tests', () => {
-
     describe('PartyFood Management Delete Component', () => {
         let comp: PartyFoodDeleteDialogComponent;
         let fixture: ComponentFixture<PartyFoodDeleteDialogComponent>;
@@ -17,19 +16,13 @@ describe('Component Tests', () => {
         let mockEventManager: any;
         let mockActiveModal: any;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [WeddingplanerTestModule],
-                declarations: [PartyFoodDeleteDialogComponent],
-                providers: [
-                    PartyFoodService
-                ]
+                declarations: [PartyFoodDeleteDialogComponent]
             })
-            .overrideTemplate(PartyFoodDeleteDialogComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(PartyFoodDeleteDialogComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(PartyFoodDeleteDialogComponent);
             comp = fixture.componentInstance;
             service = fixture.debugElement.injector.get(PartyFoodService);
@@ -38,24 +31,22 @@ describe('Component Tests', () => {
         });
 
         describe('confirmDelete', () => {
-            it('Should call delete service on confirmDelete',
-                inject([],
-                    fakeAsync(() => {
-                        // GIVEN
-                        spyOn(service, 'delete').and.returnValue(Observable.of({}));
+            it('Should call delete service on confirmDelete', inject(
+                [],
+                fakeAsync(() => {
+                    // GIVEN
+                    spyOn(service, 'delete').and.returnValue(of({}));
 
-                        // WHEN
-                        comp.confirmDelete(123);
-                        tick();
+                    // WHEN
+                    comp.confirmDelete(123);
+                    tick();
 
-                        // THEN
-                        expect(service.delete).toHaveBeenCalledWith(123);
-                        expect(mockActiveModal.dismissSpy).toHaveBeenCalled();
-                        expect(mockEventManager.broadcastSpy).toHaveBeenCalled();
-                    })
-                )
-            );
+                    // THEN
+                    expect(service.delete).toHaveBeenCalledWith(123);
+                    expect(mockActiveModal.dismissSpy).toHaveBeenCalled();
+                    expect(mockEventManager.broadcastSpy).toHaveBeenCalled();
+                })
+            ));
         });
     });
-
 });

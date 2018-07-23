@@ -2,6 +2,7 @@ package rocks.gebsattel.hochzeit.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import rocks.gebsattel.hochzeit.security.AuthoritiesConstants;
 import rocks.gebsattel.hochzeit.security.SecurityUtils;
 import rocks.gebsattel.hochzeit.service.MessageService;
 import rocks.gebsattel.hochzeit.service.UserService;
+
+import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -51,6 +54,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public Message save(Message message) {
+<<<<<<< HEAD
         log.debug("Request to save Message : {}", message);
 
         /**
@@ -62,6 +66,9 @@ public class MessageServiceImpl implements MessageService {
         message.setFrom(userExtra);
 
         Message result = messageRepository.save(message);
+=======
+        log.debug("Request to save Message : {}", message);        Message result = messageRepository.save(message);
+>>>>>>> jhipster_upgrade
         messageSearchRepository.save(result);
         return result;
     }
@@ -86,6 +93,16 @@ public class MessageServiceImpl implements MessageService {
     }
 
     /**
+     * Get all the Message with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<Message> findAllWithEagerRelationships(Pageable pageable) {
+        return messageRepository.findAllWithEagerRelationships(pageable);
+    }
+    
+
+    /**
      * Get one message by id.
      *
      * @param id the id of the entity
@@ -93,6 +110,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     @Transactional(readOnly = true)
+<<<<<<< HEAD
     public Message findOne(Long id) {
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             log.debug("Request to get all Messages from : {}", userService.getUserWithAuthorities().get().getLogin());
@@ -106,6 +124,11 @@ public class MessageServiceImpl implements MessageService {
             } else
                 return null;
         }
+=======
+    public Optional<Message> findOne(Long id) {
+        log.debug("Request to get Message : {}", id);
+        return messageRepository.findOneWithEagerRelationships(id);
+>>>>>>> jhipster_upgrade
     }
 
     /**
@@ -116,8 +139,8 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Message : {}", id);
-        messageRepository.delete(id);
-        messageSearchRepository.delete(id);
+        messageRepository.deleteById(id);
+        messageSearchRepository.deleteById(id);
     }
 
     /**
@@ -131,7 +154,5 @@ public class MessageServiceImpl implements MessageService {
     @Transactional(readOnly = true)
     public Page<Message> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Messages for query {}", query);
-        Page<Message> result = messageSearchRepository.search(queryStringQuery(query), pageable);
-        return result;
-    }
+        return messageSearchRepository.search(queryStringQuery(query), pageable);    }
 }

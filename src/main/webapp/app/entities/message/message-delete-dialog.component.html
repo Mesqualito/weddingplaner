@@ -9,11 +9,19 @@
         <p jhiTranslate="weddingplanerApp.message.delete.question" translateValues="{id: '{{message.id}}'}">Are you sure you want to delete this Message?</p>
     </div>
     <div class="modal-footer">
+<<<<<<< HEAD
         <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" class="btn btn-sm btn-outline-danger">
             <span class="fa fa-remove"></span>&nbsp;<span jhiTranslate="entity.action.delete">Delete</span>
+=======
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" class="btn btn-danger">
+            <fa-icon [icon]="'times'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Delete</span>
+>>>>>>> jhipster_upgrade
         </button>
     </div>
 </form>

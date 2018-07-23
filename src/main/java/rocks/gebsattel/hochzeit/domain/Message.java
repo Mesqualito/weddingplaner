@@ -1,5 +1,6 @@
 package rocks.gebsattel.hochzeit.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -57,12 +58,22 @@ public class Message implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @NotNull
     @JoinTable(name = "message_to",
+<<<<<<< HEAD
                joinColumns = @JoinColumn(name="messages_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="tos_id", referencedColumnName="user_id"))
     private Set<UserExtra> tos = new HashSet<>();
 
     @ManyToOne(optional = false)
     // @NotNull
+=======
+               joinColumns = @JoinColumn(name = "messages_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "tos_id", referencedColumnName = "id"))
+    private Set<UserExtra> tos = new HashSet<>();
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("ownedMessages")
+>>>>>>> jhipster_upgrade
     private UserExtra from;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

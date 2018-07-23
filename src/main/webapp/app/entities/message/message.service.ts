@@ -1,95 +1,86 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IMessage } from 'app/shared/model/message.model';
 
-import { Message } from './message.model';
-import { createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IMessage>;
+type EntityArrayResponseType = HttpResponse<IMessage[]>;
 
-export type EntityResponseType = HttpResponse<Message>;
-
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MessageService {
-
-    private resourceUrl =  SERVER_API_URL + 'api/messages';
+    private resourceUrl = SERVER_API_URL + 'api/messages';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/messages';
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
+    constructor(private http: HttpClient) {}
 
-    create(message: Message): Observable<EntityResponseType> {
-        const copy = this.convert(message);
-        return this.http.post<Message>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    create(message: IMessage): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(message);
+        return this.http
+            .post<IMessage>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update(message: Message): Observable<EntityResponseType> {
-        const copy = this.convert(message);
-        return this.http.put<Message>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    update(message: IMessage): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(message);
+        return this.http
+            .put<IMessage>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<Message>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
+        return this.http
+            .get<IMessage>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<HttpResponse<Message[]>> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<Message[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Message[]>) => this.convertArrayResponse(res));
+        return this.http
+            .get<IMessage[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    search(req?: any): Observable<HttpResponse<Message[]>> {
+    search(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<Message[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<Message[]>) => this.convertArrayResponse(res));
+        return this.http
+            .get<IMessage[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: Message = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<Message[]>): HttpResponse<Message[]> {
-        const jsonResponse: Message[] = res.body;
-        const body: Message[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to Message.
-     */
-    private convertItemFromServer(message: Message): Message {
-        const copy: Message = Object.assign({}, message);
-        copy.messageInitTime = this.dateUtils
-            .convertDateTimeFromServer(message.messageInitTime);
-        copy.messageValidFrom = this.dateUtils
-            .convertDateTimeFromServer(message.messageValidFrom);
-        copy.messageValidUntil = this.dateUtils
-            .convertDateTimeFromServer(message.messageValidUntil);
+    private convertDateFromClient(message: IMessage): IMessage {
+        const copy: IMessage = Object.assign({}, message, {
+            messageInitTime: message.messageInitTime != null && message.messageInitTime.isValid() ? message.messageInitTime.toJSON() : null,
+            messageValidFrom:
+                message.messageValidFrom != null && message.messageValidFrom.isValid() ? message.messageValidFrom.toJSON() : null,
+            messageValidUntil:
+                message.messageValidUntil != null && message.messageValidUntil.isValid() ? message.messageValidUntil.toJSON() : null
+        });
         return copy;
     }
 
-    /**
-     * Convert a Message to a JSON which can be sent to the server.
-     */
-    private convert(message: Message): Message {
-        const copy: Message = Object.assign({}, message);
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.messageInitTime = res.body.messageInitTime != null ? moment(res.body.messageInitTime) : null;
+        res.body.messageValidFrom = res.body.messageValidFrom != null ? moment(res.body.messageValidFrom) : null;
+        res.body.messageValidUntil = res.body.messageValidUntil != null ? moment(res.body.messageValidUntil) : null;
+        return res;
+    }
 
-        copy.messageInitTime = this.dateUtils.toDate(message.messageInitTime);
-
-        copy.messageValidFrom = this.dateUtils.toDate(message.messageValidFrom);
-
-        copy.messageValidUntil = this.dateUtils.toDate(message.messageValidUntil);
-        return copy;
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((message: IMessage) => {
+            message.messageInitTime = message.messageInitTime != null ? moment(message.messageInitTime) : null;
+            message.messageValidFrom = message.messageValidFrom != null ? moment(message.messageValidFrom) : null;
+            message.messageValidUntil = message.messageValidUntil != null ? moment(message.messageValidUntil) : null;
+        });
+        return res;
     }
 }

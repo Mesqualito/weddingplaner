@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="row">
     <div class="col-sm-8">
         <h2 jhiTranslate="weddingplanerApp.message.home.title">Messages</h2>
@@ -10,10 +11,19 @@
             <span class="fa fa-plus"></span>
             <ng-template #addTooltip>
             <span class="hidden-sm-down" jhiTranslate="weddingplanerApp.message.home.createLabel">
+=======
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="weddingplanerApp.message.home.title">Messages</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-message" [routerLink]="['/message/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="weddingplanerApp.message.home.createLabel">
+>>>>>>> jhipster_upgrade
             Create new Message
             </span>
             </ng-template>
         </button>
+<<<<<<< HEAD
         <jhi-alert></jhi-alert>
         <form name="searchForm" class="form-inline">
             <div class="input-group w-100 mr-1">
@@ -126,6 +136,87 @@
     <div class="row justify-content-center">
         <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5"
                         [itemsPerPage]="itemsPerPage"></jhi-item-count>
+=======
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'weddingplanerApp.message.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon [icon]="'search'"></fa-icon>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="messages">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="messageShortDescription"><span jhiTranslate="weddingplanerApp.message.messageShortDescription">Message Short Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="messageInitTime"><span jhiTranslate="weddingplanerApp.message.messageInitTime">Message Init Time</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="messageText"><span jhiTranslate="weddingplanerApp.message.messageText">Message Text</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="messageValidFrom"><span jhiTranslate="weddingplanerApp.message.messageValidFrom">Message Valid From</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="messageValidUntil"><span jhiTranslate="weddingplanerApp.message.messageValidUntil">Message Valid Until</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="image"><span jhiTranslate="weddingplanerApp.message.image">Image</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="from.user_id"><span jhiTranslate="weddingplanerApp.message.from">From</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let message of messages ;trackBy: trackId">
+                <td><a [routerLink]="['/message', message.id, 'view' ]">{{message.id}}</a></td>
+                <td>{{message.messageShortDescription}}</td>
+                <td>{{message.messageInitTime | date:'medium'}}</td>
+                <td>{{message.messageText}}</td>
+                <td>{{message.messageValidFrom | date:'medium'}}</td>
+                <td>{{message.messageValidUntil | date:'medium'}}</td>
+                <td>
+                    <a *ngIf="message.image" (click)="openFile(message.imageContentType, message.image)">
+                        <img [src]="'data:' + message.imageContentType + ';base64,' + message.image" style="max-height: 30px;" alt="message image"/>
+                    </a>
+                    <span *ngIf="message.image">{{message.imageContentType}}, {{byteSize(message.image)}}</span>
+                </td>
+                <td>
+                    <div *ngIf="message.from">
+                        <a [routerLink]="['../user-extra', message.from?.id, 'view' ]" >{{message.from?.user_id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/message', message.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/message', message.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'message/'+ message.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+>>>>>>> jhipster_upgrade
     </div>
     <div class="row justify-content-center">
         <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage"

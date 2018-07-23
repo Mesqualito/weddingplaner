@@ -1,51 +1,30 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { WeddingplanerSharedModule } from '../../shared';
-import { WeddingplanerAdminModule } from '../../admin/admin.module';
+import { WeddingplanerSharedModule } from 'app/shared';
+import { WeddingplanerAdminModule } from 'app/admin/admin.module';
 import {
-    UserExtraService,
-    UserExtraPopupService,
     UserExtraComponent,
     UserExtraDetailComponent,
-    UserExtraDialogComponent,
-    UserExtraPopupComponent,
+    UserExtraUpdateComponent,
     UserExtraDeletePopupComponent,
     UserExtraDeleteDialogComponent,
     userExtraRoute,
-    userExtraPopupRoute,
+    userExtraPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...userExtraRoute,
-    ...userExtraPopupRoute,
-];
+const ENTITY_STATES = [...userExtraRoute, ...userExtraPopupRoute];
 
 @NgModule({
-    imports: [
-        WeddingplanerSharedModule,
-        WeddingplanerAdminModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [WeddingplanerSharedModule, WeddingplanerAdminModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         UserExtraComponent,
         UserExtraDetailComponent,
-        UserExtraDialogComponent,
+        UserExtraUpdateComponent,
         UserExtraDeleteDialogComponent,
-        UserExtraPopupComponent,
-        UserExtraDeletePopupComponent,
+        UserExtraDeletePopupComponent
     ],
-    entryComponents: [
-        UserExtraComponent,
-        UserExtraDialogComponent,
-        UserExtraPopupComponent,
-        UserExtraDeleteDialogComponent,
-        UserExtraDeletePopupComponent,
-    ],
-    providers: [
-        UserExtraService,
-        UserExtraPopupService,
-    ],
+    entryComponents: [UserExtraComponent, UserExtraUpdateComponent, UserExtraDeleteDialogComponent, UserExtraDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class WeddingplanerUserExtraModule {}

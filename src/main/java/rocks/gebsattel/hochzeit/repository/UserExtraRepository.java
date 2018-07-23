@@ -3,13 +3,12 @@ package rocks.gebsattel.hochzeit.repository;
 import org.springframework.data.repository.query.Param;
 import rocks.gebsattel.hochzeit.domain.AllowControl;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the UserExtra entity.
+ * Spring Data  repository for the UserExtra entity.
  */
 @SuppressWarnings("unused")
 @Repository

@@ -2,19 +2,20 @@ import {Component, OnInit} from '@angular/core';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
+<<<<<<< HEAD
 import {Principal} from '../shared';
 import { Router } from '@angular/router';
 
 import { LoginService } from '../shared/login/login.service';
 import { StateStorageService } from '../shared/auth/state-storage.service';
+=======
+import { LoginModalService, Principal, Account } from 'app/core';
+>>>>>>> jhipster_upgrade
 
 @Component({
     selector: 'jhi-home',
     templateUrl: './home.component.html',
-    styleUrls: [
-        'home.scss'
-    ]
-
+    styleUrls: ['home.scss']
 })
 export class HomeComponent implements OnInit {
     authenticationError: boolean;
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit {
     vorname: string;
     code: string;
 
+<<<<<<< HEAD
     constructor(
         private principal: Principal,
         private jhiAlertService: JhiAlertService,
@@ -33,17 +35,20 @@ export class HomeComponent implements OnInit {
         private router: Router
     ) {
     }
+=======
+    constructor(private principal: Principal, private loginModalService: LoginModalService, private eventManager: JhiEventManager) {}
+>>>>>>> jhipster_upgrade
 
     ngOnInit() {
-        this.principal.identity().then((account) => {
+        this.principal.identity().then(account => {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
     }
 
     registerAuthenticationSuccess() {
-        this.eventManager.subscribe('authenticationSuccess', (message) => {
-            this.principal.identity().then((account) => {
+        this.eventManager.subscribe('authenticationSuccess', message => {
+            this.principal.identity().then(account => {
                 this.account = account;
             });
         });

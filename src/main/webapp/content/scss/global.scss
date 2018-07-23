@@ -48,7 +48,15 @@
 Bootstrap tweaks
 ===============================================================*/
 
+<<<<<<< HEAD
 body {
+=======
+body,
+h1,
+h2,
+h3,
+h4 {
+>>>>>>> jhipster_upgrade
     font-weight: 300;
     background: url('../../content/images/hintergrund.jpg') center center;
     background-size: cover;
@@ -97,7 +105,12 @@ Generic styles
 ========================================================================== */
 
 /* Error highlight on input fields */
+<<<<<<< HEAD
 .ng-valid[required], .ng-valid.required {
+=======
+.ng-valid[required],
+.ng-valid.required {
+>>>>>>> jhipster_upgrade
     border-left: 5px solid green;
 }
 
@@ -146,7 +159,11 @@ Generic styles
 }
 
 .footer {
+<<<<<<< HEAD
     border-top: 1px solid rgba(0, 0, 0, .125);
+=======
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+>>>>>>> jhipster_upgrade
 }
 
 /* ==========================================================================
@@ -156,7 +173,8 @@ a:hover {
     cursor: pointer;
 }
 
-.hand, [jhisortby] {
+.hand,
+[jhisortby] {
     cursor: pointer;
 }
 
@@ -207,7 +225,7 @@ entity tables helpers
 ========================================================================== */
 
 /* Remove Bootstrap padding from the element
-   http://stackoverflow.com/questions/19562903/remove-padding-from-columns-in-bootstrap-3 */
+http://stackoverflow.com/questions/19562903/remove-padding-from-columns-in-bootstrap-3 */
 @mixin no-padding($side) {
     @if $side == 'all' {
         .no-padding {
@@ -219,6 +237,7 @@ entity tables helpers
         }
     }
 }
+<<<<<<< HEAD
 
 @include no-padding("left");
 @include no-padding("right");
@@ -228,12 +247,22 @@ entity tables helpers
 
 /* bootstrap 3 input-group 100% width
    http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
+=======
+@include no-padding('left');
+@include no-padding('right');
+@include no-padding('top');
+@include no-padding('bottom');
+@include no-padding('all');
+
+/* bootstrap 3 input-group 100% width
+http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
+>>>>>>> jhipster_upgrade
 .width-min {
     width: 1% !important;
 }
 
 /* Makes toolbar not wrap on smaller screens
-   http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
+http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
 .flex-btn-group-container {
     display: -webkit-flex;
     display: flex;
@@ -268,7 +297,10 @@ entity detail page css
 /* ==========================================================================
 ui bootstrap tweaks
 ========================================================================== */
-.nav, .pagination, .carousel, .panel-title a {
+.nav,
+.pagination,
+.carousel,
+.panel-title a {
     cursor: pointer;
 }
 
@@ -288,6 +320,7 @@ ui bootstrap tweaks
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+<<<<<<< HEAD
 
 /* ==========================================================================
 --- ui primeng autocomplete tweaks ---
@@ -300,5 +333,7 @@ ui bootstrap tweaks
 .ui-autocomplete {
     width: 100%;
 }
+=======
+>>>>>>> jhipster_upgrade
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */

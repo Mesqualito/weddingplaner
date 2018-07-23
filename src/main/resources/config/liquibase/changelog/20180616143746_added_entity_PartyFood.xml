@@ -38,7 +38,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="food_best_serve_time" type="timestamp">
+            <column name="food_best_serve_time" type="datetime">
                 <constraints nullable="true" />
             </column>
 

@@ -1,51 +1,29 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { WeddingplanerSharedModule } from '../../shared';
+import { WeddingplanerSharedModule } from 'app/shared';
 import {
-    PartyFoodService,
-    PartyFoodPopupService,
     PartyFoodComponent,
     PartyFoodDetailComponent,
-    PartyFoodDialogComponent,
-    PartyFoodPopupComponent,
+    PartyFoodUpdateComponent,
     PartyFoodDeletePopupComponent,
     PartyFoodDeleteDialogComponent,
     partyFoodRoute,
-    partyFoodPopupRoute,
-    PartyFoodResolvePagingParams,
+    partyFoodPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...partyFoodRoute,
-    ...partyFoodPopupRoute,
-];
+const ENTITY_STATES = [...partyFoodRoute, ...partyFoodPopupRoute];
 
 @NgModule({
-    imports: [
-        WeddingplanerSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
+    imports: [WeddingplanerSharedModule, RouterModule.forChild(ENTITY_STATES)],
     declarations: [
         PartyFoodComponent,
         PartyFoodDetailComponent,
-        PartyFoodDialogComponent,
+        PartyFoodUpdateComponent,
         PartyFoodDeleteDialogComponent,
-        PartyFoodPopupComponent,
-        PartyFoodDeletePopupComponent,
+        PartyFoodDeletePopupComponent
     ],
-    entryComponents: [
-        PartyFoodComponent,
-        PartyFoodDialogComponent,
-        PartyFoodPopupComponent,
-        PartyFoodDeleteDialogComponent,
-        PartyFoodDeletePopupComponent,
-    ],
-    providers: [
-        PartyFoodService,
-        PartyFoodPopupService,
-        PartyFoodResolvePagingParams,
-    ],
+    entryComponents: [PartyFoodComponent, PartyFoodUpdateComponent, PartyFoodDeleteDialogComponent, PartyFoodDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class WeddingplanerPartyFoodModule {}
