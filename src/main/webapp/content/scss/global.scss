@@ -48,15 +48,11 @@
 Bootstrap tweaks
 ===============================================================*/
 
-<<<<<<< HEAD
-body {
-=======
 body,
 h1,
 h2,
 h3,
 h4 {
->>>>>>> jhipster_upgrade
     font-weight: 300;
     background: url('../../content/images/hintergrund.jpg') center center;
     background-size: cover;
@@ -105,12 +101,8 @@ Generic styles
 ========================================================================== */
 
 /* Error highlight on input fields */
-<<<<<<< HEAD
-.ng-valid[required], .ng-valid.required {
-=======
 .ng-valid[required],
 .ng-valid.required {
->>>>>>> jhipster_upgrade
     border-left: 5px solid green;
 }
 
@@ -159,11 +151,7 @@ Generic styles
 }
 
 .footer {
-<<<<<<< HEAD
-    border-top: 1px solid rgba(0, 0, 0, .125);
-=======
     border-top: 1px solid rgba(0, 0, 0, 0.125);
->>>>>>> jhipster_upgrade
 }
 
 /* ==========================================================================
@@ -237,17 +225,7 @@ http://stackoverflow.com/questions/19562903/remove-padding-from-columns-in-boots
         }
     }
 }
-<<<<<<< HEAD
 
-@include no-padding("left");
-@include no-padding("right");
-@include no-padding("top");
-@include no-padding("bottom");
-@include no-padding("all");
-
-/* bootstrap 3 input-group 100% width
-   http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
-=======
 @include no-padding('left');
 @include no-padding('right');
 @include no-padding('top');
@@ -256,7 +234,6 @@ http://stackoverflow.com/questions/19562903/remove-padding-from-columns-in-boots
 
 /* bootstrap 3 input-group 100% width
 http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
->>>>>>> jhipster_upgrade
 .width-min {
     width: 1% !important;
 }
@@ -320,7 +297,6 @@ ui bootstrap tweaks
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-<<<<<<< HEAD
 
 /* ==========================================================================
 --- ui primeng autocomplete tweaks ---
@@ -333,7 +309,5 @@ ui bootstrap tweaks
 .ui-autocomplete {
     width: 100%;
 }
-=======
->>>>>>> jhipster_upgrade
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
