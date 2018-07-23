@@ -1,7 +1,8 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AutoCompleteModule } from 'primeng/primeng';
 
 import { WeddingplanerSharedModule } from '../../shared';
 import {
@@ -26,6 +27,7 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         WeddingplanerSharedModule,
+        BrowserAnimationsModule,
         AutoCompleteModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
