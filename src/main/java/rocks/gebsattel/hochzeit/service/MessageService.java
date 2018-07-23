@@ -1,8 +1,11 @@
 package rocks.gebsattel.hochzeit.service;
 
 import rocks.gebsattel.hochzeit.domain.Message;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing Message.
@@ -26,12 +29,19 @@ public interface MessageService {
     Page<Message> findAll(Pageable pageable);
 
     /**
+     * Get all the Message with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    Page<Message> findAllWithEagerRelationships(Pageable pageable);
+    
+    /**
      * Get the "id" message.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    Message findOne(Long id);
+    Optional<Message> findOne(Long id);
 
     /**
      * Delete the "id" message.

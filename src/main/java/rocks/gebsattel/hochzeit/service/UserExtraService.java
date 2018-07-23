@@ -1,7 +1,9 @@
 package rocks.gebsattel.hochzeit.service;
 
 import rocks.gebsattel.hochzeit.domain.UserExtra;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service Interface for managing UserExtra.
@@ -23,13 +25,14 @@ public interface UserExtraService {
      */
     List<UserExtra> findAll();
 
+
     /**
      * Get the "id" userExtra.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    UserExtra findOne(Long id);
+    Optional<UserExtra> findOne(Long id);
 
     /**
      * Delete the "id" userExtra.

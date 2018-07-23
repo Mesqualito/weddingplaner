@@ -1,87 +1,79 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { map } from 'rxjs/operators';
 
-import { JhiDateUtils } from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IPartyFood } from 'app/shared/model/party-food.model';
 
-import { PartyFood } from './party-food.model';
-import { createRequestOption } from '../../shared';
+type EntityResponseType = HttpResponse<IPartyFood>;
+type EntityArrayResponseType = HttpResponse<IPartyFood[]>;
 
-export type EntityResponseType = HttpResponse<PartyFood>;
-
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PartyFoodService {
-
-    private resourceUrl =  SERVER_API_URL + 'api/party-foods';
+    private resourceUrl = SERVER_API_URL + 'api/party-foods';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/party-foods';
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
+    constructor(private http: HttpClient) {}
 
-    create(partyFood: PartyFood): Observable<EntityResponseType> {
-        const copy = this.convert(partyFood);
-        return this.http.post<PartyFood>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    create(partyFood: IPartyFood): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(partyFood);
+        return this.http
+            .post<IPartyFood>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update(partyFood: PartyFood): Observable<EntityResponseType> {
-        const copy = this.convert(partyFood);
-        return this.http.put<PartyFood>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
+    update(partyFood: IPartyFood): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(partyFood);
+        return this.http
+            .put<IPartyFood>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<PartyFood>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
+        return this.http
+            .get<IPartyFood>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    query(req?: any): Observable<HttpResponse<PartyFood[]>> {
+    query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<PartyFood[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<PartyFood[]>) => this.convertArrayResponse(res));
+        return this.http
+            .get<IPartyFood[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    search(req?: any): Observable<HttpResponse<PartyFood[]>> {
+    search(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
-        return this.http.get<PartyFood[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<PartyFood[]>) => this.convertArrayResponse(res));
+        return this.http
+            .get<IPartyFood[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    private convertResponse(res: EntityResponseType): EntityResponseType {
-        const body: PartyFood = this.convertItemFromServer(res.body);
-        return res.clone({body});
-    }
-
-    private convertArrayResponse(res: HttpResponse<PartyFood[]>): HttpResponse<PartyFood[]> {
-        const jsonResponse: PartyFood[] = res.body;
-        const body: PartyFood[] = [];
-        for (let i = 0; i < jsonResponse.length; i++) {
-            body.push(this.convertItemFromServer(jsonResponse[i]));
-        }
-        return res.clone({body});
-    }
-
-    /**
-     * Convert a returned JSON object to PartyFood.
-     */
-    private convertItemFromServer(partyFood: PartyFood): PartyFood {
-        const copy: PartyFood = Object.assign({}, partyFood);
-        copy.foodBestServeTime = this.dateUtils
-            .convertDateTimeFromServer(partyFood.foodBestServeTime);
+    private convertDateFromClient(partyFood: IPartyFood): IPartyFood {
+        const copy: IPartyFood = Object.assign({}, partyFood, {
+            foodBestServeTime:
+                partyFood.foodBestServeTime != null && partyFood.foodBestServeTime.isValid() ? partyFood.foodBestServeTime.toJSON() : null
+        });
         return copy;
     }
 
-    /**
-     * Convert a PartyFood to a JSON which can be sent to the server.
-     */
-    private convert(partyFood: PartyFood): PartyFood {
-        const copy: PartyFood = Object.assign({}, partyFood);
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.foodBestServeTime = res.body.foodBestServeTime != null ? moment(res.body.foodBestServeTime) : null;
+        return res;
+    }
 
-        copy.foodBestServeTime = this.dateUtils.toDate(partyFood.foodBestServeTime);
-        return copy;
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((partyFood: IPartyFood) => {
+            partyFood.foodBestServeTime = partyFood.foodBestServeTime != null ? moment(partyFood.foodBestServeTime) : null;
+        });
+        return res;
     }
 }

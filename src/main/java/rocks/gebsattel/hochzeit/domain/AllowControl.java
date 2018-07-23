@@ -1,5 +1,6 @@
 package rocks.gebsattel.hochzeit.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -36,11 +37,12 @@ public class AllowControl implements Serializable {
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "allow_control_controlled_group",
-               joinColumns = @JoinColumn(name="allow_controls_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="controlled_groups_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name = "allow_controls_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "controlled_groups_id", referencedColumnName = "id"))
     private Set<UserExtra> controlledGroups = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnoreProperties("owners")
     private UserExtra controlGroup;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

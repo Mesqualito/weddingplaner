@@ -6,10 +6,13 @@ import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
 import rocks.gebsattel.hochzeit.repository.search.UserExtraSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -41,8 +44,7 @@ public class UserExtraServiceImpl implements UserExtraService {
      */
     @Override
     public UserExtra save(UserExtra userExtra) {
-        log.debug("Request to save UserExtra : {}", userExtra);
-        UserExtra result = userExtraRepository.save(userExtra);
+        log.debug("Request to save UserExtra : {}", userExtra);        UserExtra result = userExtraRepository.save(userExtra);
         userExtraSearchRepository.save(result);
         return result;
     }
@@ -59,6 +61,7 @@ public class UserExtraServiceImpl implements UserExtraService {
         return userExtraRepository.findAll();
     }
 
+
     /**
      * Get one userExtra by id.
      *
@@ -67,9 +70,9 @@ public class UserExtraServiceImpl implements UserExtraService {
      */
     @Override
     @Transactional(readOnly = true)
-    public UserExtra findOne(Long id) {
+    public Optional<UserExtra> findOne(Long id) {
         log.debug("Request to get UserExtra : {}", id);
-        return userExtraRepository.findOne(id);
+        return userExtraRepository.findById(id);
     }
 
     /**
@@ -80,8 +83,8 @@ public class UserExtraServiceImpl implements UserExtraService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete UserExtra : {}", id);
-        userExtraRepository.delete(id);
-        userExtraSearchRepository.delete(id);
+        userExtraRepository.deleteById(id);
+        userExtraSearchRepository.deleteById(id);
     }
 
     /**

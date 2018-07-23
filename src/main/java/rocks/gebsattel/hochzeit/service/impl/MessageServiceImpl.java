@@ -6,11 +6,14 @@ import rocks.gebsattel.hochzeit.repository.MessageRepository;
 import rocks.gebsattel.hochzeit.repository.search.MessageSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -40,8 +43,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public Message save(Message message) {
-        log.debug("Request to save Message : {}", message);
-        Message result = messageRepository.save(message);
+        log.debug("Request to save Message : {}", message);        Message result = messageRepository.save(message);
         messageSearchRepository.save(result);
         return result;
     }
@@ -60,6 +62,16 @@ public class MessageServiceImpl implements MessageService {
     }
 
     /**
+     * Get all the Message with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<Message> findAllWithEagerRelationships(Pageable pageable) {
+        return messageRepository.findAllWithEagerRelationships(pageable);
+    }
+    
+
+    /**
      * Get one message by id.
      *
      * @param id the id of the entity
@@ -67,7 +79,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Message findOne(Long id) {
+    public Optional<Message> findOne(Long id) {
         log.debug("Request to get Message : {}", id);
         return messageRepository.findOneWithEagerRelationships(id);
     }
@@ -80,8 +92,8 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Message : {}", id);
-        messageRepository.delete(id);
-        messageSearchRepository.delete(id);
+        messageRepository.deleteById(id);
+        messageSearchRepository.deleteById(id);
     }
 
     /**
@@ -95,7 +107,5 @@ public class MessageServiceImpl implements MessageService {
     @Transactional(readOnly = true)
     public Page<Message> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Messages for query {}", query);
-        Page<Message> result = messageSearchRepository.search(queryStringQuery(query), pageable);
-        return result;
-    }
+        return messageSearchRepository.search(queryStringQuery(query), pageable);    }
 }

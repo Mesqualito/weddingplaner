@@ -77,7 +77,7 @@ public class MessageResource {
     public ResponseEntity<Message> updateMessage(@Valid @RequestBody Message message) throws URISyntaxException {
         log.debug("REST request to update Message : {}", message);
         if (message.getId() == null) {
-            return createMessage(message);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Message result = messageService.save(message);
         return ResponseEntity.ok()
@@ -89,14 +89,20 @@ public class MessageResource {
      * GET  /messages : get all the messages.
      *
      * @param pageable the pagination information
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of messages in body
      */
     @GetMapping("/messages")
     @Timed
-    public ResponseEntity<List<Message>> getAllMessages(Pageable pageable) {
+    public ResponseEntity<List<Message>> getAllMessages(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of Messages");
-        Page<Message> page = messageService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/messages");
+        Page<Message> page;
+        if (eagerload) {
+            page = messageService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = messageService.findAll(pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/messages?eagerload=%b", eagerload));
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -110,8 +116,8 @@ public class MessageResource {
     @Timed
     public ResponseEntity<Message> getMessage(@PathVariable Long id) {
         log.debug("REST request to get Message : {}", id);
-        Message message = messageService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(message));
+        Optional<Message> message = messageService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(message);
     }
 
     /**

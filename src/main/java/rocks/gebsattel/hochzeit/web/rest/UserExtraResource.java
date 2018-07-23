@@ -72,7 +72,7 @@ public class UserExtraResource {
     public ResponseEntity<UserExtra> updateUserExtra(@Valid @RequestBody UserExtra userExtra) throws URISyntaxException {
         log.debug("REST request to update UserExtra : {}", userExtra);
         if (userExtra.getId() == null) {
-            return createUserExtra(userExtra);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         UserExtra result = userExtraService.save(userExtra);
         return ResponseEntity.ok()
@@ -90,7 +90,7 @@ public class UserExtraResource {
     public List<UserExtra> getAllUserExtras() {
         log.debug("REST request to get all UserExtras");
         return userExtraService.findAll();
-        }
+    }
 
     /**
      * GET  /user-extras/:id : get the "id" userExtra.
@@ -102,8 +102,8 @@ public class UserExtraResource {
     @Timed
     public ResponseEntity<UserExtra> getUserExtra(@PathVariable Long id) {
         log.debug("REST request to get UserExtra : {}", id);
-        UserExtra userExtra = userExtraService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(userExtra));
+        Optional<UserExtra> userExtra = userExtraService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(userExtra);
     }
 
     /**

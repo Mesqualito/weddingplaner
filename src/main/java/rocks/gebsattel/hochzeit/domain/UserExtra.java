@@ -101,17 +101,14 @@ public class UserExtra implements Serializable {
     private User user;
 
     @OneToMany(mappedBy = "controlGroup")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AllowControl> owners = new HashSet<>();
 
     @OneToMany(mappedBy = "userExtra")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PartyFood> partyFoods = new HashSet<>();
 
     @OneToMany(mappedBy = "from")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Message> ownedMessages = new HashSet<>();
 

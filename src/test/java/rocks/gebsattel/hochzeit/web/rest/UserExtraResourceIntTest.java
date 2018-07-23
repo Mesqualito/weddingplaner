@@ -6,8 +6,8 @@ import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.domain.PartyFood;
 import rocks.gebsattel.hochzeit.repository.UserExtraRepository;
-import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.repository.search.UserExtraSearchRepository;
+import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -27,11 +27,15 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
+
 
 import static rocks.gebsattel.hochzeit.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -88,11 +92,18 @@ public class UserExtraResourceIntTest {
     @Autowired
     private UserExtraRepository userExtraRepository;
 
+    
+
     @Autowired
     private UserExtraService userExtraService;
 
+    /**
+     * This repository is mocked in the rocks.gebsattel.hochzeit.repository.search test package.
+     *
+     * @see rocks.gebsattel.hochzeit.repository.search.UserExtraSearchRepositoryMockConfiguration
+     */
     @Autowired
-    private UserExtraSearchRepository userExtraSearchRepository;
+    private UserExtraSearchRepository mockUserExtraSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -157,7 +168,6 @@ public class UserExtraResourceIntTest {
 
     @Before
     public void initTest() {
-        userExtraSearchRepository.deleteAll();
         userExtra = createEntity(em);
     }
 
@@ -191,8 +201,7 @@ public class UserExtraResourceIntTest {
         assertThat(testUserExtra.getAgeGroup()).isEqualTo(DEFAULT_AGE_GROUP);
 
         // Validate the UserExtra in Elasticsearch
-        UserExtra userExtraEs = userExtraSearchRepository.findOne(testUserExtra.getId());
-        assertThat(userExtraEs).isEqualToIgnoringGivenFields(testUserExtra);
+        verify(mockUserExtraSearchRepository, times(1)).save(testUserExtra);
     }
 
     @Test
@@ -212,6 +221,9 @@ public class UserExtraResourceIntTest {
         // Validate the UserExtra in the database
         List<UserExtra> userExtraList = userExtraRepository.findAll();
         assertThat(userExtraList).hasSize(databaseSizeBeforeCreate);
+
+        // Validate the UserExtra in Elasticsearch
+        verify(mockUserExtraSearchRepository, times(0)).save(userExtra);
     }
 
     @Test
@@ -257,6 +269,7 @@ public class UserExtraResourceIntTest {
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
             .andExpect(jsonPath("$.[*].ageGroup").value(hasItem(DEFAULT_AGE_GROUP.toString())));
     }
+    
 
     @Test
     @Transactional
@@ -283,7 +296,6 @@ public class UserExtraResourceIntTest {
             .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()))
             .andExpect(jsonPath("$.ageGroup").value(DEFAULT_AGE_GROUP.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingUserExtra() throws Exception {
@@ -297,11 +309,13 @@ public class UserExtraResourceIntTest {
     public void updateUserExtra() throws Exception {
         // Initialize the database
         userExtraService.save(userExtra);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockUserExtraSearchRepository);
 
         int databaseSizeBeforeUpdate = userExtraRepository.findAll().size();
 
         // Update the userExtra
-        UserExtra updatedUserExtra = userExtraRepository.findOne(userExtra.getId());
+        UserExtra updatedUserExtra = userExtraRepository.findById(userExtra.getId()).get();
         // Disconnect from session so that the updates on updatedUserExtra are not directly saved in db
         em.detach(updatedUserExtra);
         updatedUserExtra
@@ -343,8 +357,7 @@ public class UserExtraResourceIntTest {
         assertThat(testUserExtra.getAgeGroup()).isEqualTo(UPDATED_AGE_GROUP);
 
         // Validate the UserExtra in Elasticsearch
-        UserExtra userExtraEs = userExtraSearchRepository.findOne(testUserExtra.getId());
-        assertThat(userExtraEs).isEqualToIgnoringGivenFields(testUserExtra);
+        verify(mockUserExtraSearchRepository, times(1)).save(testUserExtra);
     }
 
     @Test
@@ -358,11 +371,14 @@ public class UserExtraResourceIntTest {
         restUserExtraMockMvc.perform(put("/api/user-extras")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(userExtra)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the UserExtra in the database
         List<UserExtra> userExtraList = userExtraRepository.findAll();
-        assertThat(userExtraList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(userExtraList).hasSize(databaseSizeBeforeUpdate);
+
+        // Validate the UserExtra in Elasticsearch
+        verify(mockUserExtraSearchRepository, times(0)).save(userExtra);
     }
 
     @Test
@@ -378,13 +394,12 @@ public class UserExtraResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean userExtraExistsInEs = userExtraSearchRepository.exists(userExtra.getId());
-        assertThat(userExtraExistsInEs).isFalse();
-
         // Validate the database is empty
         List<UserExtra> userExtraList = userExtraRepository.findAll();
         assertThat(userExtraList).hasSize(databaseSizeBeforeDelete - 1);
+
+        // Validate the UserExtra in Elasticsearch
+        verify(mockUserExtraSearchRepository, times(1)).deleteById(userExtra.getId());
     }
 
     @Test
@@ -392,7 +407,8 @@ public class UserExtraResourceIntTest {
     public void searchUserExtra() throws Exception {
         // Initialize the database
         userExtraService.save(userExtra);
-
+        when(mockUserExtraSearchRepository.search(queryStringQuery("id:" + userExtra.getId())))
+            .thenReturn(Collections.singletonList(userExtra));
         // Search the userExtra
         restUserExtraMockMvc.perform(get("/api/_search/user-extras?query=id:" + userExtra.getId()))
             .andExpect(status().isOk())

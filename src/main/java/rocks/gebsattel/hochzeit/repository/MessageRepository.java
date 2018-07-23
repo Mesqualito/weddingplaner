@@ -1,22 +1,30 @@
 package rocks.gebsattel.hochzeit.repository;
 
 import rocks.gebsattel.hochzeit.domain.Message;
-import org.springframework.stereotype.Repository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
- * Spring Data JPA repository for the Message entity.
+ * Spring Data  repository for the Message entity.
  */
 @SuppressWarnings("unused")
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    @Query("select distinct message from Message message left join fetch message.tos")
+
+    @Query(value = "select distinct message from Message message left join fetch message.tos",
+        countQuery = "select count(distinct message) from Message message")
+    Page<Message> findAllWithEagerRelationships(Pageable pageable);
+
+    @Query(value = "select distinct message from Message message left join fetch message.tos")
     List<Message> findAllWithEagerRelationships();
 
     @Query("select message from Message message left join fetch message.tos where message.id =:id")
-    Message findOneWithEagerRelationships(@Param("id") Long id);
+    Optional<Message> findOneWithEagerRelationships(@Param("id") Long id);
 
 }

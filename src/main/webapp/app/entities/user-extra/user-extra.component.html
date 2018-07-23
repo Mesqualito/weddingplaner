@@ -1,8 +1,8 @@
 <div>
-    <h2>
+    <h2 id="page-heading">
         <span jhiTranslate="weddingplanerApp.userExtra.home.title">User Extras</span>
-        <button class="btn btn-primary float-right jh-create-entity create-user-extra" [routerLink]="['/', { outlets: { popup: ['user-extra-new'] } }]">
-            <span class="fa fa-plus"></span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-user-extra" [routerLink]="['/user-extra/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="weddingplanerApp.userExtra.home.createLabel">
             Create new User Extra
             </span>
@@ -15,10 +15,10 @@
                 <div class="input-group w-100 mt-3">
                     <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'weddingplanerApp.userExtra.home.search' | translate }}">
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
+                        <fa-icon [icon]="'search'"></fa-icon>
                     </button>
                     <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
                     </button>
                 </div>
             </form>
@@ -49,7 +49,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let userExtra of userExtras ;trackBy: trackId">
-                <td><a [routerLink]="['../user-extra', userExtra.id ]">{{userExtra.id}}</a></td>
+                <td><a [routerLink]="['/user-extra', userExtra.id, 'view' ]">{{userExtra.id}}</a></td>
                 <td>{{userExtra.code}}</td>
                 <td>{{userExtra.addressLine1}}</td>
                 <td>{{userExtra.addressLine2}}</td>
@@ -69,17 +69,15 @@
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../user-extra', userExtra.id ]"
+                                [routerLink]="['/user-extra', userExtra.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'user-extra/'+ userExtra.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/user-extra', userExtra.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
@@ -87,7 +85,7 @@
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>
                     </div>

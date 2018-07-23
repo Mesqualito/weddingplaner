@@ -25,7 +25,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="message_init_time" type="timestamp">
+            <column name="message_init_time" type="datetime">
                 <constraints nullable="true" />
             </column>
 
@@ -33,11 +33,11 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="message_valid_from" type="timestamp">
+            <column name="message_valid_from" type="datetime">
                 <constraints nullable="true" />
             </column>
 
-            <column name="message_valid_until" type="timestamp">
+            <column name="message_valid_until" type="datetime">
                 <constraints nullable="true" />
             </column>
 
