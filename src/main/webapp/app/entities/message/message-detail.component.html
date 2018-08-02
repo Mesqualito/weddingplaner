@@ -5,7 +5,9 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="weddingplanerApp.message.messageShortDescription">Message Short Description</span></dt>
+                <dt><span
+                    jhiTranslate="weddingplanerApp.message.messageShortDescription">Message Short Description</span>
+                </dt>
                 <dd>
                     <span>{{message.messageShortDescription}}</span>
                 </dd>
@@ -29,7 +31,8 @@
                 <dd>
                     <div *ngIf="message.image">
                         <a (click)="openFile(message.imageContentType, message.image)">
-                            <img [src]="'data:' + message.imageContentType + ';base64,' + message.image" style="max-width: 100%;" alt="message image"/>
+                            <img [src]="'data:' + message.imageContentType + ';base64,' + message.image"
+                                 style="max-width: 100%;" alt="message image"/>
                         </a>
                         {{message.imageContentType}}, {{byteSize(message.image)}}
                     </div>
@@ -50,31 +53,15 @@
 
             <button type="submit"
                     (click)="previousState()"
-                    class="btn btn-info">
+                    class="btn btn-sm btn-outline-info">
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
             </button>
 
-<<<<<<< HEAD
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-sm btn-outline-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'message/'+ message.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-sm btn-outline-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
-=======
             <button type="button"
                     [routerLink]="['/message', message.id, 'edit']"
-                    class="btn btn-primary">
+                    class="btn btn-sm btn-outline-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>
         </div>
     </div>
->>>>>>> jhipster_upgrade
 </div>

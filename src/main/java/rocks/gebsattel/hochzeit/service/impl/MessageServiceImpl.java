@@ -54,7 +54,6 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public Message save(Message message) {
-<<<<<<< HEAD
         log.debug("Request to save Message : {}", message);
 
         /**
@@ -66,9 +65,7 @@ public class MessageServiceImpl implements MessageService {
         message.setFrom(userExtra);
 
         Message result = messageRepository.save(message);
-=======
-        log.debug("Request to save Message : {}", message);        Message result = messageRepository.save(message);
->>>>>>> jhipster_upgrade
+
         messageSearchRepository.save(result);
         return result;
     }
@@ -100,7 +97,7 @@ public class MessageServiceImpl implements MessageService {
     public Page<Message> findAllWithEagerRelationships(Pageable pageable) {
         return messageRepository.findAllWithEagerRelationships(pageable);
     }
-    
+
 
     /**
      * Get one message by id.
@@ -110,25 +107,19 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     @Transactional(readOnly = true)
-<<<<<<< HEAD
-    public Message findOne(Long id) {
+    public Optional<Message> findOne(Long id) {
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             log.debug("Request to get all Messages from : {}", userService.getUserWithAuthorities().get().getLogin());
             return messageRepository.findOneWithEagerRelationships(id);
         } else {
             UserExtra userExtra = userExtraRepository.findOneByUserLogin(SecurityUtils.getCurrentUserLogin().get());
             log.debug("userExtra found : {}", userExtra.getUser().getLogin());
-            Message returnMessage = messageRepository.findOneWithEagerRelationships(id);
-            if (returnMessage.getTos().contains(userExtra)) {
+            Optional<Message> returnMessage = messageRepository.findOneWithEagerRelationships(id);
+            if (returnMessage.get().getTos().contains(userExtra)) {
                 return returnMessage;
             } else
                 return null;
         }
-=======
-    public Optional<Message> findOne(Long id) {
-        log.debug("Request to get Message : {}", id);
-        return messageRepository.findOneWithEagerRelationships(id);
->>>>>>> jhipster_upgrade
     }
 
     /**

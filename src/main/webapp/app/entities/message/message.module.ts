@@ -1,28 +1,23 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-<<<<<<< HEAD
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AutoCompleteModule, AccordionModule } from 'primeng/primeng';
+import { AccordionModule, AutoCompleteModule } from 'primeng/primeng';
 
-import { WeddingplanerSharedModule } from '../../shared';
-=======
 import { WeddingplanerSharedModule } from 'app/shared';
->>>>>>> jhipster_upgrade
+
 import {
     MessageComponent,
-    MessageDetailComponent,
-    MessageUpdateComponent,
-    MessageDeletePopupComponent,
     MessageDeleteDialogComponent,
+    MessageDeletePopupComponent,
+    MessageDetailComponent,
+    messagePopupRoute,
     messageRoute,
-    messagePopupRoute
+    MessageUpdateComponent
 } from './';
 
 const ENTITY_STATES = [...messageRoute, ...messagePopupRoute];
 
 @NgModule({
-<<<<<<< HEAD
     imports: [
         WeddingplanerSharedModule,
         BrowserAnimationsModule,
@@ -30,9 +25,6 @@ const ENTITY_STATES = [...messageRoute, ...messagePopupRoute];
         AccordionModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
-=======
-    imports: [WeddingplanerSharedModule, RouterModule.forChild(ENTITY_STATES)],
->>>>>>> jhipster_upgrade
     declarations: [
         MessageComponent,
         MessageDetailComponent,

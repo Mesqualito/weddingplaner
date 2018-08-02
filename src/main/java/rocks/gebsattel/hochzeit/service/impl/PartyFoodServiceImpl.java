@@ -55,7 +55,6 @@ public class PartyFoodServiceImpl implements PartyFoodService {
      */
     @Override
     public PartyFood save(PartyFood partyFood) {
-<<<<<<< HEAD
         log.debug("Request to save PartyFood : {}", partyFood);
 
      /**
@@ -76,9 +75,7 @@ public class PartyFoodServiceImpl implements PartyFoodService {
         partyFood.setUserExtra(userExtra);
 
         PartyFood result = partyFoodRepository.save(partyFood);
-=======
-        log.debug("Request to save PartyFood : {}", partyFood);        PartyFood result = partyFoodRepository.save(partyFood);
->>>>>>> jhipster_upgrade
+
         partyFoodSearchRepository.save(result);
         return result;
     }

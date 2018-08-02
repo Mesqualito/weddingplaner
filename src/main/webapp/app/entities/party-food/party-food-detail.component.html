@@ -9,15 +9,18 @@
                 <dd>
                     <span>{{partyFood.foodName}}</span>
                 </dd>
-                <dt><span jhiTranslate="weddingplanerApp.partyFood.foodShortDescription">Food Short Description</span></dt>
+                <dt><span jhiTranslate="weddingplanerApp.partyFood.foodShortDescription">Food Short Description</span>
+                </dt>
                 <dd>
                     <span>{{partyFood.foodShortDescription}}</span>
                 </dd>
-                <dt><span jhiTranslate="weddingplanerApp.partyFood.foodLongDescription">Food Long Description</span></dt>
+                <dt><span jhiTranslate="weddingplanerApp.partyFood.foodLongDescription">Food Long Description</span>
+                </dt>
                 <dd>
                     <span>{{partyFood.foodLongDescription}}</span>
                 </dd>
-                <dt><span jhiTranslate="weddingplanerApp.partyFood.foodQuantityPersons">Food Quantity Persons</span></dt>
+                <dt><span jhiTranslate="weddingplanerApp.partyFood.foodQuantityPersons">Food Quantity Persons</span>
+                </dt>
                 <dd>
                     <span>{{partyFood.foodQuantityPersons}}</span>
                 </dd>
@@ -25,7 +28,8 @@
                 <dd>
                     <span>{{partyFood.foodBestServeTime}}</span>
                 </dd>
-                <dt><span jhiTranslate="weddingplanerApp.partyFood.foodProposalAccepted">Food Proposal Accepted</span></dt>
+                <dt><span jhiTranslate="weddingplanerApp.partyFood.foodProposalAccepted">Food Proposal Accepted</span>
+                </dt>
                 <dd>
                     <span>{{partyFood.foodProposalAccepted}}</span>
                 </dd>
@@ -36,73 +40,66 @@
                     </div>
                 </dd>
             </dl>
-
-<<<<<<< HEAD
-<div *ngIf="partyFood">
-    <h2><span jhiTranslate="weddingplanerApp.partyFood.detail.title">Party Food</span> {{partyFood.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="weddingplanerApp.partyFood.foodName">Food Name</span></dt>
-        <dd>
-            <span>{{partyFood.foodName}}</span>
-        </dd>
-        <dt><span jhiTranslate="weddingplanerApp.partyFood.foodShortDescription">Food Short Description</span></dt>
-        <dd>
-            <span>{{partyFood.foodShortDescription}}</span>
-        </dd>
-        <dt><span jhiTranslate="weddingplanerApp.partyFood.foodLongDescription">Food Long Description</span></dt>
-        <dd>
-            <span>{{partyFood.foodLongDescription}}</span>
-        </dd>
-        <dt><span jhiTranslate="weddingplanerApp.partyFood.foodQuantityPersons">Food Quantity Persons</span></dt>
-        <dd>
-            <span>{{partyFood.foodQuantityPersons}}</span>
-        </dd>
-        <dt><span jhiTranslate="weddingplanerApp.partyFood.foodBestServeTime">Food Best Serve Time</span></dt>
-        <dd>
-            <span>{{partyFood.foodBestServeTime | date:'medium'}}</span>
-        </dd>
-        <dt><span jhiTranslate="weddingplanerApp.partyFood.foodProposalAccepted">Food Proposal Accepted</span></dt>
-        <dd>
+            <div *ngIf="partyFood">
+                <h2><span jhiTranslate="weddingplanerApp.partyFood.detail.title">Party Food</span> {{partyFood.id}}</h2>
+                <hr>
+                <jhi-alert-error></jhi-alert-error>
+                <dl class="row-md jh-entity-details">
+                    <dt><span jhiTranslate="weddingplanerApp.partyFood.foodName">Food Name</span></dt>
+                    <dd>
+                        <span>{{partyFood.foodName}}</span>
+                    </dd>
+                    <dt><span
+                        jhiTranslate="weddingplanerApp.partyFood.foodShortDescription">Food Short Description</span>
+                    </dt>
+                    <dd>
+                        <span>{{partyFood.foodShortDescription}}</span>
+                    </dd>
+                    <dt><span jhiTranslate="weddingplanerApp.partyFood.foodLongDescription">Food Long Description</span>
+                    </dt>
+                    <dd>
+                        <span>{{partyFood.foodLongDescription}}</span>
+                    </dd>
+                    <dt><span jhiTranslate="weddingplanerApp.partyFood.foodQuantityPersons">Food Quantity Persons</span>
+                    </dt>
+                    <dd>
+                        <span>{{partyFood.foodQuantityPersons}}</span>
+                    </dd>
+                    <dt><span jhiTranslate="weddingplanerApp.partyFood.foodBestServeTime">Food Best Serve Time</span>
+                    </dt>
+                    <dd>
+                        <span>{{partyFood.foodBestServeTime | date:'medium'}}</span>
+                    </dd>
+                    <dt><span
+                        jhiTranslate="weddingplanerApp.partyFood.foodProposalAccepted">Food Proposal Accepted</span>
+                    </dt>
+                    <dd>
             <span><i
                 class="fa fa-{{partyFood.foodProposalAccepted ? 'check text-success' : 'times text-danger'}}"
                 aria-hidden="true"></i></span>
-        </dd>
-        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.partyFood.userExtra">User Extra</span></dt>
-        <dd  *jhiHasAnyAuthority="'ROLE_ADMIN'">
-            <div *ngIf="partyFood.userExtra">
-                <a [routerLink]="['/user-extra', partyFood.userExtra?.id]">{{partyFood.userExtra?.id}}</a> {{partyFood.userExtra?.user.firstName}} {{partyFood.userExtra?.user.lastName}}
+                    </dd>
+                    <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="weddingplanerApp.partyFood.userExtra">User Extra</span>
+                    </dt>
+                    <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                        <div *ngIf="partyFood.userExtra">
+                            <a [routerLink]="['/user-extra', partyFood.userExtra?.id]">{{partyFood.userExtra?.id}}</a>
+                            {{partyFood.userExtra?.user.firstName}} {{partyFood.userExtra?.user.lastName}}
+                        </div>
+                    </dd>
+                </dl>
+
+                <button type="submit"
+                        (click)="previousState()"
+                        class="btn btn-sm btn-outline-info">
+                    <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+                </button>
+
+                <button type="button"
+                        [routerLink]="['/party-food', partyFood.id, 'edit']"
+                        class="btn btn-sm btn-outline-primary">
+                    <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+                </button>
             </div>
-        </dd>
-    </dl>
-
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-sm btn-outline-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'party-food/'+ partyFood.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-sm btn-outline-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
-=======
-            <button type="submit"
-                    (click)="previousState()"
-                    class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-            </button>
-
-            <button type="button"
-                    [routerLink]="['/party-food', partyFood.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-            </button>
         </div>
     </div>
->>>>>>> jhipster_upgrade
 </div>

@@ -1,18 +1,10 @@
 package rocks.gebsattel.hochzeit.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-<<<<<<< HEAD
-import org.springframework.data.domain.Page;
-=======
-
->>>>>>> jhipster_upgrade
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rocks.gebsattel.hochzeit.domain.AllowControl;
-import rocks.gebsattel.hochzeit.domain.User;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.domain.enumeration.AllowGroup;
 import rocks.gebsattel.hochzeit.repository.AllowControlRepository;
@@ -23,19 +15,13 @@ import rocks.gebsattel.hochzeit.security.SecurityUtils;
 import rocks.gebsattel.hochzeit.service.UserExtraService;
 import rocks.gebsattel.hochzeit.service.UserService;
 
-<<<<<<< HEAD
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
-=======
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
->>>>>>> jhipster_upgrade
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing UserExtra.
@@ -120,29 +106,25 @@ public class UserExtraServiceImpl implements UserExtraService {
     @Transactional(readOnly = true)
     public Optional<UserExtra> findOne(Long id) {
         log.debug("Request to get UserExtra : {}", id);
-<<<<<<< HEAD
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-            return userExtraRepository.findOne(id);
+            return userExtraRepository.findById(id);
         } else
         // ------------ for all Users in other ROLEs than 'ROLE_ADMIN' ------------
         {
             UserExtra loggedInUserExtra = this.getLoggedInUserExtra();
-            UserExtra userExtra = userExtraRepository.findOne(id);
-            this.hideAllData(userExtra);
+            Optional<UserExtra> userExtra = userExtraRepository.findById(id);
+            this.hideAllData(userExtra.get());
 
             List<AllowControl> allowControls = allowControlRepository.findAll();
 
             List<UserExtra> userExtras = new ArrayList<>();
-            userExtras.add(userExtra);
+            userExtras.add(userExtra.get());
 
             allowControls.forEach((allowControl) -> {
                 this.showData(allowControl, loggedInUserExtra, userExtras);
             });
             return userExtra;
         }
-=======
-        return userExtraRepository.findById(id);
->>>>>>> jhipster_upgrade
     }
 
     /**

@@ -1,19 +1,5 @@
 package rocks.gebsattel.hochzeit.service;
 
-<<<<<<< HEAD
-=======
-import rocks.gebsattel.hochzeit.domain.Authority;
-import rocks.gebsattel.hochzeit.domain.User;
-import rocks.gebsattel.hochzeit.repository.AuthorityRepository;
-import rocks.gebsattel.hochzeit.config.Constants;
-import rocks.gebsattel.hochzeit.repository.UserRepository;
-import rocks.gebsattel.hochzeit.repository.search.UserSearchRepository;
-import rocks.gebsattel.hochzeit.security.AuthoritiesConstants;
-import rocks.gebsattel.hochzeit.security.SecurityUtils;
-import rocks.gebsattel.hochzeit.service.util.RandomUtil;
-import rocks.gebsattel.hochzeit.service.dto.UserDTO;
-
->>>>>>> jhipster_upgrade
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -21,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import rocks.gebsattel.hochzeit.web.rest.errors.InvalidPasswordException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rocks.gebsattel.hochzeit.config.Constants;
@@ -37,6 +22,7 @@ import rocks.gebsattel.hochzeit.security.AuthoritiesConstants;
 import rocks.gebsattel.hochzeit.security.SecurityUtils;
 import rocks.gebsattel.hochzeit.service.dto.UserDTO;
 import rocks.gebsattel.hochzeit.service.util.RandomUtil;
+import rocks.gebsattel.hochzeit.web.rest.errors.InvalidPasswordException;
 
 import java.time.Instant;
 import java.time.LocalDate;

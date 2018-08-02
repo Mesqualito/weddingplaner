@@ -1,22 +1,12 @@
 package rocks.gebsattel.hochzeit.repository;
 
-<<<<<<< HEAD
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import rocks.gebsattel.hochzeit.domain.AllowControl;
 import rocks.gebsattel.hochzeit.domain.enumeration.AllowGroup;
-=======
-import rocks.gebsattel.hochzeit.domain.AllowControl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
->>>>>>> jhipster_upgrade
 
 import java.util.List;
 import java.util.Optional;

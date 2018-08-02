@@ -59,7 +59,6 @@ public class AllowControlServiceImpl implements AllowControlService {
      */
     @Override
     public AllowControl save(AllowControl allowControl) {
-<<<<<<< HEAD
         log.debug("Request to save AllowControl : {}", allowControl);
         if(loggedInUserExtra == null) {
             loggedInUserExtra = this.userExtraRepository.findOneByUserLogin(userService.getUserWithAuthorities().get().getLogin());
@@ -84,9 +83,7 @@ public class AllowControlServiceImpl implements AllowControlService {
         }
 
         AllowControl result = allowControlRepository.save(allowControl);
-=======
-        log.debug("Request to save AllowControl : {}", allowControl);        AllowControl result = allowControlRepository.save(allowControl);
->>>>>>> jhipster_upgrade
+
         allowControlSearchRepository.save(result);
         return result;
     }
@@ -119,7 +116,7 @@ public class AllowControlServiceImpl implements AllowControlService {
     public Page<AllowControl> findAllWithEagerRelationships(Pageable pageable) {
         return allowControlRepository.findAllWithEagerRelationships(pageable);
     }
-    
+
 
     /**
      * Get one allowControl by id.
@@ -157,7 +154,6 @@ public class AllowControlServiceImpl implements AllowControlService {
     @Transactional(readOnly = true)
     public Page<AllowControl> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of AllowControls for query {}", query);
-<<<<<<< HEAD
         Page<AllowControl> result = allowControlSearchRepository.search(queryStringQuery(query), pageable);
         return result;
     }
@@ -185,8 +181,4 @@ public class AllowControlServiceImpl implements AllowControlService {
         log.debug("Request to get a list of AllowControls with ControlledGroups containing userExtra userID : {} and AllowGroup : {}", userExtraId, allowGroup);
         return allowControlRepository.findAllByControlledGroupsIdAndAllowGroup(userExtraId, allowGroup);
     }
-
-=======
-        return allowControlSearchRepository.search(queryStringQuery(query), pageable);    }
->>>>>>> jhipster_upgrade
 }

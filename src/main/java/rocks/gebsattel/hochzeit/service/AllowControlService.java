@@ -1,10 +1,5 @@
 package rocks.gebsattel.hochzeit.service;
 
-<<<<<<< HEAD
-=======
-import rocks.gebsattel.hochzeit.domain.AllowControl;
-
->>>>>>> jhipster_upgrade
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import rocks.gebsattel.hochzeit.domain.AllowControl;
@@ -41,7 +36,7 @@ public interface AllowControlService {
      * @return the list of entities
      */
     Page<AllowControl> findAllWithEagerRelationships(Pageable pageable);
-    
+
     /**
      * Get the "id" allowControl.
      *
