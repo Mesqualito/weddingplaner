@@ -6,16 +6,19 @@ import rocks.gebsattel.hochzeit.domain.Message;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.domain.UserExtra;
 import rocks.gebsattel.hochzeit.repository.MessageRepository;
-import rocks.gebsattel.hochzeit.service.MessageService;
 import rocks.gebsattel.hochzeit.repository.search.MessageSearchRepository;
+import rocks.gebsattel.hochzeit.service.MessageService;
 import rocks.gebsattel.hochzeit.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -28,11 +31,16 @@ import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
 
 import static rocks.gebsattel.hochzeit.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -67,12 +75,22 @@ public class MessageResourceIntTest {
 
     @Autowired
     private MessageRepository messageRepository;
+    @Mock
+    private MessageRepository messageRepositoryMock;
+    
+    @Mock
+    private MessageService messageServiceMock;
 
     @Autowired
     private MessageService messageService;
 
+    /**
+     * This repository is mocked in the rocks.gebsattel.hochzeit.repository.search test package.
+     *
+     * @see rocks.gebsattel.hochzeit.repository.search.MessageSearchRepositoryMockConfiguration
+     */
     @Autowired
-    private MessageSearchRepository messageSearchRepository;
+    private MessageSearchRepository mockMessageSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -117,21 +135,17 @@ public class MessageResourceIntTest {
             .image(DEFAULT_IMAGE)
             .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE);
         // Add required entity
-        UserExtra to = UserExtraResourceIntTest.createEntity(em);
-        em.persist(to);
+        UserExtra userExtra = UserExtraResourceIntTest.createEntity(em);
+        em.persist(userExtra);
         em.flush();
-        message.getTos().add(to);
+        message.getTos().add(userExtra);
         // Add required entity
-        UserExtra from = UserExtraResourceIntTest.createEntity(em);
-        em.persist(from);
-        em.flush();
-        message.setFrom(from);
+        message.setFrom(userExtra);
         return message;
     }
 
     @Before
     public void initTest() {
-        messageSearchRepository.deleteAll();
         message = createEntity(em);
     }
 
@@ -159,8 +173,7 @@ public class MessageResourceIntTest {
         assertThat(testMessage.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
 
         // Validate the Message in Elasticsearch
-        Message messageEs = messageSearchRepository.findOne(testMessage.getId());
-        assertThat(messageEs).isEqualToIgnoringGivenFields(testMessage);
+        verify(mockMessageSearchRepository, times(1)).save(testMessage);
     }
 
     @Test
@@ -180,6 +193,9 @@ public class MessageResourceIntTest {
         // Validate the Message in the database
         List<Message> messageList = messageRepository.findAll();
         assertThat(messageList).hasSize(databaseSizeBeforeCreate);
+
+        // Validate the Message in Elasticsearch
+        verify(mockMessageSearchRepository, times(0)).save(message);
     }
 
     @Test
@@ -219,6 +235,37 @@ public class MessageResourceIntTest {
             .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))));
     }
+    
+    public void getAllMessagesWithEagerRelationshipsIsEnabled() throws Exception {
+        MessageResource messageResource = new MessageResource(messageServiceMock);
+        when(messageServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restMessageMockMvc = MockMvcBuilders.standaloneSetup(messageResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restMessageMockMvc.perform(get("/api/messages?eagerload=true"))
+        .andExpect(status().isOk());
+
+        verify(messageServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    public void getAllMessagesWithEagerRelationshipsIsNotEnabled() throws Exception {
+        MessageResource messageResource = new MessageResource(messageServiceMock);
+            when(messageServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+            MockMvc restMessageMockMvc = MockMvcBuilders.standaloneSetup(messageResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restMessageMockMvc.perform(get("/api/messages?eagerload=true"))
+        .andExpect(status().isOk());
+
+            verify(messageServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
 
     @Test
     @Transactional
@@ -239,7 +286,6 @@ public class MessageResourceIntTest {
             .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)));
     }
-
     @Test
     @Transactional
     public void getNonExistingMessage() throws Exception {
@@ -253,11 +299,13 @@ public class MessageResourceIntTest {
     public void updateMessage() throws Exception {
         // Initialize the database
         messageService.save(message);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockMessageSearchRepository);
 
         int databaseSizeBeforeUpdate = messageRepository.findAll().size();
 
         // Update the message
-        Message updatedMessage = messageRepository.findOne(message.getId());
+        Message updatedMessage = messageRepository.findById(message.getId()).get();
         // Disconnect from session so that the updates on updatedMessage are not directly saved in db
         em.detach(updatedMessage);
         updatedMessage
@@ -287,8 +335,7 @@ public class MessageResourceIntTest {
         assertThat(testMessage.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
 
         // Validate the Message in Elasticsearch
-        Message messageEs = messageSearchRepository.findOne(testMessage.getId());
-        assertThat(messageEs).isEqualToIgnoringGivenFields(testMessage);
+        verify(mockMessageSearchRepository, times(1)).save(testMessage);
     }
 
     @Test
@@ -302,11 +349,14 @@ public class MessageResourceIntTest {
         restMessageMockMvc.perform(put("/api/messages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(message)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Message in the database
         List<Message> messageList = messageRepository.findAll();
-        assertThat(messageList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(messageList).hasSize(databaseSizeBeforeUpdate);
+
+        // Validate the Message in Elasticsearch
+        verify(mockMessageSearchRepository, times(0)).save(message);
     }
 
     @Test
@@ -322,13 +372,12 @@ public class MessageResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean messageExistsInEs = messageSearchRepository.exists(message.getId());
-        assertThat(messageExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Message> messageList = messageRepository.findAll();
         assertThat(messageList).hasSize(databaseSizeBeforeDelete - 1);
+
+        // Validate the Message in Elasticsearch
+        verify(mockMessageSearchRepository, times(1)).deleteById(message.getId());
     }
 
     @Test
@@ -336,7 +385,8 @@ public class MessageResourceIntTest {
     public void searchMessage() throws Exception {
         // Initialize the database
         messageService.save(message);
-
+        when(mockMessageSearchRepository.search(queryStringQuery("id:" + message.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(message), PageRequest.of(0, 1), 1));
         // Search the message
         restMessageMockMvc.perform(get("/api/_search/messages?query=id:" + message.getId()))
             .andExpect(status().isOk())

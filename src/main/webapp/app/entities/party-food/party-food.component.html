@@ -1,27 +1,29 @@
 <div class="row">
     <div class="col-sm-8">
-        <h2 jhiTranslate="weddingplanerApp.partyFood.home.title">Party Foods</h2>
+        <h2 id="page-heading">
+            <span jhiTranslate="weddingplanerApp.partyFood.home.title">Party Foods</span>
     </div>
     <div class="col-sm-4 text-right">
         <button class="btn btn-primary float-right jh-create-entity create-party-food"
-                [routerLink]="['/', { outlets: { popup: ['party-food-new'] } }]"
-                [ngbTooltip]="addTooltip" placement="bottom">
-            <span class="fa fa-plus"></span>
+                [routerLink]="['/party-food/new']"
+                [ngbTooltip]="addTooltip">
+            <fa-icon [icon]="'plus'"></fa-icon>
             <ng-template #addTooltip>
             <span jhiTranslate="weddingplanerApp.partyFood.home.createLabel">
             Create new Party Food
             </span>
             </ng-template>
         </button>
+        <jhi-alert></jhi-alert>
         <form name="searchForm" class="form-inline">
-            <div class="input-group w-100 mt-3">
+            <div class="input-group w-100 mr-1">
                 <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch"
                        name="currentSearch" placeholder="{{ 'weddingplanerApp.partyFood.home.search' | translate }}">
-                <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                    <span class="fa fa-search"></span>
+                <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
+                    <fa-icon [icon]="'search'"></fa-icon>
                 </button>
-                <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                    <span class="fa fa-trash-o"></span>
+                <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                    <fa-icon [icon]="'trash-alt'"></fa-icon>
                 </button>
             </div>
         </form>
@@ -30,33 +32,38 @@
 
 <br/>
 <div class="table-responsive" *ngIf="partyFoods">
-    <table>
+    <table class="table table-striped">
         <thead>
         <tr class="d-flex" jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th class="col-2" jhiSortBy="foodName"><span
-                jhiTranslate="weddingplanerApp.partyFood.foodName">Food Name</span> <span class="fa fa-sort"></span>
+                jhiTranslate="weddingplanerApp.partyFood.foodName">Food Name</span>
+                <fa-icon [icon]="'sort'"></fa-icon>
             </th>
             <th class="col-2" jhiSortBy="foodShortDescription"><span
-                jhiTranslate="weddingplanerApp.partyFood.foodShortDescription">Food Short Description</span> <span
-                class="fa fa-sort"></span></th>
+                jhiTranslate="weddingplanerApp.partyFood.foodShortDescription">Food Short Description</span>
+                <fa-icon [icon]="'sort'"></fa-icon>
+            </th>
             <th class="col-4" jhiSortBy="foodLongDescription"><span
-                jhiTranslate="weddingplanerApp.partyFood.foodLongDescription">Food Long Description</span> <span
-                class="fa fa-sort"></span></th>
+                jhiTranslate="weddingplanerApp.partyFood.foodLongDescription">Food Long Description</span>
+                <fa-icon [icon]="'sort'"></fa-icon>
+            </th>
             <th class="col-1" jhiSortBy="foodQuantityPersons"><span
-                jhiTranslate="weddingplanerApp.partyFood.foodQuantityPersons">Food Quantity Persons</span> <span
-                class="fa fa-sort"></span></th>
-            <th class="col-1" jhiSortBy="foodProposalAccepted"><span
-                jhiTranslate="weddingplanerApp.partyFood.foodProposalAccepted">Food Proposal Accepted</span> <span
-                class="fa fa-sort"></span></th>
+                jhiTranslate="weddingplanerApp.partyFood.foodQuantityPersons">Food Quantity Persons</span>
+                <fa-icon [icon]="'sort'"></fa-icon>
+            </th>
+            <th class="col-1 text-nowrap" jhiSortBy="foodProposalAccepted"><span
+                jhiTranslate="weddingplanerApp.partyFood.foodProposalAccepted">Food Proposal Accepted</span>
+                <fa-icon [icon]="'sort'"></fa-icon>
+            </th>
             <th class="col-2"></th>
         </tr>
         </thead>
         <tbody>
         <tr class="d-flex" *ngFor="let partyFood of partyFoods ;trackBy: trackId">
-            <td class="col-2"><a [routerLink]="['../party-food', partyFood.id ]">{{partyFood.foodName}}</a></td>
+            <td class="col-2"><a [routerLink]="['/party-food', partyFood.id, 'view' ]">{{partyFood.id}}</a></td>
             <td class="col-2">{{partyFood.foodShortDescription}}</td>
             <td class="col-4">
-                <div class="truncate" [ngbPopover]="partyFood.foodLongDescription">{{partyFood.foodLongDescription}}
+                <div [ngbPopover]="partyFood.foodLongDescription">{{partyFood.foodLongDescription}}
                 </div>
             </td>
             <td class="col-1">{{partyFood.foodQuantityPersons}}</td>
@@ -66,27 +73,23 @@
             <td class="col-2 text-right">
                 <div class="btn-group flex-btn-group-container">
                     <button type="submit"
-                            [routerLink]="['../party-food', partyFood.id ]"
-                            class="btn btn-info btn-sm">
-                        <span class="fa fa-eye"></span>
+                            [routerLink]="['/party-food', partyFood.id, 'view' ]"
+                            class="btn btn-outline-info btn-sm">
+                        <fa-icon [icon]="'eye'"></fa-icon>
                         <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                     </button>
-                    <br>
                     <button type="submit"
-                            [routerLink]="['/', { outlets: { popup: 'party-food/'+ partyFood.id + '/edit'} }]"
-                            replaceUrl="true"
-                            queryParamsHandling="merge"
-                            class="btn btn-primary btn-sm">
-                        <span class="fa fa-pencil"></span>
+                            [routerLink]="['/party-food', partyFood.id, 'edit']"
+                            class="btn btn-outline-primary btn-sm">
+                        <fa-icon [icon]="'pencil-alt'"></fa-icon>
                         <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                     </button>
-                    <br>
                     <button *jhiHasAnyAuthority="'ROLE_ADMIN'" type="submit"
                             [routerLink]="['/', { outlets: { popup: 'party-food/'+ partyFood.id + '/delete'} }]"
                             replaceUrl="true"
                             queryParamsHandling="merge"
-                            class="btn btn-danger btn-sm">
-                        <span class="fa fa-remove"></span>
+                            class="btn btn-outline-danger btn-sm">
+                        <fa-icon [icon]="'times'"></fa-icon>
                         <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                     </button>
                 </div>
@@ -98,6 +101,7 @@
 <div *ngIf="partyFoods && partyFoods.length">
     <div class="row justify-content-center">
         <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+
     </div>
     <div class="row justify-content-center">
         <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5"

@@ -1,5 +1,6 @@
 package rocks.gebsattel.hochzeit.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -57,12 +59,13 @@ public class Message implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @NotNull
     @JoinTable(name = "message_to",
-               joinColumns = @JoinColumn(name="messages_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="tos_id", referencedColumnName="user_id"))
+        joinColumns = @JoinColumn(name = "messages_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "tos_id", referencedColumnName = "user_id"))
     private Set<UserExtra> tos = new HashSet<>();
 
     @ManyToOne(optional = false)
-    // @NotNull
+    @NotNull
+    @JsonIgnoreProperties("ownedMessages")
     private UserExtra from;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

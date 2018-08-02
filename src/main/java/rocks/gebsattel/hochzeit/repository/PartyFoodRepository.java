@@ -1,13 +1,12 @@
 package rocks.gebsattel.hochzeit.repository;
 
 import rocks.gebsattel.hochzeit.domain.PartyFood;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the PartyFood entity.
+ * Spring Data  repository for the PartyFood entity.
  */
 @SuppressWarnings("unused")
 @Repository

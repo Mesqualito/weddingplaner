@@ -76,7 +76,7 @@ public class AllowControlResource {
     public ResponseEntity<AllowControl> updateAllowControl(@RequestBody AllowControl allowControl) throws URISyntaxException {
         log.debug("REST request to update AllowControl : {}", allowControl);
         if (allowControl.getId() == null) {
-            return createAllowControl(allowControl);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         AllowControl result = allowControlService.save(allowControl);
         return ResponseEntity.ok()
@@ -88,14 +88,20 @@ public class AllowControlResource {
      * GET  /allow-controls : get all the allowControls.
      *
      * @param pageable the pagination information
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of allowControls in body
      */
     @GetMapping("/allow-controls")
     @Timed
-    public ResponseEntity<List<AllowControl>> getAllAllowControls(Pageable pageable) {
+    public ResponseEntity<List<AllowControl>> getAllAllowControls(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of AllowControls");
-        Page<AllowControl> page = allowControlService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/allow-controls");
+        Page<AllowControl> page;
+        if (eagerload) {
+            page = allowControlService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = allowControlService.findAll(pageable);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, String.format("/api/allow-controls?eagerload=%b", eagerload));
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -109,8 +115,8 @@ public class AllowControlResource {
     @Timed
     public ResponseEntity<AllowControl> getAllowControl(@PathVariable Long id) {
         log.debug("REST request to get AllowControl : {}", id);
-        AllowControl allowControl = allowControlService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(allowControl));
+        Optional<AllowControl> allowControl = allowControlService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(allowControl);
     }
 
     /**

@@ -1,54 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { WeddingplanerTestModule } from '../../../test.module';
-import { AllowControlDetailComponent } from '../../../../../../main/webapp/app/entities/allow-control/allow-control-detail.component';
-import { AllowControlService } from '../../../../../../main/webapp/app/entities/allow-control/allow-control.service';
-import { AllowControl } from '../../../../../../main/webapp/app/entities/allow-control/allow-control.model';
+import { AllowControlDetailComponent } from 'app/entities/allow-control/allow-control-detail.component';
+import { AllowControl } from 'app/shared/model/allow-control.model';
 
 describe('Component Tests', () => {
-
     describe('AllowControl Management Detail Component', () => {
         let comp: AllowControlDetailComponent;
         let fixture: ComponentFixture<AllowControlDetailComponent>;
-        let service: AllowControlService;
+        const route = ({ data: of({ allowControl: new AllowControl(123) }) } as any) as ActivatedRoute;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [WeddingplanerTestModule],
                 declarations: [AllowControlDetailComponent],
-                providers: [
-                    AllowControlService
-                ]
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
-            .overrideTemplate(AllowControlDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(AllowControlDetailComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(AllowControlDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(AllowControlService);
         });
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
                 // GIVEN
 
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new AllowControl(123)
-                })));
-
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.allowControl).toEqual(jasmine.objectContaining({id: 123}));
+                expect(comp.allowControl).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });
-
 });

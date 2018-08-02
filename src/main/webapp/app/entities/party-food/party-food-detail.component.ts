@@ -1,43 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils } from 'ng-jhipster';
 
-import { PartyFood } from './party-food.model';
-import { PartyFoodService } from './party-food.service';
+import { IPartyFood } from 'app/shared/model/party-food.model';
 
 @Component({
     selector: 'jhi-party-food-detail',
     templateUrl: './party-food-detail.component.html'
 })
-export class PartyFoodDetailComponent implements OnInit, OnDestroy {
+export class PartyFoodDetailComponent implements OnInit {
+    partyFood: IPartyFood;
 
-    partyFood: PartyFood;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
-
-    constructor(
-        private eventManager: JhiEventManager,
-        private dataUtils: JhiDataUtils,
-        private partyFoodService: PartyFoodService,
-        private route: ActivatedRoute
-    ) {
-    }
+    constructor(private dataUtils: JhiDataUtils, private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
+        this.activatedRoute.data.subscribe(({ partyFood }) => {
+            this.partyFood = partyFood;
         });
-        this.registerChangeInPartyFoods();
     }
 
-    load(id) {
-        this.partyFoodService.find(id)
-            .subscribe((partyFoodResponse: HttpResponse<PartyFood>) => {
-                this.partyFood = partyFoodResponse.body;
-            });
-    }
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }
@@ -47,17 +28,5 @@ export class PartyFoodDetailComponent implements OnInit, OnDestroy {
     }
     previousState() {
         window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInPartyFoods() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'partyFoodListModification',
-            (response) => this.load(this.partyFood.id)
-        );
     }
 }

@@ -4,16 +4,19 @@ import rocks.gebsattel.hochzeit.WeddingplanerApp;
 
 import rocks.gebsattel.hochzeit.domain.AllowControl;
 import rocks.gebsattel.hochzeit.repository.AllowControlRepository;
-import rocks.gebsattel.hochzeit.service.AllowControlService;
 import rocks.gebsattel.hochzeit.repository.search.AllowControlSearchRepository;
+import rocks.gebsattel.hochzeit.service.AllowControlService;
 import rocks.gebsattel.hochzeit.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -23,11 +26,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
 
 import static rocks.gebsattel.hochzeit.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -46,12 +54,22 @@ public class AllowControlResourceIntTest {
 
     @Autowired
     private AllowControlRepository allowControlRepository;
+    @Mock
+    private AllowControlRepository allowControlRepositoryMock;
+    
+    @Mock
+    private AllowControlService allowControlServiceMock;
 
     @Autowired
     private AllowControlService allowControlService;
 
+    /**
+     * This repository is mocked in the rocks.gebsattel.hochzeit.repository.search test package.
+     *
+     * @see rocks.gebsattel.hochzeit.repository.search.AllowControlSearchRepositoryMockConfiguration
+     */
     @Autowired
-    private AllowControlSearchRepository allowControlSearchRepository;
+    private AllowControlSearchRepository mockAllowControlSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -94,7 +112,6 @@ public class AllowControlResourceIntTest {
 
     @Before
     public void initTest() {
-        allowControlSearchRepository.deleteAll();
         allowControl = createEntity(em);
     }
 
@@ -116,8 +133,7 @@ public class AllowControlResourceIntTest {
         assertThat(testAllowControl.getAllowGroup()).isEqualTo(DEFAULT_ALLOW_GROUP);
 
         // Validate the AllowControl in Elasticsearch
-        AllowControl allowControlEs = allowControlSearchRepository.findOne(testAllowControl.getId());
-        assertThat(allowControlEs).isEqualToIgnoringGivenFields(testAllowControl);
+        verify(mockAllowControlSearchRepository, times(1)).save(testAllowControl);
     }
 
     @Test
@@ -137,6 +153,9 @@ public class AllowControlResourceIntTest {
         // Validate the AllowControl in the database
         List<AllowControl> allowControlList = allowControlRepository.findAll();
         assertThat(allowControlList).hasSize(databaseSizeBeforeCreate);
+
+        // Validate the AllowControl in Elasticsearch
+        verify(mockAllowControlSearchRepository, times(0)).save(allowControl);
     }
 
     @Test
@@ -152,6 +171,37 @@ public class AllowControlResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(allowControl.getId().intValue())))
             .andExpect(jsonPath("$.[*].allowGroup").value(hasItem(DEFAULT_ALLOW_GROUP.toString())));
     }
+    
+    public void getAllAllowControlsWithEagerRelationshipsIsEnabled() throws Exception {
+        AllowControlResource allowControlResource = new AllowControlResource(allowControlServiceMock);
+        when(allowControlServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restAllowControlMockMvc = MockMvcBuilders.standaloneSetup(allowControlResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restAllowControlMockMvc.perform(get("/api/allow-controls?eagerload=true"))
+        .andExpect(status().isOk());
+
+        verify(allowControlServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    public void getAllAllowControlsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        AllowControlResource allowControlResource = new AllowControlResource(allowControlServiceMock);
+            when(allowControlServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+            MockMvc restAllowControlMockMvc = MockMvcBuilders.standaloneSetup(allowControlResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restAllowControlMockMvc.perform(get("/api/allow-controls?eagerload=true"))
+        .andExpect(status().isOk());
+
+            verify(allowControlServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
 
     @Test
     @Transactional
@@ -166,7 +216,6 @@ public class AllowControlResourceIntTest {
             .andExpect(jsonPath("$.id").value(allowControl.getId().intValue()))
             .andExpect(jsonPath("$.allowGroup").value(DEFAULT_ALLOW_GROUP.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingAllowControl() throws Exception {
@@ -180,11 +229,13 @@ public class AllowControlResourceIntTest {
     public void updateAllowControl() throws Exception {
         // Initialize the database
         allowControlService.save(allowControl);
+        // As the test used the service layer, reset the Elasticsearch mock repository
+        reset(mockAllowControlSearchRepository);
 
         int databaseSizeBeforeUpdate = allowControlRepository.findAll().size();
 
         // Update the allowControl
-        AllowControl updatedAllowControl = allowControlRepository.findOne(allowControl.getId());
+        AllowControl updatedAllowControl = allowControlRepository.findById(allowControl.getId()).get();
         // Disconnect from session so that the updates on updatedAllowControl are not directly saved in db
         em.detach(updatedAllowControl);
         updatedAllowControl
@@ -202,8 +253,7 @@ public class AllowControlResourceIntTest {
         assertThat(testAllowControl.getAllowGroup()).isEqualTo(UPDATED_ALLOW_GROUP);
 
         // Validate the AllowControl in Elasticsearch
-        AllowControl allowControlEs = allowControlSearchRepository.findOne(testAllowControl.getId());
-        assertThat(allowControlEs).isEqualToIgnoringGivenFields(testAllowControl);
+        verify(mockAllowControlSearchRepository, times(1)).save(testAllowControl);
     }
 
     @Test
@@ -217,11 +267,14 @@ public class AllowControlResourceIntTest {
         restAllowControlMockMvc.perform(put("/api/allow-controls")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(allowControl)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the AllowControl in the database
         List<AllowControl> allowControlList = allowControlRepository.findAll();
-        assertThat(allowControlList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(allowControlList).hasSize(databaseSizeBeforeUpdate);
+
+        // Validate the AllowControl in Elasticsearch
+        verify(mockAllowControlSearchRepository, times(0)).save(allowControl);
     }
 
     @Test
@@ -237,13 +290,12 @@ public class AllowControlResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean allowControlExistsInEs = allowControlSearchRepository.exists(allowControl.getId());
-        assertThat(allowControlExistsInEs).isFalse();
-
         // Validate the database is empty
         List<AllowControl> allowControlList = allowControlRepository.findAll();
         assertThat(allowControlList).hasSize(databaseSizeBeforeDelete - 1);
+
+        // Validate the AllowControl in Elasticsearch
+        verify(mockAllowControlSearchRepository, times(1)).deleteById(allowControl.getId());
     }
 
     @Test
@@ -251,7 +303,8 @@ public class AllowControlResourceIntTest {
     public void searchAllowControl() throws Exception {
         // Initialize the database
         allowControlService.save(allowControl);
-
+        when(mockAllowControlSearchRepository.search(queryStringQuery("id:" + allowControl.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(allowControl), PageRequest.of(0, 1), 1));
         // Search the allowControl
         restAllowControlMockMvc.perform(get("/api/_search/allow-controls?query=id:" + allowControl.getId()))
             .andExpect(status().isOk())

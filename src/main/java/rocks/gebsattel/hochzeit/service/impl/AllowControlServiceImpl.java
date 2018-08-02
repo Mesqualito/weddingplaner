@@ -2,6 +2,7 @@ package rocks.gebsattel.hochzeit.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import rocks.gebsattel.hochzeit.service.AllowControlService;
 import rocks.gebsattel.hochzeit.service.UserService;
 
 import java.util.List;
+
+import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -80,6 +83,7 @@ public class AllowControlServiceImpl implements AllowControlService {
         }
 
         AllowControl result = allowControlRepository.save(allowControl);
+
         allowControlSearchRepository.save(result);
         return result;
     }
@@ -105,6 +109,16 @@ public class AllowControlServiceImpl implements AllowControlService {
     }
 
     /**
+     * Get all the AllowControl with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<AllowControl> findAllWithEagerRelationships(Pageable pageable) {
+        return allowControlRepository.findAllWithEagerRelationships(pageable);
+    }
+
+
+    /**
      * Get one allowControl by id.
      *
      * @param id the id of the entity
@@ -112,7 +126,7 @@ public class AllowControlServiceImpl implements AllowControlService {
      */
     @Override
     @Transactional(readOnly = true)
-    public AllowControl findOne(Long id) {
+    public Optional<AllowControl> findOne(Long id) {
         log.debug("Request to get AllowControl : {}", id);
         return allowControlRepository.findOneWithEagerRelationships(id);
     }
@@ -125,8 +139,8 @@ public class AllowControlServiceImpl implements AllowControlService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete AllowControl : {}", id);
-        allowControlRepository.delete(id);
-        allowControlSearchRepository.delete(id);
+        allowControlRepository.deleteById(id);
+        allowControlSearchRepository.deleteById(id);
     }
 
     /**
@@ -167,5 +181,4 @@ public class AllowControlServiceImpl implements AllowControlService {
         log.debug("Request to get a list of AllowControls with ControlledGroups containing userExtra userID : {} and AllowGroup : {}", userExtraId, allowGroup);
         return allowControlRepository.findAllByControlledGroupsIdAndAllowGroup(userExtraId, allowGroup);
     }
-
 }

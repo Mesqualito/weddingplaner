@@ -1,5 +1,6 @@
 package rocks.gebsattel.hochzeit.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -49,6 +50,7 @@ public class PartyFood implements Serializable {
     private Boolean foodProposalAccepted;
 
     @ManyToOne
+    @JsonIgnoreProperties("partyFoods")
     private UserExtra userExtra;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

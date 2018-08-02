@@ -1,43 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils } from 'ng-jhipster';
 
-import { Message } from './message.model';
-import { MessageService } from './message.service';
+import { IMessage } from 'app/shared/model/message.model';
 
 @Component({
     selector: 'jhi-message-detail',
     templateUrl: './message-detail.component.html'
 })
-export class MessageDetailComponent implements OnInit, OnDestroy {
+export class MessageDetailComponent implements OnInit {
+    message: IMessage;
 
-    message: Message;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
-
-    constructor(
-        private eventManager: JhiEventManager,
-        private dataUtils: JhiDataUtils,
-        private messageService: MessageService,
-        private route: ActivatedRoute
-    ) {
-    }
+    constructor(private dataUtils: JhiDataUtils, private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
+        this.activatedRoute.data.subscribe(({ message }) => {
+            this.message = message;
         });
-        this.registerChangeInMessages();
     }
 
-    load(id) {
-        this.messageService.find(id)
-            .subscribe((messageResponse: HttpResponse<Message>) => {
-                this.message = messageResponse.body;
-            });
-    }
     byteSize(field) {
         return this.dataUtils.byteSize(field);
     }
@@ -47,17 +28,5 @@ export class MessageDetailComponent implements OnInit, OnDestroy {
     }
     previousState() {
         window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    registerChangeInMessages() {
-        this.eventSubscriber = this.eventManager.subscribe(
-            'messageListModification',
-            (response) => this.load(this.message.id)
-        );
     }
 }

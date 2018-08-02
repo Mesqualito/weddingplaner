@@ -1,54 +1,38 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AccordionModule, AutoCompleteModule} from 'primeng/primeng';
 
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import {WeddingplanerSharedModule} from 'app/shared';
 
-import { WeddingplanerSharedModule } from '../../shared';
 import {
-    MessageService,
-    MessagePopupService,
     MessageComponent,
-    MessageDetailComponent,
-    MessageDialogComponent,
-    MessagePopupComponent,
-    MessageDeletePopupComponent,
     MessageDeleteDialogComponent,
-    messageRoute,
+    MessageDeletePopupComponent,
+    MessageDetailComponent,
     messagePopupRoute,
-    MessageResolvePagingParams,
+    messageRoute,
+    MessageUpdateComponent
 } from './';
 
-const ENTITY_STATES = [
-    ...messageRoute,
-    ...messagePopupRoute,
-];
+const ENTITY_STATES = [...messageRoute, ...messagePopupRoute];
 
 @NgModule({
     imports: [
         WeddingplanerSharedModule,
+        BrowserAnimationsModule,
         AutoCompleteModule,
+        AccordionModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [
         MessageComponent,
         MessageDetailComponent,
-        MessageDialogComponent,
+        MessageUpdateComponent,
         MessageDeleteDialogComponent,
-        MessagePopupComponent,
-        MessageDeletePopupComponent,
+        MessageDeletePopupComponent
     ],
-    entryComponents: [
-        MessageComponent,
-        MessageDialogComponent,
-        MessagePopupComponent,
-        MessageDeleteDialogComponent,
-        MessageDeletePopupComponent,
-    ],
-    providers: [
-        MessageService,
-        MessagePopupService,
-        MessageResolvePagingParams,
-    ],
+    entryComponents: [MessageComponent, MessageUpdateComponent, MessageDeleteDialogComponent, MessageDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class WeddingplanerMessageModule {}

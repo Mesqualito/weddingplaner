@@ -1,24 +1,27 @@
-<div>
-    <h2>
-        <span jhiTranslate="weddingplanerApp.allowControl.home.title">Allow Controls</span>
-        <button class="btn btn-primary float-right jh-create-entity create-allow-control" [routerLink]="['/', { outlets: { popup: ['allow-control-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="weddingplanerApp.allowControl.home.createLabel">
+<div class="row">
+    <div class="col-sm-8">
+        <h2 id="page-heading"><span jhiTranslate="weddingplanerApp.allowControl.home.title">Allow Controls</span></h2>
+    </div>
+    <div class="col-sm-4 text-right">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-allow-control" [routerLink]="['/allow-control/new']"
+                [ngbTooltip]="addTooltip"
+                placement="bottom">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <ng-template #addTooltip>
+            <span jhiTranslate="weddingplanerApp.allowControl.home.createLabel">
             Create new Allow Control
             </span>
+            </ng-template>
         </button>
-    </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-        <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
+                <div class="input-group w-100 mr-1">
                     <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'weddingplanerApp.allowControl.home.search' | translate }}">
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
+                        <fa-icon [icon]="'search'"></fa-icon>
                     </button>
                     <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>
                     </button>
                 </div>
             </form>
@@ -28,44 +31,41 @@
     <div class="table-responsive" *ngIf="allowControls">
         <table class="table table-striped">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="allowGroup"><span jhiTranslate="weddingplanerApp.allowControl.allowGroup">Allow Group</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="controlGroup.user_id"><span jhiTranslate="weddingplanerApp.allowControl.controlGroup">Control Group</span> <span class="fa fa-sort"></span></th>
+            <th *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="allowGroup"><span jhiTranslate="weddingplanerApp.allowControl.allowGroup">Allow Group</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="controlGroup.user_id"><span jhiTranslate="weddingplanerApp.allowControl.controlGroup">Control Group</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let allowControl of allowControls ;trackBy: trackId">
-                <td><a [routerLink]="['../allow-control', allowControl.id ]">{{allowControl.id}}</a></td>
+                <td *jhiHasAnyAuthority="'ROLE_ADMIN'"><a [routerLink]="['/allow-control', allowControl.id, 'view' ]">{{allowControl.id}}</a></td>
                 <td jhiTranslate="{{'weddingplanerApp.AllowGroup.' + allowControl.allowGroup}}">{{allowControl.allowGroup}}</td>
                 <td>
                     <div *ngIf="allowControl.controlGroup">
-                        <a [routerLink]="['../user-extra', allowControl.controlGroup?.id ]" >{{allowControl.controlGroup?.user_id}}</a>
+                        <a [routerLink]="['../user-extra', allowControl.controlGroup?.id, 'view' ]" >{{allowControl.controlGroup?.user_id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../allow-control', allowControl.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                                [routerLink]="['/allow-control', allowControl.id, 'view' ]"
+                                class="btn btn-outline-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'allow-control/'+ allowControl.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
+                                [routerLink]="['/allow-control', allowControl.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'allow-control/'+ allowControl.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                                class="btn btn-outline-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>
                     </div>

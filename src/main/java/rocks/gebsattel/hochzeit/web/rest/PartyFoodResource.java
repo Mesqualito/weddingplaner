@@ -79,7 +79,7 @@ public class PartyFoodResource {
     public ResponseEntity<PartyFood> updatePartyFood(@Valid @RequestBody PartyFood partyFood) throws URISyntaxException {
         log.debug("REST request to update PartyFood : {}", partyFood);
         if (partyFood.getId() == null) {
-            return createPartyFood(partyFood);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         PartyFood result = partyFoodService.save(partyFood);
         return ResponseEntity.ok()
@@ -112,8 +112,8 @@ public class PartyFoodResource {
     @Timed
     public ResponseEntity<PartyFood> getPartyFood(@PathVariable Long id) {
         log.debug("REST request to get PartyFood : {}", id);
-        PartyFood partyFood = partyFoodService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(partyFood));
+        Optional<PartyFood> partyFood = partyFoodService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(partyFood);
     }
 
     /**

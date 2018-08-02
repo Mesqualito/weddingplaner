@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { PartyFood } from './party-food.model';
-import { PartyFoodPopupService } from './party-food-popup.service';
+import { IPartyFood } from 'app/shared/model/party-food.model';
 import { PartyFoodService } from './party-food.service';
 
 @Component({
@@ -13,22 +12,16 @@ import { PartyFoodService } from './party-food.service';
     templateUrl: './party-food-delete-dialog.component.html'
 })
 export class PartyFoodDeleteDialogComponent {
+    partyFood: IPartyFood;
 
-    partyFood: PartyFood;
-
-    constructor(
-        private partyFoodService: PartyFoodService,
-        public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
-    ) {
-    }
+    constructor(private partyFoodService: PartyFoodService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
 
     clear() {
         this.activeModal.dismiss('cancel');
     }
 
     confirmDelete(id: number) {
-        this.partyFoodService.delete(id).subscribe((response) => {
+        this.partyFoodService.delete(id).subscribe(response => {
             this.eventManager.broadcast({
                 name: 'partyFoodListModification',
                 content: 'Deleted an partyFood'
@@ -43,22 +36,30 @@ export class PartyFoodDeleteDialogComponent {
     template: ''
 })
 export class PartyFoodDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor(
-        private route: ActivatedRoute,
-        private partyFoodPopupService: PartyFoodPopupService
-    ) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.partyFoodPopupService
-                .open(PartyFoodDeleteDialogComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ partyFood }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(PartyFoodDeleteDialogComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.partyFood = partyFood;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }
